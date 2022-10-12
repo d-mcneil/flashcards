@@ -1,0 +1,106 @@
+import React, { Component } from "react";
+import Deck from "../Components/Deck";
+import MainCard from "../Components/MainCard";
+import mainUrl from "../mainUrl";
+import NewDeck from "../Components/NewDeck";
+
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      decks: [],
+      currentDeck: "",
+      error: "",
+      newDeckName: "",
+      newDeckDescription: "",
+      route: "decks",
+    };
+  }
+  onDeckNameChange = (event) => {
+    this.setState({ newDeckName: event.target.value });
+  };
+
+  onDeckDescriptionChange = (event) => {
+    this.setState({ newDeckDescription: event.target.value });
+  };
+
+  onAddNewDeck = () => {};
+
+  onDeleteDeck = (deckId) => {};
+
+  onSelectDeck = (route, deckId) => {
+    this.onRouteChange(route);
+    this.setState({ currentDeck: deckId });
+  };
+
+  onRouteChange = (route) => {
+    if (route === "decks") {
+      this.setState({
+        newDeckDescription: "",
+        newDeckName: "",
+        currentDeck: "",
+      });
+    }
+    this.setState({ route });
+  };
+
+  componentDidMount() {
+    const { userId } = this.props;
+    fetch(`${mainUrl}/read-decks/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length) {
+          this.setState({ decks: data });
+        } else {
+          this.setState({ error: data });
+        }
+      })
+      .catch((err) => {
+        this.setState({ error: "Error fetching user's decks: 0" });
+      });
+  }
+
+  render() {
+    const { decks, currentDeck, route } = this.state;
+    const { userId } = this.props;
+    if (route === "practice") {
+      return <></>;
+    } else if (route === "edit") {
+      return <></>;
+    } else {
+      return (
+        <>
+          <MainCard>
+            <div style={{ textAlign: "center" }} className="f2 mb4">
+              {"Decks"}
+            </div>
+            {Array.isArray(decks) && decks.length ? (
+              decks.map((deck) => {
+                return (
+                  <Deck
+                    key={`${deck.deck_id}-${deck.deck_name.replace(" ", "-")}`}
+                    deckId={deck.deck_id}
+                    deckName={deck.deck_name}
+                    description={deck.description}
+                    onSelectDeck={this.onSelectDeck}
+                    onDeleteDeck={this.onDeleteDeck}
+                  />
+                );
+              })
+            ) : (
+              <></>
+            )}
+            <NewDeck
+              onDeckNameChange={this.onDeckNameChange}
+              onDeckDescriptionChange={this.onDeckDescriptionChange}
+              userId={userId}
+              onAddNewDeck={this.onAddNewDeck}
+            />
+          </MainCard>
+        </>
+      );
+    }
+  }
+}
+
+export default Home;

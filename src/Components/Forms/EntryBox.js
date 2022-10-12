@@ -18,6 +18,7 @@ const EntryBox = ({ label, onChange, onEnterSubmit, type }) => {
           name={`${labelHtml}`}
           onChange={onChange}
           onKeyDown={onEnterSubmit}
+          maxLength={100}
         />
       </div>
     </>

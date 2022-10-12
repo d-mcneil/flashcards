@@ -19,3 +19,9 @@ button {
 .push {
   margin-left: auto;
 }
+
+@media screen and (min-width: 30em) {
+  .sign-in-form {
+    width: 30em;
+  }
+}

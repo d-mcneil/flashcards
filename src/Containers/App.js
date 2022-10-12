@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Navigation from "../Components/Navigation";
-import Register from "../Components/Forms/Register";
-import SignIn from "../Components/Forms/SignIn";
+import Register from "./Register";
+import SignIn from "./SignIn";
+import Home from "./Home";
+import Profile from "../Components/Profile";
 
 const initialState = {
   route: "signed-out",
@@ -65,9 +67,9 @@ class App extends Component {
           route={route}
         />
         {route === "home" ? (
-          <></>
+          <Home userId={user.userId} />
         ) : route === "profile" ? (
-          <></>
+          <Profile />
         ) : route === "signed-out" ? (
           <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : (

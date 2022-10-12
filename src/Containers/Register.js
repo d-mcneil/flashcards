@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import EntryBox from "./EntryBox";
-import Button from "./Button";
-import Title from "./Title";
-import Error from "./Error";
-import Form from "./Form";
-import mainUrl from "../../mainUrl";
+import EntryBox from "../Components/Forms/EntryBox";
+import Button from "../Components/Forms/Button";
+import Title from "../Components/Forms/Title";
+import Error from "../Components/Forms/Error";
+import Form from "../Components/Forms/Form";
+import mainUrl from "../mainUrl";
 
 class Register extends Component {
   constructor(props) {
