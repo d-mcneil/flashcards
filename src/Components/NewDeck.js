@@ -18,6 +18,22 @@ class NewDeck extends Component {
     };
   }
 
+  checkValidInput = (deckName) => {
+    if (!deckName) {
+      this.setState({
+        error: "Invalid submission: deck name is required",
+      });
+      return false;
+    } else if (deckName.length > 100) {
+      this.setState({
+        error:
+          "Invalid submission: deck name must be no more than 100 characters long",
+      });
+      return false;
+    }
+    return true;
+  };
+
   onDeckNameChange = (event) => {
     this.setState({ deckName: event.target.value });
   };
@@ -29,6 +45,10 @@ class NewDeck extends Component {
   onSaveDeck = () => {
     const { deckName, description } = this.state;
     const { userId, addNewDeck } = this.props;
+    const valid = this.checkValidInput(deckName);
+    if (!valid) {
+      return;
+    }
     fetch(`${mainUrl}/create-deck`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
