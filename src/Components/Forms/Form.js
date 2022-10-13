@@ -16,11 +16,11 @@ const Form = ({ children }) => {
       </div> */}
       <MainCard>
         <fieldset className="ba b--transparent ph0 mh0">
-          {children.slice(0, -2)}
           {/* the input boxes for the register and sign-in forms */}
+          {children.slice(0, -2)}
         </fieldset>
-        {children.slice(-2)}
         {/* the submit button and error message for the register and sign-in forms */}
+        {children.slice(-2)}
       </MainCard>
     </>
   );

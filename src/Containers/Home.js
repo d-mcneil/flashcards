@@ -11,20 +11,13 @@ class Home extends Component {
       decks: [],
       currentDeck: "",
       error: "",
-      newDeckName: "",
-      newDeckDescription: "",
       route: "decks",
     };
   }
-  onDeckNameChange = (event) => {
-    this.setState({ newDeckName: event.target.value });
-  };
 
-  onDeckDescriptionChange = (event) => {
-    this.setState({ newDeckDescription: event.target.value });
+  addNewDeck = (deck) => {
+    this.setState({ decks: [...this.state.decks, deck] });
   };
-
-  onAddNewDeck = () => {};
 
   onDeleteDeck = (deckId) => {};
 
@@ -90,12 +83,7 @@ class Home extends Component {
             ) : (
               <></>
             )}
-            <NewDeck
-              onDeckNameChange={this.onDeckNameChange}
-              onDeckDescriptionChange={this.onDeckDescriptionChange}
-              userId={userId}
-              onAddNewDeck={this.onAddNewDeck}
-            />
+            <NewDeck userId={userId} addNewDeck={this.addNewDeck} />
           </MainCard>
         </>
       );
