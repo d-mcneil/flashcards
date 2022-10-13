@@ -19,6 +19,47 @@ class Register extends Component {
     };
   }
 
+  checkValidInput = (firstName, lastName, email, username, password) => {
+    if (!firstName || !lastName || !email || !username || !password) {
+      this.setState({
+        error: "Incorrect form submission: all fields are required",
+      });
+      return false;
+    } else if (firstName.length > 100) {
+      this.setState({
+        error:
+          "Invalid form submission: first name must be no more than 100 characters long",
+      });
+      return false;
+    } else if (lastName.length > 100) {
+      this.setState({
+        error:
+          "Invalid form submission: last name must be no more than 100 characters long",
+      });
+      return false;
+    } else if (email.length > 100) {
+      this.setState({
+        error:
+          "Invalid form submission: email must be no more than 100 characters long",
+      });
+      return false;
+    } else if (username.length > 100) {
+      this.setState({
+        error:
+          "Invalid form submission: username must be no more than 100 characters long",
+      });
+      return false;
+    } else if (
+      !email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      this.setState({ error: "Incorrect form submission: invalid email" });
+      return false;
+    }
+    return true;
+  };
+
   onFirstNameChange = (event) => {
     this.setState({ firstName: event.target.value });
   };
@@ -41,16 +82,20 @@ class Register extends Component {
   onSubmit = () => {
     const { onRouteChange, loadUser } = this.props;
     const { password, email, firstName, lastName, username } = this.state;
+    const valid = this.checkValidInput(
+      firstName,
+      lastName,
+      email,
+      username,
+      password
+    );
+    if (!valid) {
+      return;
+    }
     fetch(`${mainUrl}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        username: username,
-        password: password,
-      }),
+      body: JSON.stringify({ firstName, lastName, email, username, password }),
     })
       .then((response) => response.json())
       .then((data) => {

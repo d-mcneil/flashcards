@@ -24,9 +24,28 @@ class SignIn extends Component {
     this.setState({ password: event.target.value });
   };
 
+  checkValidInput = (username, password) => {
+    if (!username || !password) {
+      this.setState({
+        error: "Incorrect form submission: all fields are required",
+      });
+      return false;
+    } else if (username.length > 100) {
+      this.setState({
+        error: "Invalid combination of username and password",
+      });
+      return false;
+    }
+    return true;
+  };
+
   onSubmit = () => {
     const { password, username } = this.state;
     const { onRouteChange, loadUser } = this.props;
+    const valid = this.checkValidInput(username, password);
+    if (!valid) {
+      return;
+    }
     fetch(`${mainUrl}/sign-in`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
