@@ -19,7 +19,12 @@ class Home extends Component {
     this.setState({ decks: [...this.state.decks, deck] });
   };
 
-  onDeleteDeck = (deckId) => {};
+  removeDeck = (deckId) => {
+    const remainingDecks = this.state.decks.filter(
+      (deck) => deck.deck_id !== deckId
+    );
+    this.setState({ decks: remainingDecks });
+  };
 
   onSelectDeck = (route, deckId) => {
     this.onRouteChange(route);
@@ -73,10 +78,11 @@ class Home extends Component {
                   <Deck
                     key={`${deck.deck_id}-${deck.deck_name.replace(" ", "-")}`}
                     deckId={deck.deck_id}
+                    userId={deck.user_id}
                     deckName={deck.deck_name}
                     description={deck.description}
                     onSelectDeck={this.onSelectDeck}
-                    onDeleteDeck={this.onDeleteDeck}
+                    removeDeck={this.removeDeck}
                   />
                 );
               })
