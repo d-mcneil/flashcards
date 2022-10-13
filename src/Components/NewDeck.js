@@ -103,7 +103,7 @@ class NewDeck extends Component {
           {/* **************start description***************** */}
           <textarea
             onChange={this.onDescriptionChange}
-            placeholder="Enter New Deck Description"
+            placeholder="Enter New Deck Description (Optional)"
             style={{
               alignSelf: "start",
               resize: "none",
@@ -112,10 +112,7 @@ class NewDeck extends Component {
             rows={3}
           ></textarea>
           {/* **************start error notification***************** */}
-          <div
-            className={"mt0 pt0"}
-            style={{ gridColumn: "span 2", alignItems: "start" }}
-          >
+          <div className={"mt0 pt0"} style={{ gridColumn: "span 2" }}>
             <Error error={error} />
           </div>
         </div>

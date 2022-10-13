@@ -90,10 +90,7 @@ class Deck extends Component {
           </div>
           {/* **************start error notification***************** */}
           {error ? (
-            <div
-              className={"mt0 pt0 mb3"}
-              style={{ gridColumn: "span 2", alignItems: "start" }}
-            >
+            <div className={"mt0 pt0 mb3"} style={{ gridColumn: "span 2" }}>
               <Error error={error} />
             </div>
           ) : (
