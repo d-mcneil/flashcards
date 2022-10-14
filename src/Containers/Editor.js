@@ -11,6 +11,17 @@ class Editor extends Component {
     this.state = { error: "", cards: [] };
   }
 
+  addNewCard = (card) => {
+    this.setState({ cards: [...this.state.cards, card] });
+  };
+
+  removeCard = (cardId) => {
+    const remainingCards = this.state.cards.filter(
+      (card) => card.card_id !== cardId
+    );
+    this.setState({ cards: remainingCards });
+  };
+
   componentDidMount() {
     const { currentDeckId } = this.props;
     fetch(`${mainUrl}/read-cards/${currentDeckId}`)
@@ -57,14 +68,18 @@ class Editor extends Component {
                   definition={card.definition}
                   term={card.term}
                   score={card.score}
-                  //   removeCard={this.removeCard}
+                  removeCard={this.removeCard}
                 />
               );
             })
           ) : (
             <></>
           )}
-          <NewCard userId={userId} deckId={currentDeckId} />
+          <NewCard
+            userId={userId}
+            deckId={currentDeckId}
+            addNewCard={this.addNewCard}
+          />
         </MainCard>
       </>
     );

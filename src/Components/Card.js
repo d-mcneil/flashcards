@@ -22,8 +22,8 @@ class Card extends Component {
         } else {
           this.setState({ error: data });
         }
-      })
-      .catch((err) => this.setState({ error: "Error deleting card: 0" }));
+      });
+    // .catch((err) => this.setState({ error: "Error deleting card: 0" }));
   };
 
   render() {
@@ -53,7 +53,6 @@ class Card extends Component {
             Edit
           </div>
           {/* **************start definition***************** */}
-
           <div
             style={{
               alignSelf: "start",
