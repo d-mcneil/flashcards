@@ -19,30 +19,45 @@ class Home extends Component {
       this.setState({
         //     newDeckDescription: "",    // removed when decks was moved to be a child component, pretty sure it's no longer needed, keeping just in case
         //     newDeckName: "",
-        currentDeck: "",
+        currentDeckId: "",
+        currentDeckName: "",
+        currentDeckDescription: "",
       });
     }
     this.setState({ route });
   };
 
-  onSelectDeck = (route, deckId) => {
+  onSelectDeck = (route, deckId, deckName, description) => {
     this.onRouteChange(route);
-    this.setState({ currentDeck: deckId });
+    this.setState({
+      currentDeckId: deckId,
+      currentDeckName: deckName,
+      currentDeckDescription: description,
+    });
   };
 
   render() {
-    const { currentDeck, route } = this.state;
+    const { currentDeckId, currentDeckDescription, currentDeckName, route } =
+      this.state;
     const { userId } = this.props;
     if (route === "practice") {
       return (
         <Practice
-          currentDeck={currentDeck}
+          currentDeckId={currentDeckId}
+          currentDeckDescription={currentDeckDescription}
+          currentDeckName={currentDeckName}
           onRouteChange={this.onRouteChange}
         />
       );
     } else if (route === "editor") {
       return (
-        <Editor currentDeck={currentDeck} onRouteChange={this.onRouteChange} />
+        <Editor
+          userId={userId}
+          currentDeckId={currentDeckId}
+          currentDeckDescription={currentDeckDescription}
+          currentDeckName={currentDeckName}
+          onRouteChange={this.onRouteChange}
+        />
       );
     } else {
       return <Decks userId={userId} onSelectDeck={this.onSelectDeck} />;

@@ -46,11 +46,15 @@ class Deck extends Component {
               textOverflow: "ellipsis",
               overflow: "hidden",
             }}
-            onClick={() => onSelectDeck("practice", deckId)}
+            onClick={() =>
+              onSelectDeck("practice", deckId, deckName, description)
+            }
           >{`${deckName}`}</div>
           {/* **************start edit button***************** */}
           <div
-            onClick={() => onSelectDeck("edit", deckId)}
+            onClick={() =>
+              onSelectDeck("editor", deckId, deckName, description)
+            }
             className="f6 f5-ns mt3 mb2 link dim pointer"
             style={{ alignSelf: "end" }}
           >
