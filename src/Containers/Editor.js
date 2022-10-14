@@ -4,6 +4,8 @@ import MainCard from "../Components/MainCard";
 import Error from "../Components/Forms/Error";
 import Card from "../Components/Card";
 import NewCard from "../Components/NewCard";
+import DeckNavigation from "../Components/DeckNavigation";
+import Deck from "../Components/Deck";
 
 class Editor extends Component {
   constructor(props) {
@@ -39,12 +41,18 @@ class Editor extends Component {
   }
 
   render() {
-    const { currentDeckId, currentDeckName, currentDeckDescription, userId } =
-      this.props;
+    const {
+      currentDeckId,
+      currentDeckName,
+      currentDeckDescription,
+      userId,
+      onRouteChange,
+    } = this.props;
     const { error, cards } = this.state;
     return (
       <>
         <MainCard>
+          <DeckNavigation onRouteChange={onRouteChange} />
           <div style={{ textAlign: "center" }} className="f2 mb4">
             {`${currentDeckName}`}
           </div>
