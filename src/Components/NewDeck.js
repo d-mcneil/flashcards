@@ -85,11 +85,12 @@ class NewDeck extends Component {
             maxLength={100}
             onChange={this.onDeckNameChange}
             placeholder="Enter New Deck Name"
-            className="f3-ns f4 mt3 mb2 mr4 bn reset-new-deck-info"
+            className="f3-ns f4 mt3 mb2 mr4 bn reset-new-deck-info outline-hover"
             style={{
               alignSelf: "end",
               textOverflow: "ellipsis",
               overflow: "hidden",
+              cursor: "text",
             }}
           ></input>
           {/* **************start save button***************** */}
@@ -107,8 +108,9 @@ class NewDeck extends Component {
             style={{
               alignSelf: "start",
               resize: "none",
+              cursor: "text",
             }}
-            className="f6 mb0 mt2 mr4 bn reset-new-deck-info"
+            className="f6 mb0 mt2 mr4 bn reset-new-deck-info outline-hover"
             rows={3}
           ></textarea>
           {/* **************start error notification***************** */}

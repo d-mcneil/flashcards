@@ -7,6 +7,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  cursor: default;
+}
+
+.outline-hover:hover {
+  outline: solid 1px;
+  outline: -webkit-focus-ring-color auto 1px;
+}
+
 .justify-content-center {
   display: flex;
   justify-content: center;

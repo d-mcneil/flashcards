@@ -1,6 +1,11 @@
 import React from "react";
 
-const DeckNavigation = ({ onRouteChange }) => {
+const DeckNavigation = ({
+  onRouteChange,
+  editing,
+  changesToBeSaved,
+  onSaveDeckChanges,
+}) => {
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -10,12 +15,31 @@ const DeckNavigation = ({ onRouteChange }) => {
         >
           Decks
         </p>
-        <p
-          onClick={() => onRouteChange("practice")}
-          className="f5 link dim black underline pa0 pb3 mv0 pointer mr0 push"
-        >
-          Practice
-        </p>
+        {changesToBeSaved === true ? (
+          <p
+            onClick={onSaveDeckChanges}
+            className="f5 link dim black underline pa0 pb3 mv0 pointer mr0 push"
+          >
+            Save
+          </p>
+        ) : (
+          <></>
+        )}
+        {editing ? (
+          <p
+            onClick={() => onRouteChange("practice")}
+            className="f5 link dim black underline pa0 pb3 mv0 pointer mr0 push"
+          >
+            Practice
+          </p>
+        ) : (
+          <p
+            onClick={() => onRouteChange("editor")}
+            className="f5 link dim black underline pa0 pb3 mv0 pointer mr0 push"
+          >
+            Edit
+          </p>
+        )}
       </div>
     </>
   );

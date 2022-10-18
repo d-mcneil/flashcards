@@ -87,11 +87,12 @@ class NewCard extends Component {
             maxLength={255}
             onChange={this.onTermChange}
             placeholder="Enter New Term"
-            className="f3-ns f4 mt3 mb2 mr4 bn reset-new-card-info"
+            className="f3-ns f4 mt3 mb2 mr4 bn reset-new-card-info outline-hover"
             style={{
               alignSelf: "end",
               textOverflow: "ellipsis",
               overflow: "hidden",
+              cursor: "text",
             }}
           ></input>
           {/* **************start save button***************** */}
@@ -110,8 +111,9 @@ class NewCard extends Component {
             style={{
               alignSelf: "start",
               resize: "none",
+              cursor: "text",
             }}
-            className="f6 mb0 mt2 mr4 bn reset-new-card-info"
+            className="f6 mb0 mt2 mr4 bn reset-new-card-info outline-hover"
             rows={3}
           ></textarea>
           {/* **************start error notification***************** */}

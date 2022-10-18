@@ -25,13 +25,22 @@ class Decks extends Component {
     this.setState({ decks: remainingDecks });
   };
 
+  sortDecks = (a, b) => {
+    if (a.deck_id < b.deck_id) {
+      return -1;
+    } else if (b.deck_id < a.deck_id) {
+      return 1;
+    }
+    return 0;
+  };
+
   componentDidMount() {
     const { userId } = this.props;
     fetch(`${mainUrl}/read-decks/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data) && data.length) {
-          this.setState({ decks: data });
+          this.setState({ decks: data.sort(this.sortDecks) });
         } else {
           this.setState({ error: data });
         }

@@ -7,18 +7,25 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentDeck: "",
+      currentDeckId: "",
+      currentDeckName: "",
+      currentDeckDescription: "",
       error: "",
       route: "decks",
     };
   }
 
+  updateDeckInformation = (newDeckName, newDeckDescription) => {
+    this.setState({
+      currentDeckName: newDeckName,
+      currentDeckDescription: newDeckDescription,
+    });
+  };
+
   // called in this.onSelectDeck
   onRouteChange = (route) => {
     if (route === "decks") {
       this.setState({
-        //     newDeckDescription: "",    // removed when decks was moved to be a child component, pretty sure it's no longer needed, keeping just in case
-        //     newDeckName: "",
         currentDeckId: "",
         currentDeckName: "",
         currentDeckDescription: "",
@@ -57,6 +64,7 @@ class Home extends Component {
           currentDeckDescription={currentDeckDescription}
           currentDeckName={currentDeckName}
           onRouteChange={this.onRouteChange}
+          updateDeckInformation={this.updateDeckInformation}
         />
       );
     } else {
