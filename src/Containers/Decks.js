@@ -14,7 +14,7 @@ class Decks extends Component {
     };
   }
 
-  addNewDeck = (deck) => {
+  addDeck = (deck) => {
     this.setState({ decks: [...this.state.decks, deck] });
   };
 
@@ -34,6 +34,13 @@ class Decks extends Component {
     return 0;
   };
 
+  componentDidUpdate() {
+    const { error } = this.props;
+    if (error && error !== this.state.error) {
+      this.setState({ error });
+    }
+  }
+
   componentDidMount() {
     const { userId } = this.props;
     fetch(`${mainUrl}/read-decks/${userId}`)
@@ -51,7 +58,7 @@ class Decks extends Component {
   }
 
   render() {
-    const { userId, onSelectDeck } = this.props;
+    const { userId, selectDeck } = this.props;
     const { decks, error } = this.state;
     return (
       <>
@@ -75,7 +82,7 @@ class Decks extends Component {
                   userId={deck.user_id}
                   deckName={deck.deck_name}
                   description={deck.description}
-                  onSelectDeck={onSelectDeck}
+                  selectDeck={selectDeck}
                   removeDeck={this.removeDeck}
                 />
               );
@@ -83,7 +90,7 @@ class Decks extends Component {
           ) : (
             <></>
           )}
-          <NewDeck userId={userId} addNewDeck={this.addNewDeck} />
+          <NewDeck userId={userId} addDeck={this.addDeck} />
         </MainCard>
       </>
     );

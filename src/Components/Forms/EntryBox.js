@@ -19,6 +19,7 @@ const EntryBox = ({ label, onChange, onEnterSubmit, type }) => {
           onChange={onChange}
           onKeyDown={onEnterSubmit}
           maxLength={100}
+          style={{ cursor: "text" }}
         />
       </div>
     </>

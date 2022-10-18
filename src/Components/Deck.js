@@ -10,7 +10,7 @@ class Deck extends Component {
     };
   }
 
-  onDeleteDeck = () => {
+  deleteDeck = () => {
     const { userId, deckId, removeDeck } = this.props;
     fetch(`${mainUrl}/delete-deck`, {
       method: "DELETE",
@@ -29,7 +29,7 @@ class Deck extends Component {
   };
 
   render() {
-    const { deckId, deckName, description, onSelectDeck } = this.props;
+    const { deckId, deckName, description, selectDeck } = this.props;
     const { error } = this.state;
     return (
       <>
@@ -47,14 +47,12 @@ class Deck extends Component {
               overflow: "hidden",
             }}
             onClick={() =>
-              onSelectDeck("practice", deckId, deckName, description)
+              selectDeck("practice", deckId, deckName, description)
             }
           >{`${deckName}`}</div>
           {/* **************start edit button***************** */}
           <div
-            onClick={() =>
-              onSelectDeck("editor", deckId, deckName, description)
-            }
+            onClick={() => selectDeck("editor", deckId, deckName, description)}
             className="f6 f5-ns mt3 mb2 link dim pointer"
             style={{ alignSelf: "end" }}
           >
@@ -88,7 +86,7 @@ class Deck extends Component {
           <div
             className="f6 f5-ns mb3 mt2 link dim pointer"
             style={{ alignSelf: "start", gridColumn: "2/span 1" }}
-            onClick={this.onDeleteDeck}
+            onClick={this.deleteDeck}
           >
             Delete
           </div>

@@ -42,9 +42,9 @@ class NewDeck extends Component {
     this.setState({ description: event.target.value });
   };
 
-  onSaveDeck = () => {
+  saveDeck = () => {
     const { deckName, description } = this.state;
-    const { userId, addNewDeck } = this.props;
+    const { userId, addDeck } = this.props;
     const valid = this.checkValidInput(deckName);
     if (!valid) {
       return;
@@ -57,7 +57,7 @@ class NewDeck extends Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.deck_id) {
-          addNewDeck(data);
+          addDeck(data);
           for (const item of document.getElementsByClassName(
             "reset-new-deck-info"
           )) {
@@ -95,7 +95,7 @@ class NewDeck extends Component {
           ></input>
           {/* **************start save button***************** */}
           <div
-            onClick={this.onSaveDeck}
+            onClick={this.saveDeck}
             className="f6 f5-ns mt3 mb2 link dim pointer"
             style={{ alignSelf: "end" }}
           >

@@ -1,11 +1,6 @@
 import React from "react";
 
-const DeckNavigation = ({
-  onRouteChange,
-  editing,
-  changesToBeSaved,
-  onSaveDeckChanges,
-}) => {
+const DeckNavigation = ({ onRouteChange, editing }) => {
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -15,16 +10,6 @@ const DeckNavigation = ({
         >
           Decks
         </p>
-        {changesToBeSaved === true ? (
-          <p
-            onClick={onSaveDeckChanges}
-            className="f5 link dim black underline pa0 pb3 mv0 pointer mr0 push"
-          >
-            Save
-          </p>
-        ) : (
-          <></>
-        )}
         {editing ? (
           <p
             onClick={() => onRouteChange("practice")}

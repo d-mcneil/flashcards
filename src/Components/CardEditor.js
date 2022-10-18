@@ -12,12 +12,6 @@ class CardEditor extends Component {
     };
   }
 
-  componentDidMount() {
-    const { currentDefinition, currentTerm } = this.props;
-    this.setState({ newTerm: currentTerm, newDefinition: currentDefinition });
-    this.setDefinitionAreaHeight();
-  }
-
   onTermChange = (event) => {
     this.setState({ newTerm: event.target.value });
   };
@@ -33,7 +27,7 @@ class CardEditor extends Component {
     definitionArea.style.height = definitionArea.scrollHeight + 2 + "px";
   };
 
-  onDeleteCard = () => {
+  deleteCard = () => {
     const { userId, cardId, removeCard } = this.props;
     fetch(`${mainUrl}/delete-card`, {
       method: "DELETE",
@@ -51,6 +45,7 @@ class CardEditor extends Component {
       .catch((err) => this.setState({ error: "Error deleting card: 0" }));
   };
 
+  // called in this.saveCard
   checkValidInput = (term, definition) => {
     if (!term || !definition) {
       this.setState({
@@ -73,7 +68,7 @@ class CardEditor extends Component {
     return true;
   };
 
-  onUpdateCard = () => {
+  saveCard = () => {
     const { userId, cardId, updateCard, currentDefinition, currentTerm } =
       this.props;
     const { newTerm, newDefinition } = this.state;
@@ -106,7 +101,7 @@ class CardEditor extends Component {
       .catch((err) => this.setState({ error: "Unable to update card: 0" }));
   };
 
-  onUpdateScore = (incrementValue) => {
+  changeScore = (incrementValue) => {
     const { updateScore, cardId, userId } = this.props;
     fetch(`${mainUrl}/update-score`, {
       method: "PUT",
@@ -124,6 +119,12 @@ class CardEditor extends Component {
       })
       .catch((err) => this.setState({ error: "Unable to update score: 0" }));
   };
+
+  componentDidMount() {
+    const { currentDefinition, currentTerm } = this.props;
+    this.setState({ newTerm: currentTerm, newDefinition: currentDefinition });
+    this.setDefinitionAreaHeight();
+  }
 
   render() {
     const { currentTerm, currentDefinition, score, cardId } = this.props;
@@ -148,7 +149,7 @@ class CardEditor extends Component {
             type="text"
             maxLength={255}
             onChange={this.onTermChange}
-            onBlur={this.onUpdateCard}
+            onBlur={this.saveCard}
             placeholder="Enter Term"
             defaultValue={currentTerm}
             className="f3-ns f4 mt3 mb2 mr4 bn outline-hover"
@@ -174,11 +175,11 @@ class CardEditor extends Component {
                 minWidth: "1.5em",
                 textAlign: "center",
               }}
-              onClick={() => this.onUpdateScore(-1)}
+              onClick={() => this.changeScore(-1)}
             >
               -
             </div>
-            <div className="ph2 pv1 bt bb b--black">{`${score}`}</div>
+            <div className="ph1 pv1 bt bb b--black">{`${score}`}</div>
             <div
               className="pointer pv1 ba b--black br3 br--right bg-transparent hover-bg-black hover-white"
               style={{
@@ -186,18 +187,11 @@ class CardEditor extends Component {
                 minWidth: "1.5em",
                 textAlign: "center",
               }}
-              onClick={() => this.onUpdateScore(1)}
+              onClick={() => this.changeScore(1)}
             >
               +
             </div>
           </div>
-          {/* **************start edit button*****************
-          <div
-            className="f6 f5-ns mt3 mb2 link dim pointer"
-            style={{ alignSelf: "end" }}
-          >
-            Edit
-          </div> */}
           {/* **************start definition***************** */}
           {/* <div
             style={{
@@ -224,7 +218,7 @@ class CardEditor extends Component {
               this.setDefinitionAreaHeight();
               this.onDefinitionChange(event);
             }}
-            onBlur={this.onUpdateCard}
+            onBlur={this.saveCard}
             defaultValue={currentDefinition}
             placeholder="Enter Definition"
             style={{
@@ -246,7 +240,7 @@ class CardEditor extends Component {
               gridColumn: "2/span 1",
               justifySelf: "center",
             }}
-            onClick={this.onDeleteCard}
+            onClick={this.deleteCard}
           >
             Delete
           </div>

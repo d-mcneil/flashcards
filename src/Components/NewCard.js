@@ -14,6 +14,7 @@ class NewCard extends Component {
     this.state = { error: "", term: "", definition: "" };
   }
 
+  // called in this.saveCard
   checkValidInput = (term, definition) => {
     if (!term || !definition) {
       this.setState({
@@ -44,9 +45,9 @@ class NewCard extends Component {
     this.setState({ definition: event.target.value });
   };
 
-  onSaveCard = () => {
+  saveCard = () => {
     const { term, definition } = this.state;
-    const { userId, deckId, addNewCard } = this.props;
+    const { userId, deckId, addCard } = this.props;
     const valid = this.checkValidInput(term, definition);
     if (!valid) {
       return;
@@ -59,7 +60,7 @@ class NewCard extends Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.card_id) {
-          addNewCard(data);
+          addCard(data);
           for (const item of document.getElementsByClassName(
             "reset-new-card-info"
           )) {
@@ -97,7 +98,7 @@ class NewCard extends Component {
           ></input>
           {/* **************start save button***************** */}
           <div
-            onClick={this.onSaveCard}
+            onClick={this.saveCard}
             className="f6 f5-ns mt3 mb2 link dim pointer"
             style={{ alignSelf: "end" }}
           >
