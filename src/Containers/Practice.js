@@ -12,6 +12,7 @@ class Practice extends Component {
       practiceCards: [],
       currentIndex: 1,
       error: "",
+      definitionFirst: false,
     };
   }
 
@@ -31,6 +32,12 @@ class Practice extends Component {
     this.setState({ currentIndex: currentIndex + incrementValue });
   };
 
+  toggleSwitch = () => {
+    const definitionFirst = document.getElementById("definition-first");
+    console.log(definitionFirst.checked);
+    this.setState({ definitionFirst: definitionFirst.checked });
+  };
+
   componentDidMount() {
     const { cards } = this.props;
     this.setState({ practiceCards: cards });
@@ -41,6 +48,18 @@ class Practice extends Component {
     const totalCards = this.state.practiceCards.length;
     const { currentIndex, error } = this.state;
     const currentCard = this.state.practiceCards.at(currentIndex - 1);
+    const { definitionFirst } = this.state;
+    let front;
+    let back;
+    if (totalCards) {
+      if (definitionFirst) {
+        front = currentCard.definition;
+        back = currentCard.term;
+      } else {
+        front = currentCard.term;
+        back = currentCard.definition;
+      }
+    }
     return (
       <>
         <MainCard>
@@ -70,7 +89,7 @@ class Practice extends Component {
               <Notecard
                 cardId={currentCard.card_id}
                 score={currentCard.score}
-                content={currentCard.term}
+                content={front}
                 userId={userId}
                 totalCards={totalCards}
                 changeCurrentIndex={this.changeCurrentIndex}
@@ -81,7 +100,7 @@ class Practice extends Component {
               <Notecard
                 cardId={currentCard.card_id}
                 score={currentCard.score}
-                content={currentCard.definition}
+                content={back}
                 userId={userId}
                 totalCards={totalCards}
                 changeCurrentIndex={this.changeCurrentIndex}
@@ -97,7 +116,43 @@ class Practice extends Component {
               </div>
             </MainCard>
           )}
-          <div>settings</div>
+          <div
+            className="f3-ns f4 w-100 mt4 mb3"
+            style={{ textAlign: "center" }}
+          >
+            Settings
+          </div>
+          <div
+            className="w-100"
+            style={{
+              display: "grid",
+              alignItems: "center",
+              justifyItems: "center",
+              gridTemplateColumns: "1fr auto 1fr",
+            }}
+          >
+            <span
+              className="pr2 f6 f5-ns settings-definition-first "
+              style={{ justifySelf: "end" }}
+            >
+              Term First
+            </span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                value="definition-first"
+                id="definition-first"
+                onChange={this.toggleSwitch}
+              ></input>
+              <span className="slider round"></span>
+            </label>
+            <span
+              className="pl2 f6 f5-ns settings-definition-first"
+              style={{ justifySelf: "start" }}
+            >
+              Definition First
+            </span>
+          </div>
         </MainCard>
       </>
     );
