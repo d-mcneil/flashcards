@@ -39,7 +39,7 @@ class Deck extends Component {
         >
           {/* **************start deck name***************** */}
           <div
-            className="f3-ns f4 mt3 mb2 mr4 link dim pointer"
+            className="f3-ns f4 mt3 pb2 mr4 link dim pointer"
             style={{
               alignSelf: "end",
               whiteSpace: "nowrap",
@@ -77,7 +77,7 @@ class Deck extends Component {
                 //   overflow: "hidden",
                 //   maxHeight: "3.22rem",
               }}
-              className="f6 mb3 mt2 mr4"
+              className="f6 pb3 mt2 mr4"
             >{`${description}`}</div>
           ) : (
             <></>

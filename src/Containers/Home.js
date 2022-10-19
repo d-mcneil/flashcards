@@ -126,7 +126,9 @@ class Home extends Component {
           currentDeckId={currentDeckId}
           currentDeckDescription={currentDeckDescription}
           currentDeckName={currentDeckName}
+          userId={userId}
           onRouteChange={this.onRouteChange}
+          updateScore={this.updateScore}
           cards={cards}
         />
       );

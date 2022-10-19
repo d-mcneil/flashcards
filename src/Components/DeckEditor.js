@@ -109,7 +109,7 @@ class DeckEditor extends Component {
       <>
         {/* **************start deck name***************** */}
         <textarea
-          className="bn f2 mv3 outline-hover"
+          className="bn f2 mb3 outline-hover"
           id="name-area"
           defaultValue={currentDeckName}
           placeholder="Enter Deck Name"

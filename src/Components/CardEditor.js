@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
+import ScoreCounter from "./ScoreCounter";
 
 class CardEditor extends Component {
   constructor(props) {
@@ -101,24 +102,28 @@ class CardEditor extends Component {
       .catch((err) => this.setState({ error: "Unable to update card: 0" }));
   };
 
-  changeScore = (incrementValue) => {
-    const { updateScore, cardId, userId } = this.props;
-    fetch(`${mainUrl}/update-score`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, cardId, incrementValue }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.card_id) {
-          updateScore(cardId, incrementValue);
-          this.setState({ error: "" });
-        } else {
-          this.setState({ error: data });
-        }
-      })
-      .catch((err) => this.setState({ error: "Unable to update score: 0" }));
+  setScoreError = (error) => {
+    this.setState({ error });
   };
+
+  // changeScore = (incrementValue) => {
+  //   const { updateScore, cardId, userId } = this.props;
+  //   fetch(`${mainUrl}/update-score`, {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ userId, cardId, incrementValue }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.card_id) {
+  //         updateScore(cardId, incrementValue);
+  //         this.setState({ error: "" });
+  //       } else {
+  //         this.setState({ error: data });
+  //       }
+  //     })
+  //     .catch((err) => this.setState({ error: "Unable to update score: 0" }));
+  // };
 
   componentDidMount() {
     const { currentDefinition, currentTerm } = this.props;
@@ -127,7 +132,14 @@ class CardEditor extends Component {
   }
 
   render() {
-    const { currentTerm, currentDefinition, score, cardId } = this.props;
+    const {
+      currentTerm,
+      currentDefinition,
+      score,
+      cardId,
+      updateScore,
+      userId,
+    } = this.props;
     const { error } = this.state;
     return (
       <>
@@ -168,7 +180,7 @@ class CardEditor extends Component {
               alignSelf: "end",
             }}
           >
-            <div
+            {/* <div
               className="pointer pv1 ba b--black br3 br--left bg-transparent hover-bg-black hover-white"
               style={{
                 marginLeft: "auto",
@@ -190,7 +202,14 @@ class CardEditor extends Component {
               onClick={() => this.changeScore(1)}
             >
               +
-            </div>
+            </div> */}
+            <ScoreCounter
+              score={score}
+              setScoreError={this.setScoreError}
+              updateScore={updateScore}
+              userId={userId}
+              cardId={cardId}
+            />
           </div>
           {/* **************start definition***************** */}
           {/* <div
