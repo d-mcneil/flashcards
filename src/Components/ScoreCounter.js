@@ -8,7 +8,8 @@ const ScoreCounter = ({
   userId,
   cardId,
 }) => {
-  const changeScore = (incrementValue) => {
+  const changeScore = (incrementValue, event) => {
+    event.stopPropagation();
     fetch(`${mainUrl}/update-score`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -35,7 +36,7 @@ const ScoreCounter = ({
           minWidth: "1.5em",
           textAlign: "center",
         }}
-        onClick={() => changeScore(-1)}
+        onClick={(event) => changeScore(-1, event)}
       >
         -
       </div>
@@ -47,7 +48,7 @@ const ScoreCounter = ({
           minWidth: "1.5em",
           textAlign: "center",
         }}
-        onClick={() => changeScore(1)}
+        onClick={(event) => changeScore(1, event)}
       >
         +
       </div>

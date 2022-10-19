@@ -16,19 +16,15 @@ body {
   outline: -webkit-focus-ring-color auto 1px;
 }
 
-.justify-content-center {
+/* .justify-content-center {
   display: flex;
   justify-content: center;
-}
-
-/* button {
-  cursor: pointer;
 } */
 
 #flip-card {
   perspective: 1000px;
-  height: 350px;
-  width: 100%
+  height: 19rem;
+  width: 100%;
 }
 
 #flip-card-inner {
@@ -39,9 +35,9 @@ body {
   height: 100%;
 }
 
-/* #flip-card:hover #flip-card-inner {
+.flipped {
   transform: rotateX(-180deg);
-} */
+}
 
 #flip-card-front,
 #flip-card-back {
@@ -60,8 +56,16 @@ body {
   margin-left: auto;
 }
 
+.notecard-text {
+  max-height: 8.25em;
+}
+
 @media screen and (min-width: 30em) {
   .width-30-em-after-break {
     width: 30em;
+  }
+
+  .notecard-text {
+    max-height: 7em;
   }
 }

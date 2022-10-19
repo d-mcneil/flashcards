@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import DeckNavigation from "../Components/DeckNavigation";
 import MainCard from "../Components/MainCard";
 import Notecard from "../Components/Notecard";
+import Flipcard from "../Components/Flipcard";
+import Error from "../Components/Forms/Error";
 
 class Practice extends Component {
   constructor(props) {
@@ -17,7 +19,8 @@ class Practice extends Component {
     this.setState({ error });
   };
 
-  changeCurrentIndex = (incrementValue) => {
+  changeCurrentIndex = (incrementValue, event) => {
+    event.stopPropagation();
     const totalCards = this.state.practiceCards.length;
     const { currentIndex } = this.state;
     if (currentIndex === 1 && incrementValue < 0) {
@@ -36,12 +39,8 @@ class Practice extends Component {
   render() {
     const { currentDeckName, onRouteChange, userId, updateScore } = this.props;
     const totalCards = this.state.practiceCards.length;
-    const { currentIndex } = this.state;
+    const { currentIndex, error } = this.state;
     const currentCard = this.state.practiceCards.at(currentIndex - 1);
-    console.log(this.state);
-    console.log(totalCards);
-    console.log(currentCard);
-    console.log(this.state.practiceCards);
     return (
       <>
         <MainCard>
@@ -59,37 +58,38 @@ class Practice extends Component {
           >
             {`${currentDeckName}`}
           </div>
-          {totalCards > 0 ? (
-            <div id="flip-card">
-              <div id="flip-card-inner">
-                <div id="flip-card-front">
-                  <Notecard
-                    cardId={currentCard.card_id}
-                    score={currentCard.score}
-                    content={currentCard.term}
-                    userId={userId}
-                    totalCards={totalCards}
-                    changeCurrentIndex={this.changeCurrentIndex}
-                    setScoreError={this.setScoreError}
-                    updateScore={updateScore}
-                    currentIndex={currentIndex}
-                  />
-                </div>
-                <div id="flip-card-back">
-                  <Notecard
-                    cardId={currentCard.card_id}
-                    score={currentCard.score}
-                    content={currentCard.definition}
-                    userId={userId}
-                    totalCards={totalCards}
-                    changeCurrentIndex={this.changeCurrentIndex}
-                    setScoreError={this.setScoreError}
-                    updateScore={updateScore}
-                    currentIndex={currentIndex}
-                  />
-                </div>
-              </div>
+          {error ? (
+            <div className={"mt0 pt0 mb3"}>
+              <Error error={error} />
             </div>
+          ) : (
+            <></>
+          )}
+          {totalCards > 0 ? (
+            <Flipcard key={currentIndex}>
+              <Notecard
+                cardId={currentCard.card_id}
+                score={currentCard.score}
+                content={currentCard.term}
+                userId={userId}
+                totalCards={totalCards}
+                changeCurrentIndex={this.changeCurrentIndex}
+                setScoreError={this.setScoreError}
+                updateScore={updateScore}
+                currentIndex={currentIndex}
+              />
+              <Notecard
+                cardId={currentCard.card_id}
+                score={currentCard.score}
+                content={currentCard.definition}
+                userId={userId}
+                totalCards={totalCards}
+                changeCurrentIndex={this.changeCurrentIndex}
+                setScoreError={this.setScoreError}
+                updateScore={updateScore}
+                currentIndex={currentIndex}
+              />
+            </Flipcard>
           ) : (
             <MainCard>
               <div className="f3-ns f4" style={{ textAlign: "center" }}>
