@@ -29,44 +29,70 @@ class DeckEditor extends Component {
     return true;
   };
 
-  saveDeck = () => {
-    const { newDeckName, newDeckDescription } = this.state;
-    const {
-      updateDeck,
-      userId,
-      currentDeckId,
-      currentDeckDescription,
-      currentDeckName,
-    } = this.props;
-    if (
-      currentDeckDescription === newDeckDescription &&
-      currentDeckName === newDeckName
-    ) {
+  saveDeckName = () => {
+    const { newDeckName } = this.state;
+    const { updateDeckName, userId, currentDeckId, currentDeckName } =
+      this.props;
+    if (currentDeckName === newDeckName) {
       return;
     }
     const valid = this.checkValidInput(newDeckName);
     if (!valid) {
       return;
     }
-    fetch(`${mainUrl}/update-deck`, {
+    fetch(`${mainUrl}/update-deck-name`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId: userId,
         deckId: currentDeckId,
         deckName: newDeckName,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.deck_id) {
+          updateDeckName(newDeckName);
+        } else {
+          this.setState({ error: data });
+        }
+      })
+      .catch((err) =>
+        this.setState({ error: "Unable to update deck name: 0" })
+      );
+  };
+
+  saveDeckDescription = () => {
+    const { newDeckDescription } = this.state;
+    const {
+      updateDeckDescription,
+      userId,
+      currentDeckId,
+      currentDeckDescription,
+    } = this.props;
+    if (currentDeckDescription === newDeckDescription) {
+      return;
+    }
+    fetch(`${mainUrl}/update-deck-description`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+        deckId: currentDeckId,
         description: newDeckDescription,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.deck_id) {
-          updateDeck(newDeckName, newDeckDescription);
+          updateDeckDescription(newDeckDescription);
         } else {
           this.setState({ error: data });
         }
       })
-      .catch((err) => this.setState({ error: "Unable to update deck: 0" }));
+      .catch((err) =>
+        this.setState({ error: "Unable to update deck description: 0" })
+      );
   };
 
   onDeckNameChange = (event) => {
@@ -113,7 +139,7 @@ class DeckEditor extends Component {
           id="name-area"
           defaultValue={currentDeckName}
           placeholder="Enter Deck Name"
-          onBlur={this.saveDeck}
+          onBlur={this.saveDeckName}
           maxLength={100}
           onChange={(event) => {
             this.setNameAreaHeight();
@@ -133,7 +159,7 @@ class DeckEditor extends Component {
           id="description-area"
           placeholder="Enter Deck Description (Optional)"
           defaultValue={currentDeckDescription}
-          onBlur={this.saveDeck}
+          onBlur={this.saveDeckDescription}
           onChange={(event) => {
             this.setDescriptionAreaHeight();
             this.onDeckDescriptionChange(event);

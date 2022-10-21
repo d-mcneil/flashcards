@@ -82,6 +82,8 @@ class Decks extends Component {
                   userId={deck.user_id}
                   deckName={deck.deck_name}
                   description={deck.description}
+                  definitionFirst={deck.definition_first}
+                  deckPercentage={deck.deck_percentage}
                   selectDeck={selectDeck}
                   removeDeck={this.removeDeck}
                 />

@@ -29,7 +29,14 @@ class Deck extends Component {
   };
 
   render() {
-    const { deckId, deckName, description, selectDeck } = this.props;
+    const {
+      deckId,
+      deckName,
+      description,
+      definitionFirst,
+      deckPercentage,
+      selectDeck,
+    } = this.props;
     const { error } = this.state;
     return (
       <>
@@ -47,12 +54,28 @@ class Deck extends Component {
               overflow: "hidden",
             }}
             onClick={() =>
-              selectDeck("practice", deckId, deckName, description)
+              selectDeck(
+                "practice",
+                deckId,
+                deckName,
+                description,
+                definitionFirst,
+                deckPercentage
+              )
             }
           >{`${deckName}`}</div>
           {/* **************start edit button***************** */}
           <div
-            onClick={() => selectDeck("editor", deckId, deckName, description)}
+            onClick={() =>
+              selectDeck(
+                "editor",
+                deckId,
+                deckName,
+                description,
+                definitionFirst,
+                deckPercentage
+              )
+            }
             className="f6 f5-ns mt3 mb2 link dim pointer"
             style={{ alignSelf: "end" }}
           >

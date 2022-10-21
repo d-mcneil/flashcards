@@ -12,7 +12,8 @@ const Editor = ({
   userId,
   cards,
   onRouteChange,
-  updateDeck,
+  updateDeckName,
+  updateDeckDescription,
   addCard,
   removeCard,
   updateCard,
@@ -36,7 +37,8 @@ const Editor = ({
           currentDeckDescription={currentDeckDescription}
           currentDeckId={currentDeckId}
           userId={userId}
-          updateDeck={updateDeck}
+          updateDeckName={updateDeckName}
+          updateDeckDescription={updateDeckDescription}
         />
         {Array.isArray(cards) && cards.length ? (
           cards.map((card) => {

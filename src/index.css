@@ -11,7 +11,8 @@ body {
   cursor: default;
 }
 
-.outline-hover:hover {
+.outline-hover:hover,
+#percentage {
   outline: solid 1px;
   outline: -webkit-focus-ring-color auto 1px;
 }
@@ -77,6 +78,20 @@ body {
   }
 }
 
+/* hide arrows in the number input field */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+
+/* input[type=number] {
+  -moz-appearance: textfield;
+} this is supposed to hide the arrows in the number input field for firefox */
+
+
+
 .switch {
   position: relative;
   display: inline-block;
@@ -114,8 +129,6 @@ body {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
-
 
 input:checked+.slider {
   /* background-color: #2196F3; */

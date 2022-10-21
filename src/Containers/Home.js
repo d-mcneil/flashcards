@@ -11,6 +11,7 @@ class Home extends Component {
       currentDeckId: "",
       currentDeckName: "",
       currentDeckDescription: "",
+      currentDeckSettings: {},
       cards: [],
       error: "",
       route: "decks",
@@ -21,16 +22,26 @@ class Home extends Component {
     currentDeckId: "",
     currentDeckName: "",
     currentDeckDescription: "",
+    currentDeckSettings: {},
     cards: [],
     error: "",
     route: "decks",
   };
 
-  updateDeck = (newDeckName, newDeckDescription) => {
+  updateDeckName = (newDeckName) => {
     this.setState({
       currentDeckName: newDeckName,
+    });
+  };
+
+  updateDeckDescription = (newDeckDescription) => {
+    this.setState({
       currentDeckDescription: newDeckDescription,
     });
+  };
+
+  updateDeckSettings = (definitionFirst, deckPercentage) => {
+    this.setState({ currentDeckSettings: { definitionFirst, deckPercentage } });
   };
 
   onRouteChange = (route) => {
@@ -88,7 +99,14 @@ class Home extends Component {
     this.setState({ cards: updatedCards });
   };
 
-  selectDeck = (route, deckId, deckName, description) => {
+  selectDeck = (
+    route,
+    deckId,
+    deckName,
+    description,
+    definitionFirst,
+    deckPercentage
+  ) => {
     fetch(`${mainUrl}/read-cards/${deckId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -99,6 +117,7 @@ class Home extends Component {
             currentDeckId: deckId,
             currentDeckName: deckName,
             currentDeckDescription: description,
+            currentDeckSettings: { definitionFirst, deckPercentage },
           });
           this.onRouteChange(route);
         } else {
@@ -115,6 +134,7 @@ class Home extends Component {
       currentDeckId,
       currentDeckDescription,
       currentDeckName,
+      currentDeckSettings,
       route,
       cards,
       error,
@@ -126,9 +146,12 @@ class Home extends Component {
           currentDeckId={currentDeckId}
           currentDeckDescription={currentDeckDescription}
           currentDeckName={currentDeckName}
+          definitionFirst={currentDeckSettings.definitionFirst}
+          deckPercentage={currentDeckSettings.deckPercentage}
           userId={userId}
           onRouteChange={this.onRouteChange}
           updateScore={this.updateScore}
+          updateDeckSettings={this.updateDeckSettings}
           cards={cards}
         />
       );
@@ -140,7 +163,8 @@ class Home extends Component {
           currentDeckDescription={currentDeckDescription}
           currentDeckName={currentDeckName}
           onRouteChange={this.onRouteChange}
-          updateDeck={this.updateDeck}
+          updateDeckName={this.updateDeckName}
+          updateDeckDescription={this.updateDeckDescription}
           cards={cards}
           addCard={this.addCard}
           removeCard={this.removeCard}

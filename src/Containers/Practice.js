@@ -4,6 +4,8 @@ import MainCard from "../Components/MainCard";
 import Notecard from "../Components/Notecard";
 import Flipcard from "../Components/Flipcard";
 import Error from "../Components/Forms/Error";
+import mainUrl from "../mainUrl";
+import PracticeSettings from "./PracticeSettings";
 
 class Practice extends Component {
   constructor(props) {
@@ -11,13 +13,14 @@ class Practice extends Component {
     this.state = {
       practiceCards: [],
       currentIndex: 1,
-      error: "",
+      scoreError: "",
       definitionFirst: false,
+      deckPercentage: 100,
     };
   }
 
   setScoreError = (error) => {
-    this.setState({ error });
+    this.setState({ scoreError: error });
   };
 
   changeCurrentIndex = (incrementValue, event) => {
@@ -32,23 +35,125 @@ class Practice extends Component {
     this.setState({ currentIndex: currentIndex + incrementValue });
   };
 
-  toggleSwitch = () => {
-    const definitionFirst = document.getElementById("definition-first");
-    console.log(definitionFirst.checked);
-    this.setState({ definitionFirst: definitionFirst.checked });
+  // ********called in this.toggleSwitch and onBlur for the deck percentage input field********
+  saveDeckSettings = (definitionFirst, deckPercentage) => {
+    const { userId, currentDeckId, updateDeckSettings } = this.props;
+    updateDeckSettings(definitionFirst, deckPercentage);
+    fetch(`${mainUrl}/update-deck-settings`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+        deckId: currentDeckId,
+        definitionFirst: definitionFirst,
+        deckPercentage: deckPercentage,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.deck_id) {
+          this.setState({ error: data });
+        } else {
+          this.setState({ error: "" });
+        }
+      })
+      .catch((err) =>
+        this.setState({ error: "Unable to save deck settings: 0" })
+      );
+  };
+
+  // ********called in onClick for the toggle switch********
+  toggleSwitch = (event) => {
+    const definitionFirst = event.target.checked;
+    // const definitionFirst = document.getElementById("definition-first").checked;
+    const { deckPercentage } = this.state;
+    this.saveDeckSettings(definitionFirst, deckPercentage);
+    this.setState({ definitionFirst });
+  };
+
+  // called in this.updatePracticeCards
+  validatePercentageInput = (event) => {
+    const currentDeckPercentage = this.state.deckPercentage;
+    const percentageInput = event.target;
+    let newDeckPercentage;
+    if (percentageInput.value > 100) {
+      percentageInput.value = 100;
+      newDeckPercentage = 100;
+    } else if (percentageInput.value < 1) {
+      newDeckPercentage = 1;
+    } else {
+      newDeckPercentage = Number(percentageInput.value);
+    }
+    if (currentDeckPercentage === newDeckPercentage) {
+      return false;
+      // this way, the cards won't be unnecessarily regenerated
+    }
+    this.setState({ deckPercentage: newDeckPercentage });
+    return newDeckPercentage;
+  };
+
+  // called in this.setPracticeCards
+  shuffleCards = (cards) => {
+    let shuffledCards = [].concat(cards);
+    for (let i = shuffledCards.length - 1; i >= 1; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = shuffledCards[j];
+      shuffledCards[j] = shuffledCards[i];
+      shuffledCards[i] = temp;
+    }
+    return shuffledCards;
+  };
+
+  // called in this.setPracticeCards
+  calculatePracticeCardsQuantity = (cards, deckPercentage) => {
+    if (deckPercentage >= 100) {
+      return cards.length;
+    }
+    const practiceCardsQuantity = Math.round(
+      (deckPercentage / 100) * cards.length
+    );
+    if (practiceCardsQuantity <= 1) {
+      return 1;
+    }
+    return practiceCardsQuantity;
+  };
+
+  // called in this.updatePracticeCards and componentDidMount
+  setPracticeCards = (deckPercentage) => {
+    const { cards } = this.props;
+    const practiceCardsQuantity = this.calculatePracticeCardsQuantity(
+      cards,
+      deckPercentage
+    );
+    const practiceCards = this.shuffleCards(cards).slice(
+      0,
+      practiceCardsQuantity
+    );
+    this.setState({ practiceCards });
+  };
+
+  // ********called in onChange for the deck percentage input field********
+  updatePracticeCards = (event) => {
+    const deckPercentage = this.validatePercentageInput(event);
+    if (deckPercentage) {
+      this.setState({ currentIndex: 1 });
+      this.setPracticeCards(deckPercentage);
+    }
   };
 
   componentDidMount() {
-    const { cards } = this.props;
-    this.setState({ practiceCards: cards });
+    const { definitionFirst, deckPercentage } = this.props;
+    this.setState({ definitionFirst, deckPercentage });
+    this.setPracticeCards(deckPercentage);
   }
 
   render() {
     const { currentDeckName, onRouteChange, userId, updateScore } = this.props;
+    const { currentIndex, scoreError, definitionFirst, deckPercentage } =
+      this.state;
+    const initialDeckPercentage = this.props.deckPercentage;
     const totalCards = this.state.practiceCards.length;
-    const { currentIndex, error } = this.state;
     const currentCard = this.state.practiceCards.at(currentIndex - 1);
-    const { definitionFirst } = this.state;
     let front;
     let back;
     if (totalCards) {
@@ -60,6 +165,7 @@ class Practice extends Component {
         back = currentCard.definition;
       }
     }
+
     return (
       <>
         <MainCard>
@@ -77,38 +183,48 @@ class Practice extends Component {
           >
             {`${currentDeckName}`}
           </div>
-          {error ? (
+          {scoreError ? (
             <div className={"mt0 pt0 mb3"}>
-              <Error error={error} />
+              <Error error={scoreError} />
             </div>
           ) : (
             <></>
           )}
           {totalCards > 0 ? (
-            <Flipcard key={currentIndex}>
-              <Notecard
-                cardId={currentCard.card_id}
-                score={currentCard.score}
-                content={front}
-                userId={userId}
-                totalCards={totalCards}
-                changeCurrentIndex={this.changeCurrentIndex}
-                setScoreError={this.setScoreError}
-                updateScore={updateScore}
-                currentIndex={currentIndex}
+            <>
+              <Flipcard key={currentIndex}>
+                <Notecard
+                  cardId={currentCard.card_id}
+                  score={currentCard.score}
+                  content={front}
+                  userId={userId}
+                  totalCards={totalCards}
+                  changeCurrentIndex={this.changeCurrentIndex}
+                  setScoreError={this.setScoreError}
+                  updateScore={updateScore}
+                  currentIndex={currentIndex}
+                />
+                <Notecard
+                  cardId={currentCard.card_id}
+                  score={currentCard.score}
+                  content={back}
+                  userId={userId}
+                  totalCards={totalCards}
+                  changeCurrentIndex={this.changeCurrentIndex}
+                  setScoreError={this.setScoreError}
+                  updateScore={updateScore}
+                  currentIndex={currentIndex}
+                />
+              </Flipcard>
+              <PracticeSettings
+                definitionFirst={definitionFirst}
+                toggleSwitch={this.toggleSwitch}
+                initialDeckPercentage={initialDeckPercentage}
+                deckPercentage={deckPercentage}
+                updatePracticeCards={this.updatePracticeCards}
+                saveDeckSettings={this.saveDeckSettings}
               />
-              <Notecard
-                cardId={currentCard.card_id}
-                score={currentCard.score}
-                content={back}
-                userId={userId}
-                totalCards={totalCards}
-                changeCurrentIndex={this.changeCurrentIndex}
-                setScoreError={this.setScoreError}
-                updateScore={updateScore}
-                currentIndex={currentIndex}
-              />
-            </Flipcard>
+            </>
           ) : (
             <MainCard>
               <div className="f3-ns f4" style={{ textAlign: "center" }}>
@@ -116,8 +232,9 @@ class Practice extends Component {
               </div>
             </MainCard>
           )}
-          <div
-            className="f3-ns f4 w-100 mt4 mb3"
+
+          {/* <div
+            className="f3-ns f4 w-100 mt4 mb4"
             style={{ textAlign: "center" }}
           >
             Settings
@@ -142,6 +259,7 @@ class Practice extends Component {
                 type="checkbox"
                 value="definition-first"
                 id="definition-first"
+                checked={definitionFirst}
                 onChange={this.toggleSwitch}
               ></input>
               <span className="slider round"></span>
@@ -153,6 +271,25 @@ class Practice extends Component {
               Definition First
             </span>
           </div>
+          <div className="w-100 f6 f5-ns tc mt3">
+            Practice{" "}
+            <input
+              type="number"
+              className="f6 f5-ns tc bn mr1"
+              id="percentage"
+              style={{ width: "2.5em", cursor: "text" }}
+              min={1}
+              max={100}
+              defaultValue={initialDeckPercentage}
+              placeholder={deckPercentage}
+              onChange={this.updatePracticeCards}
+              onBlur={() =>
+                this.saveDeckSettings(definitionFirst, deckPercentage)
+              }
+              // pattern="^((?:0?[0-9]{1,2})|(?:100))$"
+            ></input>
+            % of Deck
+          </div> */}
         </MainCard>
       </>
     );
