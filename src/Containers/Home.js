@@ -72,13 +72,25 @@ class Home extends Component {
     this.setState({ cards: remainingCards });
   };
 
-  updateCard = (cardId, term, definition) => {
+  updateCardTerm = (cardId, term) => {
     const { cards } = this.state;
     const updatedCards = cards.map((card) => {
       if (card.card_id !== cardId) {
         return card;
       } else {
         card.term = term;
+        return card;
+      }
+    });
+    this.setState({ cards: updatedCards });
+  };
+
+  updateCardDefinition = (cardId, definition) => {
+    const { cards } = this.state;
+    const updatedCards = cards.map((card) => {
+      if (card.card_id !== cardId) {
+        return card;
+      } else {
         card.definition = definition;
         return card;
       }
@@ -168,7 +180,8 @@ class Home extends Component {
           cards={cards}
           addCard={this.addCard}
           removeCard={this.removeCard}
-          updateCard={this.updateCard}
+          updateCardTerm={this.updateCardTerm}
+          updateCardDefinition={this.updateCardDefinition}
           updateScore={this.updateScore}
         />
       );

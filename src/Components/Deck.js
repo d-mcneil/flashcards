@@ -133,7 +133,7 @@ class Deck extends Component {
             Delete
           </div> */}
           <div
-            className="f5 f4-ns mt1 dim pointer"
+            className="f5 f4-ns mt1 mb2 dim pointer"
             style={{
               alignSelf: "start",
               gridColumn: "2/span 1",

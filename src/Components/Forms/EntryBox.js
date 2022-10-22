@@ -13,7 +13,7 @@ const EntryBox = ({ label, onChange, onEnterSubmit, type }) => {
           {`${label}`}
         </label>
         <input
-          className={`${labelHtml} pa2 input-reset ba b--black bg-transparent hover-bg-black hover-white w-100`}
+          className={`${labelHtml} pa2 input-reset br1 ba b--black bg-transparent hover-bg-black hover-white w-100`}
           type={type}
           name={`${labelHtml}`}
           onChange={onChange}

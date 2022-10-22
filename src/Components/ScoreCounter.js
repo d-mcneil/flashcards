@@ -10,7 +10,7 @@ const ScoreCounter = ({
 }) => {
   const changeScore = (incrementValue, event) => {
     event.stopPropagation();
-    fetch(`${mainUrl}/update-score`, {
+    fetch(`${mainUrl}/update-card-score`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, cardId, incrementValue }),

@@ -17,9 +17,9 @@ class NewCard extends Component {
   // called in this.saveCard
   checkValidInput = (term, definition) => {
     if (!term || !definition) {
-      this.setState({
-        error: "Invalid submission: both term and definition are required",
-      });
+      // this.setState({
+      //   error: "Invalid submission: both term and definition are required",
+      // });
       return false;
     } else if (term.length > 255) {
       this.setState({
@@ -87,34 +87,39 @@ class NewCard extends Component {
             type="text"
             maxLength={255}
             onChange={this.onTermChange}
+            onBlur={this.saveCard}
             placeholder="Enter New Term"
-            className="f3-ns f4 mt3 mb2 mr4 bn reset-new-card-info outline-hover"
+            className="f3-ns f4 mt3 mb1 bn reset-new-card-info outline-hover"
             style={{
               alignSelf: "end",
               textOverflow: "ellipsis",
               overflow: "hidden",
               cursor: "text",
+              lineHeight: "1.35",
+              gridColumn: "1/3",
             }}
           ></input>
           {/* **************start save button***************** */}
-          <div
+          {/* <div
             onClick={this.saveCard}
             className="f6 f5-ns mt3 mb2 link dim pointer"
             style={{ alignSelf: "end", justifySelf: "center" }}
           >
             Save
-          </div>
+          </div> */}
           {/* **************start definition***************** */}
           <textarea
             maxLength={255}
             onChange={this.onDefinitionChange}
+            onBlur={this.saveCard}
             placeholder="Enter New Definition"
             style={{
               alignSelf: "start",
               resize: "none",
               cursor: "text",
+              gridColumn: "1/3",
             }}
-            className="f6 mb0 mt2 mr4 bn reset-new-card-info outline-hover"
+            className="f6 mb0 mt2 bn reset-new-card-info outline-hover"
             rows={3}
           ></textarea>
           {/* **************start error notification***************** */}

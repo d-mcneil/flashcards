@@ -53,6 +53,7 @@ class DeckEditor extends Component {
       .then((data) => {
         if (data.deck_id) {
           updateDeckName(newDeckName);
+          this.setState({ error: "" });
         } else {
           this.setState({ error: data });
         }
