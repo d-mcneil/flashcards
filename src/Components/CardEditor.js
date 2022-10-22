@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
 import ScoreCounter from "./ScoreCounter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 class CardEditor extends Component {
   constructor(props) {
@@ -164,12 +166,13 @@ class CardEditor extends Component {
             onBlur={this.saveCard}
             placeholder="Enter Term"
             defaultValue={currentTerm}
-            className="f3-ns f4 mt3 mb2 mr4 bn outline-hover"
+            className="f3-ns f4 mt3 mb1 mr4 bn outline-hover"
             style={{
               alignSelf: "end",
               textOverflow: "ellipsis",
               overflow: "hidden",
               cursor: "text",
+              lineHeight: "1.35",
             }}
           ></input>
           {/* **************start score counter***************** */}
@@ -252,7 +255,7 @@ class CardEditor extends Component {
           ></textarea>
 
           {/* **************start delete button***************** */}
-          <div
+          {/* <div
             className="f6 f5-ns mb3 mt2 link dim pointer"
             style={{
               alignSelf: "start",
@@ -262,6 +265,17 @@ class CardEditor extends Component {
             onClick={this.deleteCard}
           >
             Delete
+          </div> */}
+          <div
+            className="f5 f4-ns mt2 dim pointer"
+            style={{
+              alignSelf: "start",
+              gridColumn: "2/span 1",
+              justifySelf: "center",
+            }}
+            onClick={this.deleteCard}
+          >
+            <FontAwesomeIcon icon={faTrashCan} />
           </div>
           {/* **************start error notification***************** */}
           {error ? (

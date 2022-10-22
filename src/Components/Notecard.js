@@ -39,7 +39,7 @@ const Notecard = ({
               }}
             ></div>
             <div
-              className="f6 f5-ns pointer outline-hover"
+              className="f6 f5-ns pointer dim"
               onClick={(event) => shufflePracticeCardsOnly(event)}
               style={{
                 gridRow: "1",

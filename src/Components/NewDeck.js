@@ -97,7 +97,7 @@ class NewDeck extends Component {
           <div
             onClick={this.saveDeck}
             className="f6 f5-ns mt3 mb2 link dim pointer"
-            style={{ alignSelf: "end" }}
+            style={{ alignSelf: "end", justifySelf: "center" }}
           >
             Save
           </div>

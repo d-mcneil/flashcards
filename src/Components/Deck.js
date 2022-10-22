@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+// import { faPenSquare } from "@fortawesome/free-solid-svg-icons";
 
 class Deck extends Component {
   constructor(props) {
@@ -65,7 +68,7 @@ class Deck extends Component {
             }
           >{`${deckName}`}</div>
           {/* **************start edit button***************** */}
-          <div
+          {/* <div
             onClick={() =>
               selectDeck(
                 "editor",
@@ -80,6 +83,22 @@ class Deck extends Component {
             style={{ alignSelf: "end" }}
           >
             Edit
+          </div> */}
+          <div
+            onClick={() =>
+              selectDeck(
+                "editor",
+                deckId,
+                deckName,
+                description,
+                definitionFirst,
+                deckPercentage
+              )
+            }
+            className="f5 f4-ns mb1 dim pointer"
+            style={{ alignSelf: "end", justifySelf: "center" }}
+          >
+            <FontAwesomeIcon icon={faPenToSquare} />
           </div>
           {/* **************start description***************** */}
           {description ? (
@@ -100,18 +119,29 @@ class Deck extends Component {
                 //   overflow: "hidden",
                 //   maxHeight: "3.22rem",
               }}
-              className="f6 pb3 mt2 mr4"
+              className="f6 pb3 mt2 mr4 mb1"
             >{`${description}`}</div>
           ) : (
             <></>
           )}
           {/* **************start delete button***************** */}
-          <div
+          {/* <div
             className="f6 f5-ns mb3 mt2 link dim pointer"
             style={{ alignSelf: "start", gridColumn: "2/span 1" }}
             onClick={this.deleteDeck}
           >
             Delete
+          </div> */}
+          <div
+            className="f5 f4-ns mt1 dim pointer"
+            style={{
+              alignSelf: "start",
+              gridColumn: "2/span 1",
+              justifySelf: "center",
+            }}
+            onClick={this.deleteDeck}
+          >
+            <FontAwesomeIcon icon={faTrashCan} />
           </div>
           {/* **************start error notification***************** */}
           {error ? (
