@@ -11,6 +11,15 @@ body {
   cursor: default;
 }
 
+svg,
+path {
+  cursor: pointer;
+}
+
+svg {
+  padding: .25rem;
+}
+
 .outline-hover:hover,
 #percentage {
   outline: solid 1px;

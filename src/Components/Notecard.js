@@ -1,5 +1,7 @@
 import React from "react";
 import ScoreCounter from "./ScoreCounter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShuffle } from "@fortawesome/free-solid-svg-icons";
 
 const Notecard = ({
   currentIndex,
@@ -11,6 +13,7 @@ const Notecard = ({
   score,
   setScoreError,
   content,
+  shufflePracticeCardsOnly,
 }) => {
   return (
     <>
@@ -36,15 +39,20 @@ const Notecard = ({
               }}
             ></div>
             <div
-              className="f6 f5-ns mb2 pointer"
+              className="f6 f5-ns pointer outline-hover"
+              onClick={(event) => shufflePracticeCardsOnly(event)}
               style={{
                 gridRow: "1",
                 gridColumnStart: "2",
                 gridColumnEnd: "3",
                 alignSelf: "start",
                 justifySelf: "center",
+                height: "min-content",
+                width: "min-content",
               }}
-            ></div>
+            >
+              <FontAwesomeIcon icon={faShuffle} />
+            </div>
             <div
               className="f6 f5-ns mb2 pointer"
               style={{

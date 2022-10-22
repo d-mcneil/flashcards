@@ -14,6 +14,7 @@ class Practice extends Component {
       practiceCards: [],
       currentIndex: 1,
       scoreError: "",
+      settingsError: "",
       definitionFirst: false,
       deckPercentage: 100,
     };
@@ -23,6 +24,7 @@ class Practice extends Component {
     this.setState({ scoreError: error });
   };
 
+  // ********called in the onClick event for the arrow buttons on the notecard********
   changeCurrentIndex = (incrementValue, event) => {
     event.stopPropagation();
     const totalCards = this.state.practiceCards.length;
@@ -52,13 +54,13 @@ class Practice extends Component {
       .then((response) => response.json())
       .then((data) => {
         if (!data.deck_id) {
-          this.setState({ error: data });
+          this.setState({ settingsError: data });
         } else {
-          this.setState({ error: "" });
+          this.setState({ settingsError: "" });
         }
       })
       .catch((err) =>
-        this.setState({ error: "Unable to save deck settings: 0" })
+        this.setState({ settingsError: "Unable to save deck settings: 0" })
       );
   };
 
@@ -92,7 +94,7 @@ class Practice extends Component {
     return newDeckPercentage;
   };
 
-  // called in this.setPracticeCards
+  // called in this.setPracticeCards and this.shufflePracticeCardsOnly
   shuffleCards = (cards) => {
     let shuffledCards = [].concat(cards);
     for (let i = shuffledCards.length - 1; i >= 1; i--) {
@@ -141,6 +143,14 @@ class Practice extends Component {
     }
   };
 
+  // ********called in onClick for the shuffle cards button********
+  shufflePracticeCardsOnly = (event) => {
+    event.stopPropagation();
+    const { practiceCards } = this.state;
+    const shuffledPracticeCards = this.shuffleCards(practiceCards);
+    this.setState({ practiceCards: shuffledPracticeCards, currentIndex: 1 });
+  };
+
   componentDidMount() {
     const { definitionFirst, deckPercentage } = this.props;
     this.setState({ definitionFirst, deckPercentage });
@@ -149,8 +159,13 @@ class Practice extends Component {
 
   render() {
     const { currentDeckName, onRouteChange, userId, updateScore } = this.props;
-    const { currentIndex, scoreError, definitionFirst, deckPercentage } =
-      this.state;
+    const {
+      currentIndex,
+      scoreError,
+      definitionFirst,
+      deckPercentage,
+      settingsError,
+    } = this.state;
     const initialDeckPercentage = this.props.deckPercentage;
     const totalCards = this.state.practiceCards.length;
     const currentCard = this.state.practiceCards.at(currentIndex - 1);
@@ -201,6 +216,7 @@ class Practice extends Component {
                   totalCards={totalCards}
                   changeCurrentIndex={this.changeCurrentIndex}
                   setScoreError={this.setScoreError}
+                  shufflePracticeCardsOnly={this.shufflePracticeCardsOnly}
                   updateScore={updateScore}
                   currentIndex={currentIndex}
                 />
@@ -212,18 +228,26 @@ class Practice extends Component {
                   totalCards={totalCards}
                   changeCurrentIndex={this.changeCurrentIndex}
                   setScoreError={this.setScoreError}
+                  shufflePracticeCardsOnly={this.shufflePracticeCardsOnly}
                   updateScore={updateScore}
                   currentIndex={currentIndex}
                 />
               </Flipcard>
               <PracticeSettings
                 definitionFirst={definitionFirst}
-                toggleSwitch={this.toggleSwitch}
                 initialDeckPercentage={initialDeckPercentage}
                 deckPercentage={deckPercentage}
+                toggleSwitch={this.toggleSwitch}
                 updatePracticeCards={this.updatePracticeCards}
                 saveDeckSettings={this.saveDeckSettings}
               />
+              {settingsError ? (
+                <div className={"mt0 pt0 mt3"}>
+                  <Error error={settingsError} />
+                </div>
+              ) : (
+                <></>
+              )}
             </>
           ) : (
             <MainCard>
