@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
+import { handleOnBlur } from "../repeatedFunctions"; // called in the onBlur for the input and text area fields so that going from one to the other doesn't save the new deck
+import { onEnterSave } from "../repeatedFunctions";
 
 const initialState = {
   error: "",
@@ -84,7 +86,10 @@ class NewDeck extends Component {
             type="text"
             maxLength={100}
             onChange={this.onDeckNameChange}
-            onBlur={this.saveDeck}
+            onKeyDown={(event) => onEnterSave(event, this.saveDeck)}
+            onBlur={(event) => {
+              handleOnBlur(event, this.saveDeck);
+            }}
             placeholder="Enter New Deck Name"
             className="f3-ns f4 mt3 mb1 bn reset-new-deck-info outline-hover"
             style={{
@@ -107,6 +112,10 @@ class NewDeck extends Component {
           {/* **************start description***************** */}
           <textarea
             onChange={this.onDescriptionChange}
+            onKeyDown={(event) => onEnterSave(event, this.saveDeck)}
+            onBlur={(event) => {
+              handleOnBlur(event, this.saveDeck);
+            }}
             placeholder="Enter New Deck Description (Optional)"
             style={{
               alignSelf: "start",
@@ -118,9 +127,13 @@ class NewDeck extends Component {
             rows={3}
           ></textarea>
           {/* **************start error notification***************** */}
-          <div className={"mt0 pt0"} style={{ gridColumn: "span 2" }}>
-            <Error error={error} />
-          </div>
+          {error ? (
+            <div className={"mt0 pt0"} style={{ gridColumn: "span 2" }}>
+              <Error error={error} />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </>
     );

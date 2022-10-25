@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import mainUrl from "../mainUrl";
 import Error from "./Forms/Error";
+import { onEnterSave } from "../repeatedFunctions";
 
 class DeckEditor extends Component {
   constructor(props) {
@@ -141,6 +142,7 @@ class DeckEditor extends Component {
           defaultValue={currentDeckName}
           placeholder="Enter Deck Name"
           onBlur={this.saveDeckName}
+          onKeyDown={(event) => onEnterSave(event, this.saveDeckName)}
           maxLength={100}
           onChange={(event) => {
             this.setNameAreaHeight();
@@ -161,6 +163,7 @@ class DeckEditor extends Component {
           placeholder="Enter Deck Description (Optional)"
           defaultValue={currentDeckDescription}
           onBlur={this.saveDeckDescription}
+          onKeyDown={(event) => onEnterSave(event, this.saveDeckDescription)}
           onChange={(event) => {
             this.setDescriptionAreaHeight();
             this.onDeckDescriptionChange(event);

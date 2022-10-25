@@ -4,6 +4,8 @@ import mainUrl from "../mainUrl";
 import ScoreCounter from "./ScoreCounter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { handleOnBlur } from "../repeatedFunctions"; // called in the onBlur for the input and text area fields so that going from one to the other doesn't save the new card
+import { onEnterSave } from "../repeatedFunctions";
 
 class CardEditor extends Component {
   constructor(props) {
@@ -71,76 +73,109 @@ class CardEditor extends Component {
     return true;
   };
 
-  saveTerm = () => {
-    const { userId, cardId, updateCardTerm, currentDefinition, currentTerm } =
+  saveCard = () => {
+    const { userId, cardId, updateCard, currentDefinition, currentTerm } =
       this.props;
-    const { newTerm } = this.state;
-    if (currentTerm === newTerm) {
+    const { newTerm, newDefinition } = this.state;
+    if (currentTerm === newTerm && currentDefinition === newDefinition) {
       return;
     }
-    const valid = this.checkValidInput(newTerm, currentDefinition);
+    const valid = this.checkValidInput(newTerm, newDefinition);
     if (!valid) {
       return;
     }
-    fetch(`${mainUrl}/update-card-term`, {
+    fetch(`${mainUrl}/update-card`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId: userId,
         cardId: cardId,
         term: newTerm,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.card_id) {
-          updateCardTerm(cardId, newTerm);
-          this.setState({ error: "" });
-        } else {
-          this.setState({ error: data });
-        }
-      })
-      .catch((err) => this.setState({ error: "Unable to update term: 0" }));
-  };
-
-  saveDefinition = () => {
-    const {
-      userId,
-      cardId,
-      updateCardDefinition,
-      currentDefinition,
-      currentTerm,
-    } = this.props;
-    const { newDefinition } = this.state;
-    if (currentDefinition === newDefinition) {
-      return;
-    }
-    const valid = this.checkValidInput(currentTerm, newDefinition);
-    if (!valid) {
-      return;
-    }
-    fetch(`${mainUrl}/update-card-definition`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: userId,
-        cardId: cardId,
         definition: newDefinition,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.card_id) {
-          updateCardDefinition(cardId, newDefinition);
+          updateCard(cardId, newTerm, newDefinition);
           this.setState({ error: "" });
         } else {
           this.setState({ error: data });
         }
       })
-      .catch((err) =>
-        this.setState({ error: "Unable to update definition: 0" })
-      );
+      .catch((err) => this.setState({ error: "Unable to update card: 0" }));
   };
+
+  // saveTerm = () => {
+  //   const { userId, cardId, updateCardTerm, currentDefinition, currentTerm } =
+  //     this.props;
+  //   const { newTerm } = this.state;
+  //   if (currentTerm === newTerm) {
+  //     return;
+  //   }
+  //   const valid = this.checkValidInput(newTerm, currentDefinition);
+  //   if (!valid) {
+  //     return;
+  //   }
+  //   fetch(`${mainUrl}/update-card-term`, {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       userId: userId,
+  //       cardId: cardId,
+  //       term: newTerm,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.card_id) {
+  //         updateCardTerm(cardId, newTerm);
+  //         this.setState({ error: "" });
+  //       } else {
+  //         this.setState({ error: data });
+  //       }
+  //     })
+  //     .catch((err) => this.setState({ error: "Unable to update term: 0" }));
+  // };
+
+  // saveDefinition = () => {
+  //   const {
+  //     userId,
+  //     cardId,
+  //     updateCardDefinition,
+  //     currentDefinition,
+  //     currentTerm,
+  //   } = this.props;
+  //   const { newDefinition } = this.state;
+  //   if (currentDefinition === newDefinition) {
+  //     return;
+  //   }
+  //   const valid = this.checkValidInput(currentTerm, newDefinition);
+  //   if (!valid) {
+  //     return;
+  //   }
+  //   fetch(`${mainUrl}/update-card-definition`, {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       userId: userId,
+  //       cardId: cardId,
+  //       definition: newDefinition,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.card_id) {
+  //         updateCardDefinition(cardId, newDefinition);
+  //         this.setState({ error: "" });
+  //       } else {
+  //         this.setState({ error: data });
+  //       }
+  //     })
+  //     .catch((err) =>
+  //       this.setState({ error: "Unable to update definition: 0" })
+  //     );
+  // };
 
   setScoreError = (error) => {
     this.setState({ error });
@@ -165,7 +200,11 @@ class CardEditor extends Component {
     return (
       <>
         <div
-          style={{ display: "grid", gridTemplateColumns: "5fr 1fr" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "5fr 1fr",
+            gridAutoFlow: "dense",
+          }}
           className="mh0 bt b--black-10"
         >
           {/* **************start term***************** */}
@@ -182,7 +221,10 @@ class CardEditor extends Component {
             type="text"
             maxLength={255}
             onChange={this.onTermChange}
-            onBlur={this.saveTerm}
+            onKeyDown={(event) => onEnterSave(event, this.saveCard)}
+            onBlur={(event) => {
+              handleOnBlur(event, this.saveCard);
+            }}
             placeholder="Enter Term"
             defaultValue={currentTerm}
             className="f3-ns f4 mt3 mb1 mr4 bn outline-hover"
@@ -194,23 +236,6 @@ class CardEditor extends Component {
               lineHeight: "1.35",
             }}
           ></input>
-          {/* **************start score counter***************** */}
-          <div
-            className="f6 f5-ns mt3 mb2"
-            style={{
-              display: "flex",
-              alignSelf: "end",
-            }}
-          >
-            <ScoreCounter
-              score={score}
-              setScoreError={this.setScoreError}
-              updateScore={updateScore}
-              userId={userId}
-              cardId={cardId}
-              arrowKeysChangeScore={false}
-            />
-          </div>
           {/* **************start definition***************** */}
           {/* <div
             style={{
@@ -237,7 +262,10 @@ class CardEditor extends Component {
               this.setDefinitionAreaHeight();
               this.onDefinitionChange(event);
             }}
-            onBlur={this.saveDefinition}
+            onKeyDown={(event) => onEnterSave(event, this.saveCard)}
+            onBlur={(event) => {
+              handleOnBlur(event, this.saveCard);
+            }}
             defaultValue={currentDefinition}
             placeholder="Enter Definition"
             style={{
@@ -246,11 +274,28 @@ class CardEditor extends Component {
               cursor: "text",
               textAlign: "justify",
               maxHeight: "3.75em",
+              gridColumn: "1/2",
             }}
             className="f6 mb3 mt2 mr4 bn outline-hover"
             id={`definition-area-${cardId}`}
           ></textarea>
-
+          {/* **************start score counter***************** */}
+          <div
+            className="f6 f5-ns mt3 mb2"
+            style={{
+              display: "flex",
+              alignSelf: "end",
+            }}
+          >
+            <ScoreCounter
+              score={score}
+              setScoreError={this.setScoreError}
+              updateScore={updateScore}
+              userId={userId}
+              cardId={cardId}
+              arrowKeysChangeScore={false}
+            />
+          </div>
           {/* **************start delete button***************** */}
           {/* <div
             className="f6 f5-ns mb3 mt2 link dim pointer"

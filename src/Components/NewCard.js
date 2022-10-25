@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
+import { handleOnBlur } from "../repeatedFunctions"; // called in the onBlur for the input and text area fields so that going from one to the other doesn't save the new card
+import { onEnterSave } from "../repeatedFunctions";
 
 const initialState = {
   error: "",
@@ -87,7 +89,10 @@ class NewCard extends Component {
             type="text"
             maxLength={255}
             onChange={this.onTermChange}
-            onBlur={this.saveCard}
+            onKeyDown={(event) => onEnterSave(event, this.saveCard)}
+            onBlur={(event) => {
+              handleOnBlur(event, this.saveCard);
+            }}
             placeholder="Enter New Term"
             className="f3-ns f4 mt3 mb1 bn reset-new-card-info outline-hover"
             style={{
@@ -111,7 +116,10 @@ class NewCard extends Component {
           <textarea
             maxLength={255}
             onChange={this.onDefinitionChange}
-            onBlur={this.saveCard}
+            onKeyDown={(event) => onEnterSave(event, this.saveCard)}
+            onBlur={(event) => {
+              handleOnBlur(event, this.saveCard);
+            }}
             placeholder="Enter New Definition"
             style={{
               alignSelf: "start",
@@ -123,9 +131,13 @@ class NewCard extends Component {
             rows={3}
           ></textarea>
           {/* **************start error notification***************** */}
-          <div className={"mt0 pt0"} style={{ gridColumn: "span 2" }}>
-            <Error error={error} />
-          </div>
+          {error ? (
+            <div className={"mt0 pt0"} style={{ gridColumn: "span 2" }}>
+              <Error error={error} />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </>
     );

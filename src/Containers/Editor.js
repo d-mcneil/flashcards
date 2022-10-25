@@ -16,8 +16,9 @@ const Editor = ({
   updateDeckDescription,
   addCard,
   removeCard,
-  updateCardTerm,
-  updateCardDefinition,
+  // updateCardTerm,
+  // updateCardDefinition,
+  updateCard,
   updateScore,
 }) => {
   return (
@@ -52,8 +53,9 @@ const Editor = ({
                 score={card.score}
                 userId={userId}
                 removeCard={removeCard}
-                updateCardTerm={updateCardTerm}
-                updateCardDefinition={updateCardDefinition}
+                // updateCardTerm={updateCardTerm}
+                // updateCardDefinition={updateCardDefinition}
+                updateCard={updateCard}
                 updateScore={updateScore}
               />
             );

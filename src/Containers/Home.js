@@ -72,31 +72,45 @@ class Home extends Component {
     this.setState({ cards: remainingCards });
   };
 
-  updateCardTerm = (cardId, term) => {
+  updateCard = (cardId, term, definition) => {
     const { cards } = this.state;
     const updatedCards = cards.map((card) => {
       if (card.card_id !== cardId) {
         return card;
       } else {
         card.term = term;
-        return card;
-      }
-    });
-    this.setState({ cards: updatedCards });
-  };
-
-  updateCardDefinition = (cardId, definition) => {
-    const { cards } = this.state;
-    const updatedCards = cards.map((card) => {
-      if (card.card_id !== cardId) {
-        return card;
-      } else {
         card.definition = definition;
         return card;
       }
     });
     this.setState({ cards: updatedCards });
   };
+
+  // updateCardTerm = (cardId, term) => {
+  //   const { cards } = this.state;
+  //   const updatedCards = cards.map((card) => {
+  //     if (card.card_id !== cardId) {
+  //       return card;
+  //     } else {
+  //       card.term = term;
+  //       return card;
+  //     }
+  //   });
+  //   this.setState({ cards: updatedCards });
+  // };
+
+  // updateCardDefinition = (cardId, definition) => {
+  //   const { cards } = this.state;
+  //   const updatedCards = cards.map((card) => {
+  //     if (card.card_id !== cardId) {
+  //       return card;
+  //     } else {
+  //       card.definition = definition;
+  //       return card;
+  //     }
+  //   });
+  //   this.setState({ cards: updatedCards });
+  // };
 
   updateScore = (cardId, incrementValue) => {
     const { cards } = this.state;
@@ -180,8 +194,9 @@ class Home extends Component {
           cards={cards}
           addCard={this.addCard}
           removeCard={this.removeCard}
-          updateCardTerm={this.updateCardTerm}
-          updateCardDefinition={this.updateCardDefinition}
+          // updateCardTerm={this.updateCardTerm}
+          // updateCardDefinition={this.updateCardDefinition}
+          updateCard={this.updateCard}
           updateScore={this.updateScore}
         />
       );
