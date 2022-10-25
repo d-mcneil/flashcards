@@ -14,6 +14,7 @@ const Notecard = ({
   setScoreError,
   content,
   shufflePracticeCardsOnly,
+  arrowKeysChangeScore,
 }) => {
   return (
     <>
@@ -116,6 +117,7 @@ const Notecard = ({
                 updateScore={updateScore}
                 userId={userId}
                 cardId={cardId}
+                arrowKeysChangeScore={arrowKeysChangeScore}
               />
             </div>
             {currentIndex < totalCards ? (

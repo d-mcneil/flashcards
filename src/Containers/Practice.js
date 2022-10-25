@@ -28,6 +28,9 @@ class Practice extends Component {
   changeCurrentIndex = (incrementValue, event) => {
     event.stopPropagation();
     const totalCards = this.state.practiceCards.length;
+    if (!totalCards) {
+      return;
+    }
     const { currentIndex } = this.state;
     if (currentIndex === 1 && incrementValue < 0) {
       return;
@@ -151,10 +154,28 @@ class Practice extends Component {
     this.setState({ practiceCards: shuffledPracticeCards, currentIndex: 1 });
   };
 
+  // called in componentDidMount as an event handler
+  handleArrowKeys = (event) => {
+    if (event.code === "ArrowRight") {
+      this.changeCurrentIndex(1, event);
+    } else if (event.code === "ArrowLeft") {
+      this.changeCurrentIndex(-1, event);
+    }
+  };
+
   componentDidMount() {
     const { definitionFirst, deckPercentage } = this.props;
     this.setState({ definitionFirst, deckPercentage });
     this.setPracticeCards(deckPercentage);
+    if (window) {
+      window.addEventListener("keydown", this.handleArrowKeys);
+    }
+  }
+
+  componentWillUnmount() {
+    if (window) {
+      window.removeEventListener("keydown", this.handleArrowKeys);
+    }
   }
 
   render() {
@@ -219,6 +240,7 @@ class Practice extends Component {
                   shufflePracticeCardsOnly={this.shufflePracticeCardsOnly}
                   updateScore={updateScore}
                   currentIndex={currentIndex}
+                  arrowKeysChangeScore={true}
                 />
                 <Notecard
                   cardId={currentCard.card_id}
@@ -231,6 +253,7 @@ class Practice extends Component {
                   shufflePracticeCardsOnly={this.shufflePracticeCardsOnly}
                   updateScore={updateScore}
                   currentIndex={currentIndex}
+                  arrowKeysChangeScore={false}
                 />
               </Flipcard>
               <PracticeSettings

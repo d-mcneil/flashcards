@@ -208,6 +208,7 @@ class CardEditor extends Component {
               updateScore={updateScore}
               userId={userId}
               cardId={cardId}
+              arrowKeysChangeScore={false}
             />
           </div>
           {/* **************start definition***************** */}
