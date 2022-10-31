@@ -1,8 +1,10 @@
 export const handleOnBlur = (event, callbackFunction) => {
-  if (event.relatedTarget) {
+  const relatedTarget = event.relatedTarget;
+  const target = event.target;
+  if (relatedTarget) {
     if (
-      event.relatedTarget === event.target.nextSibling ||
-      event.relatedTarget === event.target.previousSibling
+      relatedTarget === target.nextSibling ||
+      relatedTarget === target.previousSibling
     ) {
       return;
     }
