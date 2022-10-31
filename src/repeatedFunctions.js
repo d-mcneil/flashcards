@@ -18,3 +18,11 @@ export const onEnterSave = (event, callbackFunction) => {
     callbackFunction();
   }
 };
+
+export const setAreaHeight = (areaId) => {
+  const area = document.getElementById(areaId);
+  if (area) {
+    area.style.height = "0px";
+    area.style.height = area.scrollHeight + 2 + "px";
+  }
+};

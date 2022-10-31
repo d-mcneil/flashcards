@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import mainUrl from "../mainUrl";
 import Error from "./Forms/Error";
-import { onEnterSave } from "../repeatedFunctions";
+import { onEnterSave, setAreaHeight } from "../repeatedFunctions";
 
 class DeckEditor extends Component {
   constructor(props) {
@@ -105,19 +105,19 @@ class DeckEditor extends Component {
     this.setState({ newDeckDescription: event.target.value });
   };
 
-  setDescriptionAreaHeight = () => {
-    const descriptionArea = document.getElementById("description-area");
-    if (descriptionArea) {
-      descriptionArea.style.height = "0px";
-      descriptionArea.style.height = descriptionArea.scrollHeight + 2 + "px";
-    }
-  };
+  // setDescriptionAreaHeight = () => {
+  //   const descriptionArea = document.getElementById("description-area");
+  //   if (descriptionArea) {
+  //     descriptionArea.style.height = "0px";
+  //     descriptionArea.style.height = descriptionArea.scrollHeight + 2 + "px";
+  //   }
+  // };
 
-  setNameAreaHeight = () => {
-    const nameArea = document.getElementById("name-area");
-    nameArea.style.height = "0px";
-    nameArea.style.height = nameArea.scrollHeight + 2 + "px";
-  };
+  // setNameAreaHeight = () => {
+  //   const nameArea = document.getElementById("name-area");
+  //   nameArea.style.height = "0px";
+  //   nameArea.style.height = nameArea.scrollHeight + 2 + "px";
+  // };
 
   componentDidMount() {
     const { currentDeckName, currentDeckDescription } = this.props;
@@ -125,8 +125,8 @@ class DeckEditor extends Component {
       newDeckName: currentDeckName,
       newDeckDescription: currentDeckDescription,
     });
-    this.setNameAreaHeight();
-    this.setDescriptionAreaHeight();
+    setAreaHeight("name-area");
+    setAreaHeight("description-area");
   }
 
   render() {
@@ -145,7 +145,7 @@ class DeckEditor extends Component {
           onKeyDown={(event) => onEnterSave(event, this.saveDeckName)}
           maxLength={100}
           onChange={(event) => {
-            this.setNameAreaHeight();
+            setAreaHeight("name-area");
             this.onDeckNameChange(event);
           }}
           style={{
@@ -165,7 +165,7 @@ class DeckEditor extends Component {
           onBlur={this.saveDeckDescription}
           onKeyDown={(event) => onEnterSave(event, this.saveDeckDescription)}
           onChange={(event) => {
-            this.setDescriptionAreaHeight();
+            setAreaHeight("description-area");
             this.onDeckDescriptionChange(event);
           }}
           style={{

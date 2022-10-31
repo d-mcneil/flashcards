@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
 import { handleOnBlur } from "../repeatedFunctions"; // called in the onBlur for the input and text area fields so that going from one to the other doesn't save the new card
-import { onEnterSave } from "../repeatedFunctions";
+import { onEnterSave, setAreaHeight } from "../repeatedFunctions";
 
 const initialState = {
   error: "",
@@ -76,6 +76,10 @@ class NewCard extends Component {
       .catch((err) => this.setState({ error: "Unable to create new card: 0" }));
   };
 
+  componentDidMount() {
+    setAreaHeight("new-card-definition");
+  }
+
   render() {
     const { error } = this.state;
     return (
@@ -115,7 +119,10 @@ class NewCard extends Component {
           {/* **************start definition***************** */}
           <textarea
             maxLength={255}
-            onChange={this.onDefinitionChange}
+            onChange={(event) => {
+              setAreaHeight("new-card-definition");
+              this.onDefinitionChange(event);
+            }}
             onKeyDown={(event) => onEnterSave(event, this.saveCard)}
             onBlur={(event) => {
               handleOnBlur(event, this.saveCard);
@@ -128,7 +135,7 @@ class NewCard extends Component {
               gridColumn: "1/3",
             }}
             className="f6 mb0 mt2 bn reset-new-card-info outline-hover"
-            rows={3}
+            id="new-card-definition"
           ></textarea>
           {/* **************start error notification***************** */}
           {error ? (

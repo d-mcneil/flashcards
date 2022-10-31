@@ -2,46 +2,47 @@ import React from "react";
 // import Logo from "./Logo/Logo";
 
 const Navigation = ({ onRouteChange, isSignedIn, route }) => {
+  const navBarStyleClasses = "f3 link dim black underline pa3 pointer mv0";
   return (
     <nav style={{ display: "flex" }}>
       {/* <Logo /> */}
+      {/* **************start home/profile button***************** */}
       {route === "home" ? (
         <p
           onClick={() => onRouteChange("profile")}
-          className="f3 link dim black underline pa3 pointer mv0 push"
+          className={`${navBarStyleClasses} push`}
         >
           Profile
         </p>
       ) : route === "profile" ? (
         <p
           onClick={() => onRouteChange("home")}
-          className="f3 link dim black underline pa3 pointer mv0 push"
+          className={`${navBarStyleClasses} push`}
         >
           Home
         </p>
       ) : (
         <></>
       )}
+      {/* **************start sign-out/sign-in/register buttons***************** */}
       {isSignedIn ? (
-        <>
-          <p
-            onClick={() => onRouteChange("signed-out")}
-            className="f3 link dim black underline pa3 pointer mv0"
-          >
-            Sign Out
-          </p>
-        </>
+        <p
+          onClick={() => onRouteChange("signed-out")}
+          className={`${navBarStyleClasses}`}
+        >
+          Sign Out
+        </p>
       ) : route === "register" ? (
         <p
           onClick={() => onRouteChange("signed-out")}
-          className="f3 link dim black underline pa3 pointer mv0 push"
+          className={`${navBarStyleClasses} push`}
         >
           Sign In
         </p>
       ) : (
         <p
           onClick={() => onRouteChange("register")}
-          className="f3 link dim black underline pa3 pointer mv0 push"
+          className={`${navBarStyleClasses} push`}
         >
           Register
         </p>

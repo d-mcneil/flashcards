@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Error from "./Forms/Error";
 import mainUrl from "../mainUrl";
 import { handleOnBlur } from "../repeatedFunctions"; // called in the onBlur for the input and text area fields so that going from one to the other doesn't save the new deck
-import { onEnterSave } from "../repeatedFunctions";
+import { onEnterSave, setAreaHeight } from "../repeatedFunctions";
 
 const initialState = {
   error: "",
@@ -73,6 +73,10 @@ class NewDeck extends Component {
       .catch((err) => this.setState({ error: "Unable to create new deck: 0" }));
   };
 
+  componentDidMount() {
+    setAreaHeight("new-deck-description");
+  }
+
   render() {
     const { error } = this.state;
     return (
@@ -111,7 +115,10 @@ class NewDeck extends Component {
           </div> */}
           {/* **************start description***************** */}
           <textarea
-            onChange={this.onDescriptionChange}
+            onChange={(event) => {
+              setAreaHeight("new-deck-description");
+              this.onDescriptionChange(event);
+            }}
             onKeyDown={(event) => onEnterSave(event, this.saveDeck)}
             onBlur={(event) => {
               handleOnBlur(event, this.saveDeck);
@@ -124,7 +131,7 @@ class NewDeck extends Component {
               gridColumn: "1/3",
             }}
             className="f6 mb0 mt2 bn reset-new-deck-info outline-hover"
-            rows={3}
+            id="new-deck-description"
           ></textarea>
           {/* **************start error notification***************** */}
           {error ? (

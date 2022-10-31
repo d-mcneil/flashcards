@@ -5,7 +5,7 @@ import ScoreCounter from "./ScoreCounter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { handleOnBlur } from "../repeatedFunctions"; // called in the onBlur for the input and text area fields so that going from one to the other doesn't save the new card
-import { onEnterSave } from "../repeatedFunctions";
+import { onEnterSave, setAreaHeight } from "../repeatedFunctions";
 
 class CardEditor extends Component {
   constructor(props) {
@@ -25,12 +25,12 @@ class CardEditor extends Component {
     this.setState({ newDefinition: event.target.value });
   };
 
-  setDefinitionAreaHeight = () => {
-    const { cardId } = this.props;
-    const definitionArea = document.getElementById(`definition-area-${cardId}`);
-    definitionArea.style.height = "0px";
-    definitionArea.style.height = definitionArea.scrollHeight + 2 + "px";
-  };
+  // setDefinitionAreaHeight = () => {
+  //   const { cardId } = this.props;
+  //   const definitionArea = document.getElementById(`definition-area-${cardId}`);
+  //   definitionArea.style.height = "0px";
+  //   definitionArea.style.height = definitionArea.scrollHeight + 2 + "px";
+  // };
 
   deleteCard = () => {
     const { userId, cardId, removeCard } = this.props;
@@ -182,9 +182,9 @@ class CardEditor extends Component {
   };
 
   componentDidMount() {
-    const { currentDefinition, currentTerm } = this.props;
+    const { currentDefinition, currentTerm, cardId } = this.props;
     this.setState({ newTerm: currentTerm, newDefinition: currentDefinition });
-    this.setDefinitionAreaHeight();
+    setAreaHeight(`definition-area-${cardId}`);
   }
 
   render() {
@@ -259,7 +259,7 @@ class CardEditor extends Component {
           <textarea
             maxLength={255}
             onChange={(event) => {
-              this.setDefinitionAreaHeight();
+              setAreaHeight(`definition-area-${cardId}`);
               this.onDefinitionChange(event);
             }}
             onKeyDown={(event) => onEnterSave(event, this.saveCard)}
