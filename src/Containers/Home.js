@@ -40,8 +40,20 @@ class Home extends Component {
     });
   };
 
-  updateDeckSettings = (definitionFirst, deckPercentage) => {
-    this.setState({ currentDeckSettings: { definitionFirst, deckPercentage } });
+  updateDeckSettings = (
+    definitionFirst,
+    deckPercentage,
+    termLanguage,
+    definitionLanguage
+  ) => {
+    this.setState({
+      currentDeckSettings: {
+        definitionFirst,
+        deckPercentage,
+        termLanguage,
+        definitionLanguage,
+      },
+    });
   };
 
   onRouteChange = (route) => {
@@ -131,7 +143,9 @@ class Home extends Component {
     deckName,
     description,
     definitionFirst,
-    deckPercentage
+    deckPercentage,
+    termLanguage,
+    definitionLanguage
   ) => {
     fetch(`${mainUrl}/read-cards/${deckId}`)
       .then((response) => response.json())
@@ -143,7 +157,12 @@ class Home extends Component {
             currentDeckId: deckId,
             currentDeckName: deckName,
             currentDeckDescription: description,
-            currentDeckSettings: { definitionFirst, deckPercentage },
+            currentDeckSettings: {
+              definitionFirst,
+              deckPercentage,
+              termLanguage,
+              definitionLanguage,
+            },
           });
           this.onRouteChange(route);
         } else {
@@ -174,6 +193,8 @@ class Home extends Component {
           currentDeckName={currentDeckName}
           definitionFirst={currentDeckSettings.definitionFirst}
           deckPercentage={currentDeckSettings.deckPercentage}
+          termLanguage={currentDeckSettings.termLanguage}
+          definitionLanguage={currentDeckSettings.definitionLanguage}
           userId={userId}
           onRouteChange={this.onRouteChange}
           updateScore={this.updateScore}

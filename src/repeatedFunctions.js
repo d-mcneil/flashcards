@@ -1,3 +1,4 @@
+// prevent saving the card/deck if the relatedTarget of the onBlur is a sibling element of the field being edited
 export const handleOnBlur = (event, callbackFunction) => {
   const relatedTarget = event.relatedTarget;
   const target = event.target;
@@ -9,13 +10,13 @@ export const handleOnBlur = (event, callbackFunction) => {
       return;
     }
   }
-  callbackFunction();
+  return callbackFunction();
 };
 
 export const onEnterSave = (event, callbackFunction) => {
   if (event.code === "Enter") {
     event.preventDefault(); // keeps cursor from going to next line in text area
-    callbackFunction();
+    return callbackFunction();
   }
 };
 

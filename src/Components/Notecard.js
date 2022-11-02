@@ -1,7 +1,7 @@
 import React from "react";
 import ScoreCounter from "./ScoreCounter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShuffle } from "@fortawesome/free-solid-svg-icons";
+import { faShuffle, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 
 const Notecard = ({
   currentIndex,
@@ -15,7 +15,18 @@ const Notecard = ({
   content,
   shufflePracticeCardsOnly,
   arrowKeysChangeScore,
+  voice,
 }) => {
+  const speechSynthesizer = window.speechSynthesis;
+  const speak = (event) => {
+    event.stopPropagation();
+    if (voice[0].name) {
+      const utterThis = new SpeechSynthesisUtterance(content);
+      utterThis.voice = voice[0];
+      speechSynthesizer.speak(utterThis);
+    }
+  };
+
   return (
     <>
       <div className="br3 ba b--black-10 w-100 h-100 mw6 shadow-5 center">
@@ -29,16 +40,25 @@ const Notecard = ({
             }}
           >
             {/* **************start row 1***************** */}
-            <div
-              className="f6 f5-ns mb2 pointer"
-              style={{
-                gridRow: "1",
-                gridColumnStart: "1",
-                gridColumnEnd: "2",
-                justifySelf: "start",
-                alignSelf: "start",
-              }}
-            ></div>
+            {speechSynthesizer ? (
+              <div
+                className="f6 f5-ns pointer dim"
+                style={{
+                  gridRow: "1",
+                  gridColumnStart: "1",
+                  gridColumnEnd: "2",
+                  justifySelf: "start",
+                  alignSelf: "start",
+                  height: "min-content",
+                  width: "min-content",
+                }}
+                onClick={speak}
+              >
+                <FontAwesomeIcon icon={faVolumeHigh} />
+              </div>
+            ) : (
+              <></>
+            )}
             <div
               className="f6 f5-ns pointer dim"
               onClick={(event) => shufflePracticeCardsOnly(event)}
@@ -92,7 +112,7 @@ const Notecard = ({
                   justifySelf: "end",
                   alignSelf: "center",
                 }}
-                className="pointer ba b--black br1 pv1 ph4-ns ph2 bg-transparent hover-bg-black hover-white f6 f5-ns mt2"
+                className="pointer ba b--black br1 pv1 ph4-ns ph2 bg-transparent hover-bg-black hover-white f6 f5-ns mt2 mr1"
                 onClick={(event) => changeCurrentIndex(-1, event)}
               >
                 {"<"}
@@ -101,7 +121,7 @@ const Notecard = ({
               <></>
             )}
             <div
-              className="f6 f5-ns  mt2"
+              className="f6 f5-ns mt2"
               style={{
                 gridRow: "3",
                 gridColumnStart: "2",
@@ -129,7 +149,7 @@ const Notecard = ({
                   justifySelf: "start",
                   alignSelf: "center",
                 }}
-                className="pointer ba b--black br1 pv1 ph4-ns ph2 bg-transparent hover-bg-black hover-white f6 f5-ns mt2"
+                className="pointer ba b--black br1 pv1 ph4-ns ph2 bg-transparent hover-bg-black hover-white f6 f5-ns mt2 ml1"
                 onClick={(event) => changeCurrentIndex(1, event)}
               >
                 {">"}

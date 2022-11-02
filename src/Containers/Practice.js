@@ -17,6 +17,11 @@ class Practice extends Component {
       settingsError: "",
       definitionFirst: false,
       deckPercentage: 100,
+      termLanguage: "Google US English",
+      definitionLanguage: "Google US English",
+      speechSynthesisVoices: [],
+      termVoice: {},
+      definitionVoice: {},
     };
   }
 
@@ -41,9 +46,19 @@ class Practice extends Component {
   };
 
   // ********called in this.toggleSwitch and onBlur for the deck percentage input field********
-  saveDeckSettings = (definitionFirst, deckPercentage) => {
+  saveDeckSettings = (
+    definitionFirst,
+    deckPercentage,
+    termLanguage,
+    definitionLanguage
+  ) => {
     const { userId, currentDeckId, updateDeckSettings } = this.props;
-    updateDeckSettings(definitionFirst, deckPercentage);
+    updateDeckSettings(
+      definitionFirst,
+      deckPercentage,
+      termLanguage,
+      definitionLanguage
+    );
     fetch(`${mainUrl}/update-deck-settings`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -52,6 +67,8 @@ class Practice extends Component {
         deckId: currentDeckId,
         definitionFirst: definitionFirst,
         deckPercentage: deckPercentage,
+        termLanguage: termLanguage,
+        definitionLanguage: definitionLanguage,
       }),
     })
       .then((response) => response.json())
@@ -71,8 +88,13 @@ class Practice extends Component {
   toggleSwitch = (event) => {
     const definitionFirst = event.target.checked;
     // const definitionFirst = document.getElementById("definition-first").checked;
-    const { deckPercentage } = this.state;
-    this.saveDeckSettings(definitionFirst, deckPercentage);
+    const { deckPercentage, termLanguage, definitionLanguage } = this.state;
+    this.saveDeckSettings(
+      definitionFirst,
+      deckPercentage,
+      termLanguage,
+      definitionLanguage
+    );
     this.setState({ definitionFirst });
   };
 
@@ -163,10 +185,52 @@ class Practice extends Component {
     }
   };
 
+  matchVoices = (voices, language) => {
+    const matchingVoices = voices.filter((voice) => voice.name === language);
+    if (matchingVoices.length) {
+      const voice = matchingVoices[0];
+      return voice;
+    }
+    return {};
+  };
+
+  getSpeechSynthesisVoices = (termLanguage, definitionLanguage) => {
+    let voices = [];
+    if (window.speechSynthesis) {
+      voices = window.speechSynthesis.getVoices();
+      const termVoice = this.matchVoices(voices, termLanguage);
+      const definitionVoice = this.matchVoices(voices, definitionLanguage);
+      this.setState({
+        speechSynthesisVoices: voices,
+        termVoice: termVoice,
+        definitionVoice: definitionVoice,
+      });
+    }
+  };
+
+  setSpeechSynthesisVoice = (voice, language, termOrDefinition) => {
+    if (termOrDefinition === "Term") {
+      this.setState({ termVoice: voice, termLanguage: language });
+    } else if (termOrDefinition === "Definition") {
+      this.setState({ definitionVoice: voice, definitionLanguage: language });
+    }
+  };
+
   componentDidMount() {
-    const { definitionFirst, deckPercentage } = this.props;
-    this.setState({ definitionFirst, deckPercentage });
+    const {
+      definitionFirst,
+      deckPercentage,
+      termLanguage,
+      definitionLanguage,
+    } = this.props;
+    this.setState({
+      definitionFirst,
+      deckPercentage,
+      termLanguage,
+      definitionLanguage,
+    });
     this.setPracticeCards(deckPercentage);
+    this.getSpeechSynthesisVoices(termLanguage, definitionLanguage);
     if (window) {
       window.addEventListener("keydown", this.handleArrowKeys);
     }
@@ -185,20 +249,31 @@ class Practice extends Component {
       scoreError,
       definitionFirst,
       deckPercentage,
+      termLanguage,
+      definitionLanguage,
       settingsError,
+      speechSynthesisVoices,
+      termVoice,
+      definitionVoice,
     } = this.state;
     const initialDeckPercentage = this.props.deckPercentage;
     const totalCards = this.state.practiceCards.length;
     const currentCard = this.state.practiceCards.at(currentIndex - 1);
-    let front;
-    let back;
+    let frontContent;
+    let backVoice = [];
+    let frontVoice = [];
+    let backContent;
     if (totalCards) {
       if (definitionFirst) {
-        front = currentCard.definition;
-        back = currentCard.term;
+        frontContent = currentCard.definition;
+        backContent = currentCard.term;
+        frontVoice = [definitionVoice];
+        backVoice = [termVoice];
       } else {
-        front = currentCard.term;
-        back = currentCard.definition;
+        frontContent = currentCard.term;
+        backContent = currentCard.definition;
+        frontVoice = [termVoice];
+        backVoice = [definitionVoice];
       }
     }
 
@@ -232,7 +307,7 @@ class Practice extends Component {
                 <Notecard
                   cardId={currentCard.card_id}
                   score={currentCard.score}
-                  content={front}
+                  content={frontContent}
                   userId={userId}
                   totalCards={totalCards}
                   changeCurrentIndex={this.changeCurrentIndex}
@@ -241,11 +316,12 @@ class Practice extends Component {
                   updateScore={updateScore}
                   currentIndex={currentIndex}
                   arrowKeysChangeScore={true}
+                  voice={frontVoice}
                 />
                 <Notecard
                   cardId={currentCard.card_id}
                   score={currentCard.score}
-                  content={back}
+                  content={backContent}
                   userId={userId}
                   totalCards={totalCards}
                   changeCurrentIndex={this.changeCurrentIndex}
@@ -254,15 +330,21 @@ class Practice extends Component {
                   updateScore={updateScore}
                   currentIndex={currentIndex}
                   arrowKeysChangeScore={false}
+                  voice={backVoice}
                 />
               </Flipcard>
               <PracticeSettings
                 definitionFirst={definitionFirst}
                 initialDeckPercentage={initialDeckPercentage}
                 deckPercentage={deckPercentage}
+                termLanguage={termLanguage}
+                definitionLanguage={definitionLanguage}
                 toggleSwitch={this.toggleSwitch}
                 updatePracticeCards={this.updatePracticeCards}
                 saveDeckSettings={this.saveDeckSettings}
+                voices={speechSynthesisVoices}
+                matchVoices={this.matchVoices}
+                setSpeechSynthesisVoice={this.setSpeechSynthesisVoice}
               />
               {settingsError ? (
                 <div className={"mt0 pt0 mt3"}>
@@ -279,64 +361,6 @@ class Practice extends Component {
               </div>
             </MainCard>
           )}
-
-          {/* <div
-            className="f3-ns f4 w-100 mt4 mb4"
-            style={{ textAlign: "center" }}
-          >
-            Settings
-          </div>
-          <div
-            className="w-100"
-            style={{
-              display: "grid",
-              alignItems: "center",
-              justifyItems: "center",
-              gridTemplateColumns: "1fr auto 1fr",
-            }}
-          >
-            <span
-              className="pr2 f6 f5-ns settings-definition-first "
-              style={{ justifySelf: "end" }}
-            >
-              Term First
-            </span>
-            <label className="switch">
-              <input
-                type="checkbox"
-                value="definition-first"
-                id="definition-first"
-                checked={definitionFirst}
-                onChange={this.toggleSwitch}
-              ></input>
-              <span className="slider round"></span>
-            </label>
-            <span
-              className="pl2 f6 f5-ns settings-definition-first"
-              style={{ justifySelf: "start" }}
-            >
-              Definition First
-            </span>
-          </div>
-          <div className="w-100 f6 f5-ns tc mt3">
-            Practice{" "}
-            <input
-              type="number"
-              className="f6 f5-ns tc bn mr1"
-              id="percentage"
-              style={{ width: "2.5em", cursor: "text" }}
-              min={1}
-              max={100}
-              defaultValue={initialDeckPercentage}
-              placeholder={deckPercentage}
-              onChange={this.updatePracticeCards}
-              onBlur={() =>
-                this.saveDeckSettings(definitionFirst, deckPercentage)
-              }
-              // pattern="^((?:0?[0-9]{1,2})|(?:100))$"
-            ></input>
-            % of Deck
-          </div> */}
         </MainCard>
       </>
     );

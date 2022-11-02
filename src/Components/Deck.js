@@ -38,6 +38,8 @@ class Deck extends Component {
       description,
       definitionFirst,
       deckPercentage,
+      termLanguage,
+      definitionLanguage,
       selectDeck,
     } = this.props;
     const { error } = this.state;
@@ -63,7 +65,9 @@ class Deck extends Component {
                 deckName,
                 description,
                 definitionFirst,
-                deckPercentage
+                deckPercentage,
+                termLanguage,
+                definitionLanguage
               )
             }
           >{`${deckName}`}</div>
@@ -92,7 +96,9 @@ class Deck extends Component {
                 deckName,
                 description,
                 definitionFirst,
-                deckPercentage
+                deckPercentage,
+                termLanguage,
+                definitionLanguage
               )
             }
             className="f5 f4-ns mb1 dim pointer"

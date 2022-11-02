@@ -84,6 +84,8 @@ class Decks extends Component {
                   description={deck.description}
                   definitionFirst={deck.definition_first}
                   deckPercentage={deck.deck_percentage}
+                  termLanguage={deck.term_language}
+                  definitionLanguage={deck.definition_language}
                   selectDeck={selectDeck}
                   removeDeck={this.removeDeck}
                 />

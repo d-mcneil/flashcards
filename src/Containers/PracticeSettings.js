@@ -1,13 +1,41 @@
 import React from "react";
+import LanguageSelector from "../Components/LanguageSelector";
 
 const PracticeSettings = ({
   definitionFirst,
   toggleSwitch,
   initialDeckPercentage,
   deckPercentage,
+  termLanguage,
+  definitionLanguage,
   updatePracticeCards,
   saveDeckSettings,
+  voices,
+  matchVoices,
+  setSpeechSynthesisVoice,
 }) => {
+  const setNewTermLanguage = (newTermLanguage) => {
+    if (newTermLanguage === termLanguage) {
+      return;
+    }
+    saveDeckSettings(
+      definitionFirst,
+      deckPercentage,
+      newTermLanguage,
+      definitionLanguage
+    );
+  };
+  const setNewDefinitionLanguage = (newDefinitionLanguage) => {
+    if (newDefinitionLanguage === definitionLanguage) {
+      return;
+    }
+    saveDeckSettings(
+      definitionFirst,
+      deckPercentage,
+      termLanguage,
+      newDefinitionLanguage
+    );
+  };
   return (
     <>
       <div className="f3-ns f4 w-100 mt4 mb4" style={{ textAlign: "center" }}>
@@ -29,6 +57,7 @@ const PracticeSettings = ({
         >
           Term First
         </span>
+
         <label className="switch">
           <input
             type="checkbox"
@@ -39,6 +68,7 @@ const PracticeSettings = ({
           ></input>
           <span className="slider round"></span>
         </label>
+
         <span
           className="pl2 f6 f5-ns settings-definition-first"
           style={{ justifySelf: "start" }}
@@ -67,29 +97,39 @@ const PracticeSettings = ({
           defaultValue={initialDeckPercentage}
           placeholder={deckPercentage}
           onChange={updatePracticeCards}
-          onBlur={() => saveDeckSettings(definitionFirst, deckPercentage)}
-          // pattern="^((?:0?[0-9]{1,2})|(?:100))$"
+          onBlur={() =>
+            saveDeckSettings(
+              definitionFirst,
+              deckPercentage,
+              termLanguage,
+              definitionLanguage
+            )
+          }
         ></input>
         <div style={{ justifySelf: "start" }}>% of Deck</div>
       </div>
-
-      {/* <div className="w-100 f6 f5-ns tc mt3">
-        Practice{" "}
-        <input
-          type="number"
-          className="f6 f5-ns tc bn mr1"
-          id="percentage"
-          style={{ width: "2.5em", cursor: "text" }}
-          min={1}
-          max={100}
-          defaultValue={initialDeckPercentage}
-          placeholder={deckPercentage}
-          onChange={updatePracticeCards}
-          onBlur={() => saveDeckSettings(definitionFirst, deckPercentage)}
-          // pattern="^((?:0?[0-9]{1,2})|(?:100))$"
-        ></input>
-        % of Deck
-      </div> */}
+      {/* **************start language selection input***************** */}
+      {/* <div className="w-100 f6 f5-ns mt3 tc"> */}
+      <LanguageSelector
+        label="Term"
+        voices={voices}
+        language={termLanguage}
+        setNewLanguage={setNewTermLanguage}
+        matchVoices={matchVoices}
+        setSpeechSynthesisVoice={setSpeechSynthesisVoice}
+      />
+      {/* </div> */}
+      {/* <div className="w-100 f6 f5-ns mt3 tc"> */}
+      <LanguageSelector
+        label="Definition"
+        voices={voices}
+        language={definitionLanguage}
+        setNewLanguage={setNewDefinitionLanguage}
+        matchVoices={matchVoices}
+        setSpeechSynthesisVoice={setSpeechSynthesisVoice}
+      />
+      {/* </div> */}
+      {/* <Voices /> */}
     </>
   );
 };
