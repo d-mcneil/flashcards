@@ -109,7 +109,6 @@ const PracticeSettings = ({
         <div style={{ justifySelf: "start" }}>% of Deck</div>
       </div>
       {/* **************start language selection input***************** */}
-      {/* <div className="w-100 f6 f5-ns mt3 tc"> */}
       <LanguageSelector
         label="Term"
         voices={voices}
@@ -118,8 +117,6 @@ const PracticeSettings = ({
         matchVoices={matchVoices}
         setSpeechSynthesisVoice={setSpeechSynthesisVoice}
       />
-      {/* </div> */}
-      {/* <div className="w-100 f6 f5-ns mt3 tc"> */}
       <LanguageSelector
         label="Definition"
         voices={voices}
@@ -128,8 +125,6 @@ const PracticeSettings = ({
         matchVoices={matchVoices}
         setSpeechSynthesisVoice={setSpeechSynthesisVoice}
       />
-      {/* </div> */}
-      {/* <Voices /> */}
     </>
   );
 };

@@ -194,20 +194,26 @@ class Practice extends Component {
     return {};
   };
 
+  // called in componentDidMount
   getSpeechSynthesisVoices = (termLanguage, definitionLanguage) => {
-    let voices = [];
-    if (window.speechSynthesis) {
-      voices = window.speechSynthesis.getVoices();
-      const termVoice = this.matchVoices(voices, termLanguage);
-      const definitionVoice = this.matchVoices(voices, definitionLanguage);
-      this.setState({
-        speechSynthesisVoices: voices,
-        termVoice: termVoice,
-        definitionVoice: definitionVoice,
-      });
+    const synth = window.speechSynthesis;
+    if (synth) {
+      const _handleVoicesChanged = () => {
+        const voices = window.speechSynthesis.getVoices();
+        const termVoice = this.matchVoices(voices, termLanguage);
+        const definitionVoice = this.matchVoices(voices, definitionLanguage);
+        this.setState({
+          speechSynthesisVoices: voices,
+          termVoice: termVoice,
+          definitionVoice: definitionVoice,
+        });
+        synth.removeEventListener("voiceschanged", _handleVoicesChanged);
+      };
+      synth.addEventListener("voiceschanged", _handleVoicesChanged);
     }
   };
 
+  // passed down through PracticeSettings to LanguageSelector and called when a new language is selected
   setSpeechSynthesisVoice = (voice, language, termOrDefinition) => {
     if (termOrDefinition === "Term") {
       this.setState({ termVoice: voice, termLanguage: language });
@@ -230,10 +236,10 @@ class Practice extends Component {
       definitionLanguage,
     });
     this.setPracticeCards(deckPercentage);
-    this.getSpeechSynthesisVoices(termLanguage, definitionLanguage);
     if (window) {
       window.addEventListener("keydown", this.handleArrowKeys);
     }
+    this.getSpeechSynthesisVoices(termLanguage, definitionLanguage);
   }
 
   componentWillUnmount() {
@@ -244,6 +250,7 @@ class Practice extends Component {
 
   render() {
     const { currentDeckName, onRouteChange, userId, updateScore } = this.props;
+
     const {
       currentIndex,
       scoreError,
