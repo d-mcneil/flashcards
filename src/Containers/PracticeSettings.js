@@ -109,22 +109,28 @@ const PracticeSettings = ({
         <div style={{ justifySelf: "start" }}>% of Deck</div>
       </div>
       {/* **************start language selection input***************** */}
-      <LanguageSelector
-        label="Term"
-        voices={voices}
-        language={termLanguage}
-        setNewLanguage={setNewTermLanguage}
-        matchVoices={matchVoices}
-        selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
-      />
-      <LanguageSelector
-        label="Definition"
-        voices={voices}
-        language={definitionLanguage}
-        setNewLanguage={setNewDefinitionLanguage}
-        matchVoices={matchVoices}
-        selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
-      />
+      {voices.length ? (
+        <>
+          <LanguageSelector
+            label="Term"
+            voices={voices}
+            language={termLanguage}
+            setNewLanguage={setNewTermLanguage}
+            matchVoices={matchVoices}
+            selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
+          />
+          <LanguageSelector
+            label="Definition"
+            voices={voices}
+            language={definitionLanguage}
+            setNewLanguage={setNewDefinitionLanguage}
+            matchVoices={matchVoices}
+            selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
