@@ -63,7 +63,6 @@ class App extends Component {
     const synth = window.speechSynthesis;
     if (synth) {
       const _handleVoicesChanged = () => {
-        console.log("voices changed");
         const voices = window.speechSynthesis.getVoices();
         this.setState({
           speechSynthesisVoices: voices,

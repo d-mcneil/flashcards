@@ -40,7 +40,7 @@ const Notecard = ({
             }}
           >
             {/* **************start row 1***************** */}
-            {speechSynthesizer ? (
+            {voice[0].name ? (
               <div
                 className="f6 f5-ns pointer dim"
                 style={{

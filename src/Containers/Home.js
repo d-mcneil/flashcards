@@ -185,7 +185,6 @@ class Home extends Component {
       error,
     } = this.state;
     const { userId, speechSynthesisVoices } = this.props;
-    console.log(this.state);
     if (route === "practice") {
       return (
         <Practice

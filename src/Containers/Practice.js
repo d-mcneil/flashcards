@@ -259,7 +259,6 @@ class Practice extends Component {
       termVoice,
       definitionVoice,
     } = this.state;
-    console.log(speechSynthesisVoices);
     const initialDeckPercentage = this.props.deckPercentage;
     const totalCards = this.state.practiceCards.length;
     const currentCard = this.state.practiceCards[currentIndex - 1];
