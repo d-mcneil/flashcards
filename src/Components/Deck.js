@@ -117,6 +117,7 @@ class Deck extends Component {
                 WebkitLineClamp: "3",
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
+                paddingBottom: ".15rem",
                 //
                 // this also works (although it doesn't show the ellipsis),
                 // but it gets a little funny when the ns tachyons breakpoint is reached (i.e., works below the breakpoint, not above),
@@ -125,7 +126,7 @@ class Deck extends Component {
                 //   overflow: "hidden",
                 //   maxHeight: "3.22rem",
               }}
-              className="f6 pb3 mt2 mr4 mb1"
+              className="f6 mt2 mr4 mb3"
             >{`${description}`}</div>
           ) : (
             <></>

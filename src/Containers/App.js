@@ -69,7 +69,7 @@ class App extends Component {
         {route === "home" ? (
           <Home userId={user.userId} />
         ) : route === "profile" ? (
-          <Profile />
+          <Profile user={user} onRouteChange={this.onRouteChange} />
         ) : route === "signed-out" ? (
           <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : (
