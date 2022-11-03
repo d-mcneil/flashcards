@@ -19,7 +19,6 @@ class Practice extends Component {
       deckPercentage: 100,
       termLanguage: "Google US English",
       definitionLanguage: "Google US English",
-      speechSynthesisVoices: [],
       termVoice: {},
       definitionVoice: {},
     };
@@ -87,7 +86,6 @@ class Practice extends Component {
   // ********called in onClick for the toggle switch********
   toggleSwitch = (event) => {
     const definitionFirst = event.target.checked;
-    // const definitionFirst = document.getElementById("definition-first").checked;
     const { deckPercentage, termLanguage, definitionLanguage } = this.state;
     this.saveDeckSettings(
       definitionFirst,
@@ -194,27 +192,21 @@ class Practice extends Component {
     return {};
   };
 
-  // called in componentDidMount
-  getSpeechSynthesisVoices = (termLanguage, definitionLanguage) => {
-    const synth = window.speechSynthesis;
-    if (synth) {
-      const _handleVoicesChanged = () => {
-        const voices = window.speechSynthesis.getVoices();
-        const termVoice = this.matchVoices(voices, termLanguage);
-        const definitionVoice = this.matchVoices(voices, definitionLanguage);
-        this.setState({
-          speechSynthesisVoices: voices,
-          termVoice: termVoice,
-          definitionVoice: definitionVoice,
-        });
-        synth.removeEventListener("voiceschanged", _handleVoicesChanged);
-      };
-      synth.addEventListener("voiceschanged", _handleVoicesChanged);
-    }
+  setSpeechSynthesisVoices = (termLanguage, definitionLanguage) => {
+    const { speechSynthesisVoices } = this.props;
+    const termVoice = this.matchVoices(speechSynthesisVoices, termLanguage);
+    const definitionVoice = this.matchVoices(
+      speechSynthesisVoices,
+      definitionLanguage
+    );
+    this.setState({
+      termVoice: termVoice,
+      definitionVoice: definitionVoice,
+    });
   };
 
   // passed down through PracticeSettings to LanguageSelector and called when a new language is selected
-  setSpeechSynthesisVoice = (voice, language, termOrDefinition) => {
+  selectSpeechSynthesisVoice = (voice, language, termOrDefinition) => {
     if (termOrDefinition === "Term") {
       this.setState({ termVoice: voice, termLanguage: language });
     } else if (termOrDefinition === "Definition") {
@@ -239,7 +231,7 @@ class Practice extends Component {
     if (window) {
       window.addEventListener("keydown", this.handleArrowKeys);
     }
-    this.getSpeechSynthesisVoices(termLanguage, definitionLanguage);
+    this.setSpeechSynthesisVoices(termLanguage, definitionLanguage);
   }
 
   componentWillUnmount() {
@@ -249,8 +241,13 @@ class Practice extends Component {
   }
 
   render() {
-    const { currentDeckName, onRouteChange, userId, updateScore } = this.props;
-
+    const {
+      currentDeckName,
+      onRouteChange,
+      userId,
+      updateScore,
+      speechSynthesisVoices,
+    } = this.props;
     const {
       currentIndex,
       scoreError,
@@ -259,13 +256,13 @@ class Practice extends Component {
       termLanguage,
       definitionLanguage,
       settingsError,
-      speechSynthesisVoices,
       termVoice,
       definitionVoice,
     } = this.state;
+    console.log(speechSynthesisVoices);
     const initialDeckPercentage = this.props.deckPercentage;
     const totalCards = this.state.practiceCards.length;
-    const currentCard = this.state.practiceCards.at(currentIndex - 1);
+    const currentCard = this.state.practiceCards[currentIndex - 1];
     let frontContent;
     let backVoice = [];
     let frontVoice = [];
@@ -351,7 +348,7 @@ class Practice extends Component {
                 saveDeckSettings={this.saveDeckSettings}
                 voices={speechSynthesisVoices}
                 matchVoices={this.matchVoices}
-                setSpeechSynthesisVoice={this.setSpeechSynthesisVoice}
+                selectSpeechSynthesisVoice={this.selectSpeechSynthesisVoice}
               />
               {settingsError ? (
                 <div className={"mt0 pt0 mt3"}>

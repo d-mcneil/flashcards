@@ -16,6 +16,7 @@ const initialState = {
     username: "",
     joined: "",
   },
+  // speechSynthesisVoices: [], // this isn't included as part of the initial state because it shouldn't be reset when logged out
 };
 
 class App extends Component {
@@ -32,6 +33,7 @@ class App extends Component {
         username: "",
         joined: "",
       },
+      speechSynthesisVoices: [],
     };
   }
 
@@ -57,8 +59,27 @@ class App extends Component {
     this.setState({ route });
   };
 
+  getSpeechSynthesisVoices = () => {
+    const synth = window.speechSynthesis;
+    if (synth) {
+      const _handleVoicesChanged = () => {
+        console.log("voices changed");
+        const voices = window.speechSynthesis.getVoices();
+        this.setState({
+          speechSynthesisVoices: voices,
+        });
+        synth.removeEventListener("voiceschanged", _handleVoicesChanged);
+      };
+      synth.addEventListener("voiceschanged", _handleVoicesChanged);
+    }
+  };
+
+  componentDidMount() {
+    this.getSpeechSynthesisVoices();
+  }
+
   render() {
-    const { route, isSignedIn, user } = this.state;
+    const { route, isSignedIn, user, speechSynthesisVoices } = this.state;
     return (
       <>
         <Navigation
@@ -67,7 +88,10 @@ class App extends Component {
           route={route}
         />
         {route === "home" ? (
-          <Home userId={user.userId} />
+          <Home
+            userId={user.userId}
+            speechSynthesisVoices={speechSynthesisVoices}
+          />
         ) : route === "profile" ? (
           <Profile user={user} onRouteChange={this.onRouteChange} />
         ) : route === "signed-out" ? (

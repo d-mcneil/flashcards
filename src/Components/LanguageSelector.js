@@ -6,13 +6,13 @@ class LanguageSelector extends Component {
     const {
       matchVoices,
       voices,
-      setSpeechSynthesisVoice,
+      selectSpeechSynthesisVoice,
       label,
       setNewLanguage,
     } = this.props;
     const language = event.target.selectedOptions[0].getAttribute("data-name");
     const voice = matchVoices(voices, language);
-    setSpeechSynthesisVoice(voice, language, label);
+    selectSpeechSynthesisVoice(voice, language, label);
     setNewLanguage(language);
   };
 

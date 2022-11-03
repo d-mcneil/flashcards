@@ -184,7 +184,8 @@ class Home extends Component {
       cards,
       error,
     } = this.state;
-    const { userId } = this.props;
+    const { userId, speechSynthesisVoices } = this.props;
+    console.log(this.state);
     if (route === "practice") {
       return (
         <Practice
@@ -200,6 +201,7 @@ class Home extends Component {
           updateScore={this.updateScore}
           updateDeckSettings={this.updateDeckSettings}
           cards={cards}
+          speechSynthesisVoices={speechSynthesisVoices}
         />
       );
     } else if (route === "editor") {

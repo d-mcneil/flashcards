@@ -12,7 +12,7 @@ const PracticeSettings = ({
   saveDeckSettings,
   voices,
   matchVoices,
-  setSpeechSynthesisVoice,
+  selectSpeechSynthesisVoice,
 }) => {
   const setNewTermLanguage = (newTermLanguage) => {
     if (newTermLanguage === termLanguage) {
@@ -115,7 +115,7 @@ const PracticeSettings = ({
         language={termLanguage}
         setNewLanguage={setNewTermLanguage}
         matchVoices={matchVoices}
-        setSpeechSynthesisVoice={setSpeechSynthesisVoice}
+        selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
       />
       <LanguageSelector
         label="Definition"
@@ -123,7 +123,7 @@ const PracticeSettings = ({
         language={definitionLanguage}
         setNewLanguage={setNewDefinitionLanguage}
         matchVoices={matchVoices}
-        setSpeechSynthesisVoice={setSpeechSynthesisVoice}
+        selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
       />
     </>
   );
