@@ -1,0 +1,22 @@
+.submit-button-outer {
+    margin-top: var(--spacing-medium);
+    text-align: center;
+}
+
+.submit-button {
+    padding-top: var(--spacing-small);
+    padding-bottom: var(--spacing-small);
+    padding-left: var(--spacing-medium);
+    padding-right: var(--spacing-medium);
+    background-color: transparent;
+    border-radius: var(--border-radius-1);
+    border-color: black;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.submit-button:hover {
+    background-color: black;
+    color: white;
+}

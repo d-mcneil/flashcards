@@ -1,10 +1,18 @@
 import React, { Component } from "react";
-import mainUrl from "../mainUrl";
-import EntryBox from "../Components/Forms/EntryBox";
-import Button from "../Components/Forms/Button";
-import Title from "../Components/Forms/Title";
-import Error from "../Components/Forms/Error";
-import Form from "../Components/Forms/Form";
+import { connect } from "react-redux";
+import { loadUser } from "../redux/actions";
+import { validateSignIn } from "../functions/validateInput";
+import { fetchCallSignIn } from "../functions/fetchCalls";
+import { onEnterSubmit } from "../functions/repeatedFunctions";
+import Form from "../components/Forms/Form/Form";
+import Title from "../components/Forms/Title/Title";
+import EntryBox from "../components/Forms/EntryBox/EntryBox";
+import Button from "../components/Forms/Button/Button";
+import Message from "../components/Message/Message";
+
+const mapDispatchToProps = (dispatch) => ({
+  onSignIn: (user) => dispatch(loadUser(user)),
+});
 
 class SignIn extends Component {
   constructor(props) {
@@ -18,83 +26,69 @@ class SignIn extends Component {
 
   onUsernameChange = (event) => {
     this.setState({ username: event.target.value });
+    this.resetError();
   };
 
   onPasswordChange = (event) => {
     this.setState({ password: event.target.value });
+    this.resetError();
   };
 
-  checkValidInput = (username, password) => {
-    if (!username || !password) {
-      this.setState({
-        error: "Incorrect form submission: all fields are required",
-      });
-      return false;
-    } else if (username.length > 100) {
-      this.setState({
-        error: "Invalid combination of username and password",
-      });
-      return false;
+  resetError = () => {
+    if (this.state.error) {
+      this.setState({ error: "" });
     }
-    return true;
   };
 
   onSubmit = () => {
-    const { password, username } = this.state;
-    const { onRouteChange, loadUser } = this.props;
-    const valid = this.checkValidInput(username, password);
-    if (!valid) {
+    const { username, password } = this.state;
+    const { onSignIn } = this.props;
+
+    const validity = validateSignIn(username, password);
+    // returns object with properties { valid, reason(only if invalid) }
+
+    if (!validity.valid) {
+      this.setState({ error: validity.reason });
       return;
     }
-    fetch(`${mainUrl}/sign-in`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password, username }),
-    })
-      .then((response) => response.json())
+
+    fetchCallSignIn(username, password)
       .then((data) => {
-        if (data.user_id) {
-          loadUser(data);
-          onRouteChange("home");
+        if (data.userId) {
+          onSignIn(data);
         } else {
           this.setState({ error: data });
         }
       })
-      .catch((err) => this.setState({ error: "Error logging in user: 0" }));
-  };
-
-  onEnterSubmit = (event) => {
-    if (event.code === "Enter") {
-      this.onSubmit();
-    }
+      .catch((err) => this.setState({ error: "Error signing in user: 0" }));
   };
 
   render() {
     const { error } = this.state;
     return (
       <Form>
-        <Title label="Sign In" fontSize="f1" />
+        <Title label="Sign In" />
         <EntryBox
           label="Username"
-          onChange={this.onUsernameChange}
-          onEnterSubmit={this.onEnterSubmit}
           type="text"
+          onChange={this.onUsernameChange}
+          onEnterSubmit={(event) => onEnterSubmit(event, this.onSubmit)}
         />
         <EntryBox
           label="Password"
-          onChange={this.onPasswordChange}
-          onEnterSubmit={this.onEnterSubmit}
           type="password"
+          onChange={this.onPasswordChange}
+          onEnterSubmit={(event) => onEnterSubmit(event, this.onSubmit)}
         />
         <Button
           label="Sign In"
           onClick={this.onSubmit}
-          onEnterSubmit={this.onEnterSubmit}
+          onEnterSubmit={(event) => onEnterSubmit(event, this.onSubmit)}
         />
-        <Error error={error} />
+        <Message message={error} wrapperClass="form-error-message" />
       </Form>
     );
   }
 }
 
-export default SignIn;
+export default connect(null, mapDispatchToProps)(SignIn);

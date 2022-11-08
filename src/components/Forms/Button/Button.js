@@ -1,11 +1,12 @@
 import React from "react";
+import "./Button.css";
 
 const Button = ({ label, onClick, onEnterSubmit }) => {
   return (
     <>
-      <div className="mt3" style={{ textAlign: "center" }}>
+      <div className="submit-button-outer">
         <input
-          className="b ph3 pv2 input-reset br1 ba b--black bg-transparent grow pointer f6 dib black-80"
+          className="input-reset ba grow f6 submit-button"
           type="submit"
           value={`${label}`}
           onClick={onClick}

@@ -1,0 +1,10 @@
+.main-card {
+    border-radius: var(--border-radius-3);
+    border-color: var(--light-black-border);
+    margin-top: var(--spacing-large);
+    margin-bottom: var(--spacing-large);
+    padding: var(--spacing-large);
+    max-width: 48rem;
+    box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, .2);
+    color: var(--text-color);
+}
