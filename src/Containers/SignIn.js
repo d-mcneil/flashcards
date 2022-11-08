@@ -1,17 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUser } from "../redux/actions";
 import { validateSignIn } from "../functions/validateInput";
 import { fetchCallSignIn } from "../functions/fetchCalls";
 import { onEnterSubmit } from "../functions/repeatedFunctions";
+// prettier-ignore
+import { registrationAndSignInErrorReset, registrationAndSignInRequest } from "../redux/actions";
 import Form from "../components/Forms/Form/Form";
 import Title from "../components/Forms/Title/Title";
 import EntryBox from "../components/Forms/EntryBox/EntryBox";
 import Button from "../components/Forms/Button/Button";
 import Message from "../components/Message/Message";
 
+const mapStateToProps = (state) => ({
+  error: state.registrationAndSignIn.error,
+  isPending: state.registrationAndSignIn.isPending,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  onSignIn: (user) => dispatch(loadUser(user)),
+  signInUser: (...args) => {
+    dispatch(
+      registrationAndSignInRequest(
+        validateSignIn,
+        fetchCallSignIn,
+        "Error signing in user: 0",
+        ...args
+      )
+    );
+  },
+  resetError: () => dispatch(registrationAndSignInErrorReset()),
 });
 
 class SignIn extends Component {
@@ -20,51 +36,32 @@ class SignIn extends Component {
     this.state = {
       username: "",
       password: "",
-      error: "",
     };
   }
 
+  onFieldChangeResetError = () => {
+    if (this.props.error) {
+      this.props.resetError();
+    }
+  };
+
   onUsernameChange = (event) => {
     this.setState({ username: event.target.value });
-    this.resetError();
+    this.onFieldChangeResetError();
   };
 
   onPasswordChange = (event) => {
     this.setState({ password: event.target.value });
-    this.resetError();
-  };
-
-  resetError = () => {
-    if (this.state.error) {
-      this.setState({ error: "" });
-    }
+    this.onFieldChangeResetError();
   };
 
   onSubmit = () => {
-    const { username, password } = this.state;
-    const { onSignIn } = this.props;
-
-    const validity = validateSignIn(username, password);
-    // returns object with properties { valid, reason(only if invalid) }
-
-    if (!validity.valid) {
-      this.setState({ error: validity.reason });
-      return;
-    }
-
-    fetchCallSignIn(username, password)
-      .then((data) => {
-        if (data.userId) {
-          onSignIn(data);
-        } else {
-          this.setState({ error: data });
-        }
-      })
-      .catch((err) => this.setState({ error: "Error signing in user: 0" }));
+    this.props.signInUser(...Object.values(this.state));
   };
 
   render() {
-    const { error } = this.state;
+    const { error, isPending } = this.props;
+    const message = isPending ? "Signing in user..." : error;
     return (
       <Form>
         <Title label="Sign In" />
@@ -85,10 +82,10 @@ class SignIn extends Component {
           onClick={this.onSubmit}
           onEnterSubmit={(event) => onEnterSubmit(event, this.onSubmit)}
         />
-        <Message message={error} wrapperClass="form-error-message" />
+        <Message message={message} wrapperClass="form-error-message" />
       </Form>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

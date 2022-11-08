@@ -1,4 +1,6 @@
 import { combineReducers } from "redux";
+// prettier-ignore
+import { REGISTRATION_OR_SIGN_IN_PENDING, REGISTRATION_OR_SIGN_IN_SUCCESS, REGISTRATION_OR_SIGN_IN_FAILURE, REGISTRATION_OR_SIGN_IN_ERROR_RESET } from "./constants";
 import { LOAD_USER, ROUTE_CHANGE } from "./constants";
 
 const initialStateUser = {
@@ -17,7 +19,12 @@ const initialStateRoute = {
   route: "signed-out",
 };
 
-const onLoadUser = (state = initialStateUser, action = {}) => {
+const initialStateRegistrationAndSignIn = {
+  isPending: false,
+  error: "",
+};
+
+const loadUser = (state = initialStateUser, action = {}) => {
   switch (action.type) {
     case LOAD_USER:
       return { ...state, user: action.payload, signedIn: true };
@@ -26,7 +33,7 @@ const onLoadUser = (state = initialStateUser, action = {}) => {
   }
 };
 
-const onRouteChange = (state = initialStateRoute, action = {}) => {
+const routeChange = (state = initialStateRoute, action = {}) => {
   switch (action.type) {
     case ROUTE_CHANGE:
       return { ...state, route: action.payload };
@@ -35,40 +42,30 @@ const onRouteChange = (state = initialStateRoute, action = {}) => {
   }
 };
 
-export const rootReducer = combineReducers({ onLoadUser, onRouteChange });
+const registrationAndSignIn = (
+  state = initialStateRegistrationAndSignIn,
+  action = {}
+) => {
+  switch (action.type) {
+    case REGISTRATION_OR_SIGN_IN_PENDING:
+      return { ...state, isPending: true };
+    case REGISTRATION_OR_SIGN_IN_SUCCESS:
+      return { ...state, isPending: false };
+    case REGISTRATION_OR_SIGN_IN_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        isPending: false,
+      };
+    case REGISTRATION_OR_SIGN_IN_ERROR_RESET:
+      return { ...state, error: "" };
+    default:
+      return state;
+  }
+};
 
-// // prettier-ignore
-// import { REGISTRATION_PENDING, REGISTRATION_SUCCESS, REGISTRATION_FAILURE, REGISTRATION_RESET } from "./constants";
-
-// const initialStateRegistration = {
-//   registrationPending: false,
-//   registrationError: "",
-// };
-
-// export const onRegisterUser = (
-//   state = initialStateRegistration,
-//   action = {}
-// ) => {
-//   switch (action.type) {
-//     case REGISTRATION_PENDING:
-//       return { ...state, registrationPending: true };
-//     case REGISTRATION_SUCCESS:
-//       return {
-//         ...state,
-//         registrationPending: false,
-//       };
-//     case REGISTRATION_FAILURE:
-//       return {
-//         ...state,
-//         registrationError: action.payload,
-//         registrationPending: false,
-//       };
-//     case REGISTRATION_RESET:
-//       return {
-//         ...state,
-//         registrationError: ''
-//       }
-//     default:
-//       return state;
-//   }
-// };
+export const rootReducer = combineReducers({
+  loadUser,
+  routeChange,
+  registrationAndSignIn,
+});

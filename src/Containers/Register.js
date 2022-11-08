@@ -1,25 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginUser } from "../redux/actions";
 import { validateRegistration } from "../functions/validateInput";
 import { fetchCallRegister } from "../functions/fetchCalls";
 import { onEnterSubmit } from "../functions/repeatedFunctions";
+// prettier-ignore
+import { registrationAndSignInErrorReset, registrationAndSignInRequest } from "../redux/actions";
 import Form from "../components/Forms/Form/Form";
 import Title from "../components/Forms/Title/Title";
 import EntryBox from "../components/Forms/EntryBox/EntryBox";
 import Button from "../components/Forms/Button/Button";
 import Message from "../components/Message/Message";
 
+const mapStateToProps = (state) => ({
+  error: state.registrationAndSignIn.error,
+  isPending: state.registrationAndSignIn.isPending,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  onRegisterUser: (user) => dispatch(loginUser(user, "home")),
-  // an alternative way of grouping the actions "loadUser" and "routeChange" together
-  // import { batch } from "react-redux";
-  // import { loadUser, routeChange } from "../redux/actions";
-  // onRegisterUser: (user) =>
-  //   batch(() => {
-  //     dispatch(loadUser(user));
-  //     dispatch(routeChange("home"));
-  //   }),
+  registerUser: (...args) => {
+    dispatch(
+      registrationAndSignInRequest(
+        validateRegistration,
+        fetchCallRegister,
+        "Error registering new user: 0",
+        ...args
+      )
+    );
+  },
+  resetError: () => dispatch(registrationAndSignInErrorReset()),
 });
 
 class Register extends Component {
@@ -31,69 +39,47 @@ class Register extends Component {
       email: "",
       username: "",
       password: "",
-      error: "",
     };
   }
 
+  onFieldChangeResetError = () => {
+    if (this.props.error) {
+      this.props.resetError();
+    }
+  };
+
   onFirstNameChange = (event) => {
     this.setState({ firstName: event.target.value });
-    this.resetError();
+    this.onFieldChangeResetError();
   };
 
   onLastNameChange = (event) => {
     this.setState({ lastName: event.target.value });
-    this.resetError();
+    this.onFieldChangeResetError();
   };
 
   onEmailChange = (event) => {
     this.setState({ email: event.target.value });
-    this.resetError();
+    this.onFieldChangeResetError();
   };
 
   onUsernameChange = (event) => {
     this.setState({ username: event.target.value });
-    this.resetError();
+    this.onFieldChangeResetError();
   };
 
   onPasswordChange = (event) => {
     this.setState({ password: event.target.value });
-    this.resetError();
-  };
-
-  resetError = () => {
-    if (this.state.error) {
-      this.setState({ error: "" });
-    }
+    this.onFieldChangeResetError();
   };
 
   onSubmit = () => {
-    const { firstName, lastName, email, username, password } = this.state;
-    const { onRegisterUser } = this.props;
-
-    // prettier-ignore
-    const validity = validateRegistration(firstName, lastName, email, username, password);
-    // returns object with properties { valid, reason(only if invalid) }
-
-    if (!validity.valid) {
-      this.setState({ error: validity.reason });
-      return;
-    }
-
-    fetchCallRegister(firstName, lastName, email, username, password)
-      .then((data) => {
-        if (data.userId) {
-          onRegisterUser(data);
-        } else {
-          this.setState({ error: data });
-        }
-      })
-      .catch((err) =>
-        this.setState({ error: "Error registering new user: 0" })
-      );
+    this.props.registerUser(...Object.values(this.state));
   };
 
   render() {
-    const { error } = this.state;
+    const { error, isPending } = this.props;
+    const message = isPending ? "Registering user..." : error;
     return (
       <Form>
         <Title label="Register" />
@@ -132,10 +118,10 @@ class Register extends Component {
           onClick={this.onSubmit}
           onEnterSubmit={(event) => onEnterSubmit(event, this.onSubmit)}
         />
-        <Message message={error} wrapperClass="form-error-message" />
+        <Message message={message} wrapperClass="form-error-message" />
       </Form>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

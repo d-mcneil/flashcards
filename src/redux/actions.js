@@ -1,3 +1,6 @@
+import { batch } from "react-redux";
+// prettier-ignore
+import { REGISTRATION_OR_SIGN_IN_PENDING, REGISTRATION_OR_SIGN_IN_SUCCESS, REGISTRATION_OR_SIGN_IN_FAILURE, REGISTRATION_OR_SIGN_IN_ERROR_RESET } from "./constants";
 import { LOAD_USER, ROUTE_CHANGE } from "./constants";
 
 export const loadUser = (user) => ({
@@ -10,43 +13,40 @@ export const routeChange = (route) => ({
   payload: route,
 });
 
-export const loginUser = (user, route) => (dispatch) => {
-  dispatch(loadUser(user));
-  dispatch(routeChange(route));
-};
+export const registrationAndSignInErrorReset = () => ({
+  type: REGISTRATION_OR_SIGN_IN_ERROR_RESET,
+});
 
-// if I wanted to do something to the registration page while the fetch call is pending, I would use the action below
-// the fetch call would be moved out of the register component, and the error message would be passed down as state
-
-// import { fetchCallRegister } from "../functions/fetchCalls";
-// import { validateRegistration } from "../functions/validateInput";
-// // prettier-ignore
-// import { REGISTRATION_PENDING, REGISTRATION_SUCCESS, REGISTRATION_FAILURE, REGISTRATION_RESET } from "./constants";
-
-// export const registrationRequest =
-//   (firstName, lastName, email, username, password) => (dispatch) => {
-//     // prettier-ignore
-//     const validity = validateRegistration(firstName, lastName, email, username, password);
-//     if (!validity.valid) {
-//       dispatch({ type: REGISTRATION_FAILURE, payload: data });
-//       return;
-//     }
-//     dispatch({ type: REGISTRATION_PENDING });
-//     fetchCallRegister(firstName, lastName, email, username, password)
-//       .then((data) => {
-//         if (data.userId) {
-//           dispatch({ type: REGISTRATION_SUCCESS, payload: data });
-//           dispatch(loginUser(data, "home"));
-//         } else {
-//           dispatch({ type: REGISTRATION_FAILURE, payload: data });
-//         }
-//       })
-//       .catch((err) =>
-//         dispatch({
-//           type: REGISTRATION_FAILURE,
-//           payload: "Error registering new user: 0",
-//         })
-//       );
-//   };
-
-// const registrationReset = () => ({type: REGISTRTION_RESET})
+export const registrationAndSignInRequest =
+  (validationCallback, fetchCallback, clientSideErrorMessage, ...args) =>
+  (dispatch) => {
+    const validity = validationCallback(...args);
+    // returns object with properties { valid, reason(only if invalid) }
+    if (!validity.valid) {
+      dispatch({
+        type: REGISTRATION_OR_SIGN_IN_FAILURE,
+        payload: validity.reason,
+      });
+      return;
+    }
+    dispatch({ type: REGISTRATION_OR_SIGN_IN_PENDING });
+    fetchCallback(...args)
+      .then((data) => {
+        if (data.userId) {
+          batch(() => {
+            dispatch({ type: REGISTRATION_OR_SIGN_IN_SUCCESS });
+            dispatch(loadUser(data));
+            dispatch(routeChange("home"));
+            dispatch(registrationAndSignInErrorReset());
+          });
+        } else {
+          dispatch({ type: REGISTRATION_OR_SIGN_IN_FAILURE, payload: data });
+        }
+      })
+      .catch((err) =>
+        dispatch({
+          type: REGISTRATION_OR_SIGN_IN_FAILURE,
+          payload: clientSideErrorMessage,
+        })
+      );
+  };
