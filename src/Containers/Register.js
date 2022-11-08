@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUser } from "../redux/actions";
+import { loginUser } from "../redux/actions";
 import { validateRegistration } from "../functions/validateInput";
 import { fetchCallRegister } from "../functions/fetchCalls";
 import { onEnterSubmit } from "../functions/repeatedFunctions";
@@ -11,7 +11,15 @@ import Button from "../components/Forms/Button/Button";
 import Message from "../components/Message/Message";
 
 const mapDispatchToProps = (dispatch) => ({
-  onRegisterUser: (user) => dispatch(loadUser(user)),
+  onRegisterUser: (user) => dispatch(loginUser(user, "home")),
+  // an alternative way of grouping the actions "loadUser" and "routeChange" together
+  // import { batch } from "react-redux";
+  // import { loadUser, routeChange } from "../redux/actions";
+  // onRegisterUser: (user) =>
+  //   batch(() => {
+  //     dispatch(loadUser(user));
+  //     dispatch(routeChange("home"));
+  //   }),
 });
 
 class Register extends Component {

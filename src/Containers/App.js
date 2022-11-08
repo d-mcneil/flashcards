@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <MainCard>
-        <SignIn />
+        <Register />
       </MainCard>
     );
   }

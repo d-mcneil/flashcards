@@ -1,11 +1,5 @@
 import { combineReducers } from "redux";
-// import { SIGN_IN_PENDING, SIGN_IN_SUCCESS, SIGN_IN_FAILURE } from "./constants";
-// import {
-//   REGISTRATION_PENDING,
-//   REGISTRATION_SUCCESS,
-//   REGISTRATION_FAILURE,
-// } from "./constants";
-import { LOAD_USER } from "./constants";
+import { LOAD_USER, ROUTE_CHANGE } from "./constants";
 
 const initialStateUser = {
   user: {
@@ -23,29 +17,36 @@ const initialStateRoute = {
   route: "signed-out",
 };
 
-export const loadUser = (
-  state = { ...initialStateUser, ...initialStateRoute },
-  action = {}
-) => {
+const onLoadUser = (state = initialStateUser, action = {}) => {
   switch (action.type) {
     case LOAD_USER:
-      return { ...state, user: action.payload, signedIn: true, route: "home" };
+      return { ...state, user: action.payload, signedIn: true };
     default:
       return state;
   }
 };
+
+const onRouteChange = (state = initialStateRoute, action = {}) => {
+  switch (action.type) {
+    case ROUTE_CHANGE:
+      return { ...state, route: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const rootReducer = combineReducers({ onLoadUser, onRouteChange });
+
+// // prettier-ignore
+// import { REGISTRATION_PENDING, REGISTRATION_SUCCESS, REGISTRATION_FAILURE, REGISTRATION_RESET } from "./constants";
 
 // const initialStateRegistration = {
 //   registrationPending: false,
 //   registrationError: "",
 // };
 
-// export const registerUser = (
-//   state = {
-//     ...initialStateUser,
-//     ...initialStateRoute,
-//     ...initialStateRegistration,
-//   },
+// export const onRegisterUser = (
+//   state = initialStateRegistration,
 //   action = {}
 // ) => {
 //   switch (action.type) {
@@ -54,10 +55,7 @@ export const loadUser = (
 //     case REGISTRATION_SUCCESS:
 //       return {
 //         ...state,
-//         user: action.payload,
-//         signedIn: true,
 //         registrationPending: false,
-//         route: "home",
 //       };
 //     case REGISTRATION_FAILURE:
 //       return {
@@ -65,9 +63,12 @@ export const loadUser = (
 //         registrationError: action.payload,
 //         registrationPending: false,
 //       };
+//     case REGISTRATION_RESET:
+//       return {
+//         ...state,
+//         registrationError: ''
+//       }
 //     default:
 //       return state;
 //   }
 // };
-
-export const rootReducer = combineReducers({ loadUser });
