@@ -1,0 +1,13 @@
+#nav-bar {
+    display: flex;
+    margin-right: var(--spacing-medium);
+}
+
+.nav-bar-button {
+    text-decoration: underline;
+    padding: var(--spacing-medium);
+    padding-bottom: 0;
+    cursor: pointer;
+    margin-top: 0;
+    margin-bottom: 0;
+}

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 // prettier-ignore
 import { REGISTRATION_OR_SIGN_IN_PENDING, REGISTRATION_OR_SIGN_IN_SUCCESS, REGISTRATION_OR_SIGN_IN_FAILURE, REGISTRATION_OR_SIGN_IN_ERROR_RESET } from "./constants";
-import { LOAD_USER, ROUTE_CHANGE } from "./constants";
+import { LOAD_USER, SIGN_OUT_USER, ROUTE_CHANGE } from "./constants";
 
 const initialStateUser = {
   user: {
@@ -24,10 +24,12 @@ const initialStateRegistrationAndSignIn = {
   error: "",
 };
 
-const loadUser = (state = initialStateUser, action = {}) => {
+const userStatus = (state = initialStateUser, action = {}) => {
   switch (action.type) {
     case LOAD_USER:
       return { ...state, user: action.payload, signedIn: true };
+    case SIGN_OUT_USER:
+      return { ...state, ...initialStateUser };
     default:
       return state;
   }
@@ -65,7 +67,7 @@ const registrationAndSignIn = (
 };
 
 export const rootReducer = combineReducers({
-  loadUser,
+  userStatus,
   routeChange,
   registrationAndSignIn,
 });

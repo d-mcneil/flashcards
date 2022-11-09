@@ -4,6 +4,11 @@ body {
     width: 100%;
 }
 
+html {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
 body {
     --light-black-border: rgba(0, 0, 0, .1);
     --border-radius-3: .5rem;
@@ -26,4 +31,8 @@ body {
 .form-error-message {
     margin-top: var(--spacing-medium);
     padding-top: var(--spacing-small);
+}
+
+.push {
+    margin-left: auto;
 }

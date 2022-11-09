@@ -1,17 +1,24 @@
 import { batch } from "react-redux";
 // prettier-ignore
 import { REGISTRATION_OR_SIGN_IN_PENDING, REGISTRATION_OR_SIGN_IN_SUCCESS, REGISTRATION_OR_SIGN_IN_FAILURE, REGISTRATION_OR_SIGN_IN_ERROR_RESET } from "./constants";
-import { LOAD_USER, ROUTE_CHANGE } from "./constants";
+import { LOAD_USER, SIGN_OUT_USER, ROUTE_CHANGE } from "./constants";
+
+export const routeChange = (route) => ({
+  type: ROUTE_CHANGE,
+  payload: route,
+});
 
 export const loadUser = (user) => ({
   type: LOAD_USER,
   payload: user,
 });
 
-export const routeChange = (route) => ({
-  type: ROUTE_CHANGE,
-  payload: route,
-});
+export const signOutUser = () => (dispatch) => {
+  batch(() => {
+    dispatch({ type: SIGN_OUT_USER });
+    dispatch(routeChange("signed-out"));
+  });
+};
 
 export const registrationAndSignInErrorReset = () => ({
   type: REGISTRATION_OR_SIGN_IN_ERROR_RESET,
