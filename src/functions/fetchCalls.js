@@ -16,3 +16,15 @@ export const fetchCallSignIn = (username, password) => {
     body: JSON.stringify({ username, password }),
   }).then((response) => response.json());
 };
+
+export const fetchCallGetDecks = (userId) => {
+  return fetch(`${mainUrl}/decks/${userId}`).then((response) =>
+    response.json()
+  );
+};
+
+export const fetchCallGetCards = (deckId) => {
+  return fetch(`${mainUrl}/cards/${deckId}`).then((response) =>
+    response.json()
+  );
+};

@@ -1,19 +1,23 @@
 import React from "react";
-import { routeChange, signOutUser } from "../../redux/actions";
+import { routeChangeAndResetError, signOutUser } from "../../redux/actions";
 import { connect } from "react-redux";
 import "./Navigation.css";
 
 const mapStateToProps = (state) => ({
   signedIn: state.userStatus.signedIn,
-  route: state.routeChange.route,
+  route: state.route.route,
+  error: state.error.error,
+  // error is used only to plug into the "onRouteChange" function
+  // so that the error state isn't updated unnecessarily on every route change
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onRouteChange: (route) => dispatch(routeChange(route)),
+  // prettier-ignore
+  onRouteChange: (route, error) => dispatch(routeChangeAndResetError(route, error)),
   onSignOut: () => dispatch(signOutUser()),
 });
 
-const Navigation = ({ route, signedIn, onRouteChange, onSignOut }) => {
+const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
   const navBarStyleClasses = "f3 dim nav-bar-button";
 
   const renderHomeOrProfileButton = () => {
@@ -21,7 +25,7 @@ const Navigation = ({ route, signedIn, onRouteChange, onSignOut }) => {
       case "home":
         return (
           <p
-            onClick={() => onRouteChange("profile")}
+            onClick={() => onRouteChange("profile", error)}
             className={`${navBarStyleClasses} push`}
           >
             Profile
@@ -30,7 +34,7 @@ const Navigation = ({ route, signedIn, onRouteChange, onSignOut }) => {
       case "profile":
         return (
           <p
-            onClick={() => onRouteChange("home")}
+            onClick={() => onRouteChange("home", error)}
             className={`${navBarStyleClasses} push`}
           >
             Home
@@ -53,7 +57,7 @@ const Navigation = ({ route, signedIn, onRouteChange, onSignOut }) => {
         case "register":
           return (
             <p
-              onClick={() => onRouteChange("signed-out")}
+              onClick={() => onRouteChange("signed-out", error)}
               className={`${navBarStyleClasses} push`}
             >
               Sign In
@@ -62,7 +66,7 @@ const Navigation = ({ route, signedIn, onRouteChange, onSignOut }) => {
         case "signed-out":
           return (
             <p
-              onClick={() => onRouteChange("register")}
+              onClick={() => onRouteChange("register", error)}
               className={`${navBarStyleClasses} push`}
             >
               Register

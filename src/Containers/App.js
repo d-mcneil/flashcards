@@ -6,7 +6,7 @@ import SignIn from "./SignIn";
 import Navigation from "../components/Navigation/Navigation";
 
 const mapStateToProps = (state) => ({
-  route: state.routeChange.route,
+  route: state.route.route,
 });
 
 class App extends Component {
