@@ -14,7 +14,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   // prettier-ignore
   onRouteChange: (route, error) => dispatch(routeChangeAndResetError(route, error)),
-  onSignOut: () => dispatch(signOutUser()),
+  onSignOut: (error) => dispatch(signOutUser(error)),
 });
 
 const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
@@ -48,7 +48,7 @@ const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
   const renderRegisterSignInOrSignOutButton = () => {
     if (signedIn) {
       return (
-        <p onClick={onSignOut} className={`${navBarStyleClasses}`}>
+        <p onClick={() => onSignOut(error)} className={`${navBarStyleClasses}`}>
           Sign Out
         </p>
       );

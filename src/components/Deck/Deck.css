@@ -1,0 +1,69 @@
+.deck-grid {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-auto-flow: dense;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: var(--light-black-border);
+    max-width: 36rem;
+}
+
+.deck-name {
+    cursor: pointer;
+    margin-right: var(--spacing-large);
+    margin-left: var(--spacing-small);
+    margin-bottom: var(--spacing-small);
+    margin-top: var(--spacing-medium);
+    align-self: end;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    grid-column: 1 / span 1;
+}
+
+.deck-description {
+    align-self: start;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: var(--spacing-small);
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-large);
+    margin-bottom: var(--spacing-medium);
+    grid-column: 1 / span 1;
+    max-height: 3.7rem;
+}
+
+@media screen and (min-width: 30rem) {
+
+    .deck-name,
+    .deck-description {
+        margin-left: var(--spacing-large);
+    }
+}
+
+.deck-edit-button {
+    margin-bottom: var(--spacing-extra-small);
+    cursor: pointer;
+    align-self: end;
+    justify-self: center;
+    grid-column: 2 / span 1;
+}
+
+.deck-delete-button {
+    cursor: pointer;
+    margin-top: var(--spacing-extra-small);
+    margin-bottom: var(--spacing-small);
+    align-self: start;
+    justify-self: center;
+    grid-column: 2 / span 1;
+}
+
+.deck-error-message {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: var(--spacing-medium);
+    grid-column: span 2;
+}

@@ -4,6 +4,7 @@ import MainCard from "../components/MainCard/MainCard";
 import Register from "./Register";
 import SignIn from "./SignIn";
 import Navigation from "../components/Navigation/Navigation";
+import Decks from "./Decks";
 
 const mapStateToProps = (state) => ({
   route: state.route.route,
@@ -17,7 +18,7 @@ class App extends Component {
       case "register":
         return <Register />;
       case "home":
-        // return <Home />
+        return <Decks />;
         return <></>;
       default:
         return <></>;

@@ -17,14 +17,8 @@ export const fetchCallSignIn = (username, password) => {
   }).then((response) => response.json());
 };
 
-export const fetchCallGetDecks = (userId) => {
-  return fetch(`${mainUrl}/decks/${userId}`).then((response) =>
-    response.json()
-  );
-};
-
-export const fetchCallGetCards = (deckId) => {
-  return fetch(`${mainUrl}/cards/${deckId}`).then((response) =>
+export const fetchCallGetDecksOrCards = (id, decksOrCards = "decks") => {
+  return fetch(`${mainUrl}/${decksOrCards}/${id}`).then((response) =>
     response.json()
   );
 };

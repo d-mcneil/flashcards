@@ -9,6 +9,10 @@ import {
   RESET_ERROR,
   LOAD_DECKS,
   UNLOAD_DECKS,
+  LOAD_CARDS,
+  UNLOAD_CARDS,
+  LOAD_CURRENT_DECK,
+  UNLOAD_CURRENT_DECK,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -27,7 +31,12 @@ const initialStateUserStatus = {
 };
 const initialStateRequestStatus = { isPending: false };
 const initialStateError = { error: "" };
-const initialStateDecks = { decks: [] };
+const initialStateDecks = { decks: [], decksHaveBeenFetched: false };
+const initialStateCurrentDeck = {
+  currentDeck: null,
+  cards: [],
+  cardsHaveBeenFetched: false,
+};
 
 // ************************************************************ reducers ************************************************************
 
@@ -76,9 +85,28 @@ const error = (state = initialStateError, action = {}) => {
 const decks = (state = initialStateDecks, action = {}) => {
   switch (action.type) {
     case LOAD_DECKS:
-      return { ...state, decks: action.payload };
+      return { ...state, decks: action.payload, decksHaveBeenFetched: true };
     case UNLOAD_DECKS:
       return { ...state, ...initialStateDecks };
+    default:
+      return state;
+  }
+};
+
+const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
+  switch (action.type) {
+    case LOAD_CURRENT_DECK:
+      return { ...state, currentDeck: action.payload };
+    case LOAD_CARDS:
+      return { ...state, cards: action.payload, cardsHaveBeenFetched: true };
+    case UNLOAD_CARDS:
+      return {
+        ...state,
+        cards: initialStateCurrentDeck.cards,
+        cardsHaveBeenFetched: initialStateCurrentDeck.cardsHaveBeenFetched,
+      };
+    case UNLOAD_CURRENT_DECK:
+      return { ...state, ...initialStateCurrentDeck };
     default:
       return state;
   }
@@ -127,4 +155,5 @@ export const rootReducer = combineReducers({
   requestStatus,
   error,
   decks,
+  currentDeck,
 });

@@ -80,9 +80,9 @@ class Register extends Component {
         <Title label="Register" />
         <EntryBox
           label="First Name"
+          type="text"
           onChange={this.onFirstNameChange}
           onEnterSubmit={(event) => onEnterCallback(event, this.onSubmit)}
-          type="text"
         />
         <EntryBox
           label="Last Name"

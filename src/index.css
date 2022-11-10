@@ -27,10 +27,21 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+svg,
+path {
+    cursor: pointer;
+}
+
 /* for signin and register */
 .form-error-message {
     margin-top: var(--spacing-medium);
     padding-top: var(--spacing-small);
+}
+
+.decks-error-message {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: var(--spacing-medium);
 }
 
 .push {

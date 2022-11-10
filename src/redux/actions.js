@@ -1,4 +1,5 @@
 import { batch } from "react-redux";
+import { fetchCallGetDecksOrCards } from "../functions/fetchCalls";
 import {
   ROUTE_CHANGE,
   LOAD_USER,
@@ -9,6 +10,10 @@ import {
   RESET_ERROR,
   LOAD_DECKS,
   UNLOAD_DECKS,
+  LOAD_CARDS,
+  UNLOAD_CARDS,
+  LOAD_CURRENT_DECK,
+  UNLOAD_CURRENT_DECK,
 } from "./constants";
 
 export const routeChange = (route) => ({
@@ -21,15 +26,7 @@ export const loadUser = (user) => ({
   payload: user,
 });
 
-export const signOutUser = () => (dispatch) => {
-  batch(() => {
-    dispatch(routeChange("signed-out"));
-    dispatch({ type: SIGN_OUT_USER });
-  });
-};
-
 export const requestPending = () => ({ type: REQUEST_PENDING });
-
 export const requestResovled = () => ({ type: REQUEST_RESOLVED });
 
 export const setError = (error) => ({
@@ -73,12 +70,9 @@ export const registrationAndSignInRequest =
       .then((data) => {
         if (data.userId) {
           batch(() => {
-            // the commented-out functions were how it was before I combined route change and reset error
-            // dispatch(resetError());
-            dispatch(requestResovled());
             dispatch(loadUser(data));
-            // dispatch(routeChange("home"));
             dispatch(routeChangeAndResetError("home", currentError));
+            dispatch(requestResovled());
           });
         } else {
           batch(() => {
@@ -95,6 +89,81 @@ export const registrationAndSignInRequest =
       );
   };
 
-export const getDecksRequest = (userId) => (dispatch) => {
-  dispatch({ type: REQUEST_PENDING });
+export const loadDecks = (decks) => ({
+  type: LOAD_DECKS,
+  payload: decks,
+});
+export const loadCards = (cards) => ({
+  type: LOAD_CARDS,
+  payload: cards,
+});
+const unloadDecks = () => ({ type: UNLOAD_DECKS });
+const unloadCards = () => ({ type: UNLOAD_CARDS });
+
+// export const getDecksRequest = (userId) => (dispatch) => {
+//   dispatch(requestPending());
+//   fetchCallGetDecksOrCards(userId, "decks")
+//     .then((data) => {
+//       if (Array.isArray(data) && data.length) {
+//         batch(() => {
+//           dispatch(loadDecks(data.sort((a, b) => a.deckId - b.deckId)));
+//           dispatch(requestResovled());
+//         });
+//       } else {
+//         batch(() => {
+//           dispatch(setError(data));
+//           dispatch(requestResovled());
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       batch(() => {
+//         dispatch(setError("Error fetching decks: 0"));
+//         dispatch(requestResovled());
+//       });
+//     });
+// };
+
+export const getDecksOrCardsRequest =
+  (id, actionLoadCallback, decksOrCards = "decks") =>
+  (dispatch) => {
+    console.log(id);
+    dispatch(requestPending());
+    fetchCallGetDecksOrCards(id, decksOrCards)
+      .then((data) => {
+        if (Array.isArray(data) && data.length) {
+          const idPropertyName = `${decksOrCards.replace("s", "")}Id`;
+          batch(() => {
+            dispatch(resetError());
+            dispatch(
+              actionLoadCallback(
+                data.sort(
+                  (a, b) => a[`${idPropertyName}`] - b[`${idPropertyName}`]
+                )
+              )
+            );
+            dispatch(requestResovled());
+          });
+        } else {
+          batch(() => {
+            dispatch(setError(data));
+            dispatch(requestResovled());
+          });
+        }
+      })
+      .catch((err) => {
+        batch(() => {
+          dispatch(setError(`Error fetching ${decksOrCards}: 0`));
+          dispatch(requestResovled());
+        });
+      });
+  };
+
+export const signOutUser = (error) => (dispatch) => {
+  batch(() => {
+    dispatch(routeChangeAndResetError("signed-out", error));
+    dispatch(unloadDecks());
+    dispatch(unloadCards());
+    dispatch({ type: SIGN_OUT_USER });
+  });
 };
