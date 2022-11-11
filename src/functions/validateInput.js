@@ -57,3 +57,19 @@ export const validateSignIn = (username, password) => {
   }
   return { valid: true };
 };
+
+export const validateDeckName = (deckName) => {
+  if (!deckName) {
+    // this.setState({
+    //   error: "Invalid submission: deck name is required",
+    // });
+    return { valid: false };
+  } else if (deckName.length > 100) {
+    return {
+      valid: false,
+      reason:
+        "Invalid submission: deck name must be no more than 100 characters long",
+    };
+  }
+  return { valid: true };
+};

@@ -4,6 +4,7 @@ import { loadDecks, getDecksOrCardsRequest } from "../redux/actions";
 import Message from "../components/Message/Message";
 import Header from "../components/Header/Header";
 import Deck from "../components/Deck/Deck";
+import NewDeck from "../components/NewDeck/NewDeck";
 
 const mapStateToProps = (state) => ({
   error: state.error.error,
@@ -58,7 +59,7 @@ class Decks extends Component {
         ) : (
           <></>
         )}
-        {/* <NewDeck userId={userId} addDeck={this.addDeck} /> */}
+        <NewDeck addDeck={this.addDeck} />
       </>
     );
   }

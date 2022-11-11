@@ -47,3 +47,8 @@ path {
 .push {
     margin-left: auto;
 }
+
+.outline-hover:hover {
+    outline: solid 1px;
+    outline: -webkit-focus-ring-color auto 1px;
+}

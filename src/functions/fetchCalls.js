@@ -22,3 +22,19 @@ export const fetchCallGetDecksOrCards = (id, decksOrCards = "decks") => {
     response.json()
   );
 };
+
+export const fetchCallCreateDeck = (userId, deckName, description) => {
+  return fetch(`${mainUrl}/create-deck`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, deckName, description }),
+  }).then((response) => response.json());
+};
+
+export const fetchCallCreateCard = (userId, deckId, term, definition) => {
+  return fetch(`${mainUrl}/create-card`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, deckId, term, definition }),
+  }).then((response) => response.json());
+};
