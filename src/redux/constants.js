@@ -11,3 +11,7 @@ export const LOAD_CARDS = "LOAD_CARDS";
 export const UNLOAD_CARDS = "UNLOAD_CARDS";
 export const LOAD_CURRENT_DECK = "LOAD_CURRENT_DECK";
 export const UNLOAD_CURRENT_DECK = "UNLOAD_CURRENT_DECK";
+export const ADD_DECK = "ADD_DECK";
+export const REMOVE_DECK = "REMOVE_DECK"
+export const ADD_CARD = "ADD_CARD";
+export const REMOVE_CARD = "REMOVE_CARD"

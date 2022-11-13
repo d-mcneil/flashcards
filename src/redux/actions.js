@@ -10,10 +10,14 @@ import {
   RESET_ERROR,
   LOAD_DECKS,
   UNLOAD_DECKS,
-  LOAD_CARDS,
-  UNLOAD_CARDS,
+  ADD_DECK,
+  REMOVE_DECK,
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
+  LOAD_CARDS,
+  UNLOAD_CARDS,
+  ADD_CARD,
+  REMOVE_CARD,
 } from "./constants";
 
 export const routeChange = (route) => ({
@@ -89,16 +93,14 @@ export const registrationAndSignInRequest =
       );
   };
 
-export const loadDecks = (decks) => ({
-  type: LOAD_DECKS,
-  payload: decks,
-});
-export const loadCards = (cards) => ({
-  type: LOAD_CARDS,
-  payload: cards,
-});
+export const loadDecks = (decks) => ({ type: LOAD_DECKS, payload: decks });
 const unloadDecks = () => ({ type: UNLOAD_DECKS });
+export const addDeck = (deck) => ({ type: ADD_DECK, payload: deck });
+export const removeDeck = (deckId) => ({ type: REMOVE_DECK, payload: deckId });
+export const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
 const unloadCards = () => ({ type: UNLOAD_CARDS });
+export const addCard = (card) => ({ type: ADD_CARD, payload: card });
+export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
 
 // export const getDecksRequest = (userId) => (dispatch) => {
 //   dispatch(requestPending());

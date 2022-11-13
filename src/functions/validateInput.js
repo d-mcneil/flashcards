@@ -60,15 +60,15 @@ export const validateSignIn = (username, password) => {
 
 export const validateDeckName = (deckName) => {
   if (!deckName) {
-    // this.setState({
-    //   error: "Invalid submission: deck name is required",
-    // });
-    return { valid: false };
+    return {
+      valid: false,
+      // reason: "Invalid submission: deck name is required."
+    };
   } else if (deckName.length > 100) {
     return {
       valid: false,
       reason:
-        "Invalid submission: deck name must be no more than 100 characters long",
+        "Invalid submission: deck name must be no more than 100 characters long.",
     };
   }
   return { valid: true };

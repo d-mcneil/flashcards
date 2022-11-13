@@ -4,7 +4,11 @@ import { loadDecks, getDecksOrCardsRequest } from "../redux/actions";
 import Message from "../components/Message/Message";
 import Header from "../components/Header/Header";
 import Deck from "../components/Deck/Deck";
-import NewDeck from "../components/NewDeck/NewDeck";
+import NewDeckOrNewCard from "../components/NewDeckOrNewCard/NewDeckOrNewCard";
+// the following functions are passed down as props for the NewDeckOrNewCard component
+import { fetchCallCreateDeck } from "../functions/fetchCalls";
+import { validateDeckName } from "../functions/validateInput";
+import { addDeck } from "../redux/actions";
 
 const mapStateToProps = (state) => ({
   error: state.error.error,
@@ -40,26 +44,24 @@ class Decks extends Component {
         )}
         {Array.isArray(decks) && decks.length ? (
           decks.map((deck) => (
-            <Deck
-              key={deck.deckId}
-              {...deck}
-              userId={userId}
-              // deckId={deck.deck_id}
-              // userId={deck.user_id}
-              // deckName={deck.deck_name}
-              // description={deck.description}
-              // definitionFirst={deck.definition_first}
-              // deckPercentage={deck.deck_percentage}
-              // termLanguage={deck.term_language}
-              // definitionLanguage={deck.definition_language}
-              // selectDeck={selectDeck}
-              // removeDeck={this.removeDeck}
-            />
+            <Deck key={deck.deckId} {...deck} userId={userId} />
           ))
         ) : (
           <></>
         )}
-        <NewDeck addDeck={this.addDeck} />
+        {/* <NewDeck /> */}
+        <NewDeckOrNewCard
+          userId={userId}
+          deckId={undefined}
+          validationCallback={validateDeckName}
+          fetchCallback={fetchCallCreateDeck}
+          actionAddCallback={addDeck}
+          idPropertyName="deckId"
+          maxLengthMainField={100}
+          maxLengthSecondaryField={undefined}
+          mainFieldPlaceholder="Enter New Deck Name"
+          secondaryFieldPlaceholder="Enter New Deck Description (Optional)"
+        />
       </>
     );
   }

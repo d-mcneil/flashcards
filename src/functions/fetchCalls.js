@@ -31,10 +31,18 @@ export const fetchCallCreateDeck = (userId, deckName, description) => {
   }).then((response) => response.json());
 };
 
-export const fetchCallCreateCard = (userId, deckId, term, definition) => {
+export const fetchCallCreateCard = (userId, term, definition, deckId) => {
   return fetch(`${mainUrl}/create-card`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, deckId, term, definition }),
+  }).then((response) => response.json());
+};
+
+export const fetchCallDeleteDeck = (userId, deckId) => {
+  return fetch(`${mainUrl}/delete-deck`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, deckId }),
   }).then((response) => response.json());
 };

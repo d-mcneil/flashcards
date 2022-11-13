@@ -9,10 +9,14 @@ import {
   RESET_ERROR,
   LOAD_DECKS,
   UNLOAD_DECKS,
-  LOAD_CARDS,
-  UNLOAD_CARDS,
+  ADD_DECK,
+  REMOVE_DECK,
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
+  LOAD_CARDS,
+  UNLOAD_CARDS,
+  ADD_CARD,
+  REMOVE_CARD,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -88,6 +92,13 @@ const decks = (state = initialStateDecks, action = {}) => {
       return { ...state, decks: action.payload, decksHaveBeenFetched: true };
     case UNLOAD_DECKS:
       return { ...state, ...initialStateDecks };
+    case ADD_DECK:
+      return { ...state, decks: [...state.decks, action.payload] };
+    case REMOVE_DECK:
+      return {
+        ...state,
+        decks: state.decks.filter((deck) => deck.deckId !== action.payload),
+      };
     default:
       return state;
   }
@@ -97,6 +108,8 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
   switch (action.type) {
     case LOAD_CURRENT_DECK:
       return { ...state, currentDeck: action.payload };
+    case UNLOAD_CURRENT_DECK:
+      return { ...state, ...initialStateCurrentDeck };
     case LOAD_CARDS:
       return { ...state, cards: action.payload, cardsHaveBeenFetched: true };
     case UNLOAD_CARDS:
@@ -105,47 +118,17 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
         cards: initialStateCurrentDeck.cards,
         cardsHaveBeenFetched: initialStateCurrentDeck.cardsHaveBeenFetched,
       };
-    case UNLOAD_CURRENT_DECK:
-      return { ...state, ...initialStateCurrentDeck };
+    case ADD_CARD:
+      return { ...state, cards: [...state.cards, action.payload] };
+    case REMOVE_CARD:
+      return {
+        ...state,
+        cards: state.cards.filter((card) => card.cardId !== action.payload),
+      };
     default:
       return state;
   }
 };
-
-// const registrationAndSignIn = (
-//   state = initialStateRegistrationAndSignIn,
-//   action = {}
-// ) => {
-//   switch (action.type) {
-//     case REGISTRATION_OR_SIGN_IN_PENDING:
-//       return { ...state, isPending: true };
-//     case REGISTRATION_OR_SIGN_IN_SUCCESS:
-//       return { ...state, isPending: false };
-//     case REGISTRATION_OR_SIGN_IN_FAILURE:
-//       return { ...state, error: action.payload, isPending: false };
-//     case REGISTRATION_OR_SIGN_IN_ERROR_RESET:
-//       return { ...state, error: "" };
-//     default:
-//       return state;
-//   }
-// };
-
-// const decks = (state = initialStateDecks, action = {}) => {
-//   switch (action.type) {
-//     case LOAD_DECKS_PENDING:
-//       return { ...state, isPending: true };
-//     case LOAD_DECKS_SUCCESS:
-//       return { ...state, isPending: false, decks: action.payload };
-//     case LOAD_DECKS_FAILURE:
-//       return { ...state, isPending: false, error: action.payload };
-//     case LOAD_DECKS_ERROR_RESET:
-//       return { ...state, error: "" };
-//     case UNLOAD_DECKS:
-//       return { ...state, ...initialStateDecks };
-//     default:
-//       return state;
-//   }
-// };
 
 // ************************************************************ combine reducers ************************************************************
 

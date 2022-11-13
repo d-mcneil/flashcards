@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-import "./Deck.css";
+import { connect } from "react-redux";
+import { removeDeck } from "../../redux/actions";
+import { fetchCallDeleteDeck } from "../../functions/fetchCalls";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import "./Deck.css";
+
+const mapDispatchToProps = (dispatch) => ({
+  onDelete: (deckId) => dispatch(removeDeck(deckId)),
+});
 
 class Deck extends Component {
   constructor(props) {
@@ -11,6 +18,19 @@ class Deck extends Component {
       error: "",
     };
   }
+
+  deleteDeck = () => {
+    const { userId, deckId } = this.props;
+    fetchCallDeleteDeck(userId, deckId)
+      .then((data) => {
+        if (data.deckId === deckId) {
+          this.props.onDelete(deckId);
+        } else {
+          this.setState({ error: data });
+        }
+      })
+      .catch((err) => this.setState({ error: "Error deleting deck: 0" }));
+  };
 
   render() {
     const { userId, deckId, deckName, description } = this.props;
@@ -48,7 +68,7 @@ class Deck extends Component {
 
         {/* **************start delete button***************** */}
         <div
-          //   onClick={this.deleteDeck}
+          onClick={this.deleteDeck}
           className="deck-delete-button f5 f4-ns dim pointer"
           // alternate delete button with text instead of the trash can
           // className="deck-delete-button f6 f5-ns mb3 mt2 dim" > Delete
@@ -58,7 +78,7 @@ class Deck extends Component {
 
         {/* **************start error notification***************** */}
         {error ? (
-          <Message error={error} wrapperClass="deck-error-message" />
+          <Message message={error} wrapperClass="deck-error-message" />
         ) : (
           <></>
         )}
@@ -67,4 +87,4 @@ class Deck extends Component {
   }
 }
 
-export default Deck;
+export default connect(null, mapDispatchToProps)(Deck);
