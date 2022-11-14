@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import { useInputValueWithErrorReset as useInputValue } from "../functions/hooks";
+import { resetError, registrationAndSignInRequest } from "../redux/actions";
 import { validateSignIn } from "../functions/validateInput";
 import { fetchCallSignIn } from "../functions/fetchCalls";
-import { onEnterCallback, useInputValue } from "../functions/repeatedFunctions";
-import { resetError, registrationAndSignInRequest } from "../redux/actions";
+import { onEnterCallback } from "../functions/repeatedFunctions";
 import Form from "../components/Forms/Form/Form";
 import Title from "../components/Forms/Title/Title";
 import EntryBox from "../components/Forms/EntryBox/EntryBox";
