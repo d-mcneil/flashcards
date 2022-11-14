@@ -46,3 +46,11 @@ export const fetchCallDeleteDeck = (userId, deckId) => {
     body: JSON.stringify({ userId, deckId }),
   }).then((response) => response.json());
 };
+
+export const fetchCallDeleteUser = (userId, username) => {
+  return fetch(`${mainUrl}/delete-user`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, username }),
+  }).then((response) => response.json());
+};

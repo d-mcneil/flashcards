@@ -1,4 +1,6 @@
 body {
+    /* 5 */
+    --spacing-extra-large: 4rem;
     /* 4 */
     --spacing-large: 2rem;
     /* 3 */

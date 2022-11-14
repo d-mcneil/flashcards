@@ -8,6 +8,7 @@
     border-top-width: 1px;
     border-color: var(--light-black-border);
     max-width: 36rem;
+    margin-bottom: var(--spacing-medium);
 }
 
 .new-deck-name-or-card-term {
@@ -22,8 +23,7 @@
     margin-top: var(--spacing-medium);
     margin-left: var(--spacing-small);
     margin-right: var(--spacing-small);
-
-
+    padding-left: var(--spacing-extra-small);
 }
 
 .new-deck-description-or-card-definition {
@@ -37,6 +37,7 @@
     margin-left: var(--spacing-small);
     margin-right: var(--spacing-small);
     border: none;
+    padding-left: var(--spacing-extra-small);
 }
 
 .new-deck-or-card-error-message {

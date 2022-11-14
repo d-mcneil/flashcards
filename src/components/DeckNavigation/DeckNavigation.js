@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { routeChangeAndResetError } from "../../redux/actions";
+import { routeChangeAndResetError, unselectDeck } from "../../redux/actions";
 import "./DeckNavigation.css";
 
 const mapStateToProps = (state) => ({
@@ -13,9 +13,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   // prettier-ignore
   onRouteChange: (route, error) => dispatch(routeChangeAndResetError(route, error)),
+  onNavigateToDecks: (error) => dispatch(unselectDeck(error)),
 });
 
-const DeckNavigation = ({ route, error, onRouteChange }) => {
+const DeckNavigation = ({ route, error, onRouteChange, onNavigateToDecks }) => {
   const deckNavBarStyleClasses = "f5 dim deck-nav-bar-button";
 
   const renderPracticeOrEditButton = () => {
@@ -46,7 +47,7 @@ const DeckNavigation = ({ route, error, onRouteChange }) => {
   return (
     <div id="deck-nav-bar">
       <p
-        onClick={() => onRouteChange("home", error)}
+        onClick={() => onNavigateToDecks(error)}
         className={deckNavBarStyleClasses}
       >
         Decks

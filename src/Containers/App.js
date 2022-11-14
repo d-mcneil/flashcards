@@ -8,6 +8,7 @@ import Practice from "./Practice";
 import MainCard from "../components/MainCard/MainCard";
 import Navigation from "../components/Navigation/Navigation";
 import DeckNavigation from "../components/DeckNavigation/DeckNavigation";
+import Profile from "../components/Profile/Profile";
 
 const mapStateToProps = (state) => ({
   route: state.route.route,
@@ -26,6 +27,8 @@ class App extends Component {
         return <Editor />;
       case "practice":
         return <Practice />;
+      case "profile":
+        return <Profile />;
       default:
         return <></>;
     }

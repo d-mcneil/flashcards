@@ -1,5 +1,8 @@
 import { batch } from "react-redux";
-import { fetchCallGetDecksOrCards } from "../functions/fetchCalls";
+import {
+  fetchCallGetDecksOrCards,
+  fetchCallDeleteUser,
+} from "../functions/fetchCalls";
 import {
   ROUTE_CHANGE,
   LOAD_USER,
@@ -15,11 +18,11 @@ import {
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
   LOAD_CARDS,
-  UNLOAD_CARDS,
+  // UNLOAD_CARDS,
   ADD_CARD,
   REMOVE_CARD,
   LOAD_SETTINGS,
-  UNLOAD_SETTINGS,
+  // UNLOAD_SETTINGS,
 } from "./constants";
 
 export const routeChange = (route) => ({ type: ROUTE_CHANGE, payload: route });
@@ -36,11 +39,11 @@ export const removeDeck = (deckId) => ({ type: REMOVE_DECK, payload: deckId });
 const loadCurrentDeck = (deck) => ({ type: LOAD_CURRENT_DECK, payload: deck });
 const unloadCurrentDeck = () => ({ type: UNLOAD_CURRENT_DECK });
 const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
-const unloadCards = () => ({ type: UNLOAD_CARDS });
+// const unloadCards = () => ({ type: UNLOAD_CARDS });
 export const addCard = (card) => ({ type: ADD_CARD, payload: card });
 export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
 const loadSettings = (settings) => ({ type: LOAD_SETTINGS, payload: settings });
-const unloadSettings = () => ({ type: UNLOAD_SETTINGS });
+// const unloadSettings = () => ({ type: UNLOAD_SETTINGS });
 
 export const routeChangeAndResetError =
   (route, error = "error") =>
@@ -143,12 +146,40 @@ export const selectDeck = (route, error, deck) => (dispatch) => {
   dispatch(getDecksOrCardsRequest(deck.deckId, loadCards, "cards"));
 };
 
+export const unselectDeck = (error) => (dispatch) => {
+  batch(() => {
+    dispatch(routeChangeAndResetError("home", error));
+    dispatch(unloadCurrentDeck());
+  });
+};
+
 export const signOutUser = (error) => (dispatch) => {
   batch(() => {
     dispatch(routeChangeAndResetError("signed-out", error));
     dispatch(unloadDecks());
-    dispatch(unloadCards());
-    dispatch(unloadSettings());
+    dispatch(unloadCurrentDeck());
     dispatch(unloadUser());
+    dispatch(requestResovled());
   });
+};
+
+export const deleteUserRequest = (userId, username, error) => (dispatch) => {
+  dispatch(requestPending());
+  fetchCallDeleteUser(userId, username)
+    .then((data) => {
+      if (data.userId === userId) {
+        dispatch(signOutUser(error));
+      } else {
+        batch(() => {
+          dispatch(requestResovled());
+          dispatch(setError(data));
+        });
+      }
+    })
+    .catch((err) =>
+      batch(() => {
+        dispatch(requestResovled());
+        dispatch(setError("Error deleting user: 0"));
+      })
+    );
 };

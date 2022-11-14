@@ -6,7 +6,6 @@
     text-decoration: underline;
     cursor: pointer;
     padding: 0;
-    padding-bottom: var(--spacing-medium);
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: var(--spacing-medium);
 }
