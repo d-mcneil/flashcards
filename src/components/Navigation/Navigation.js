@@ -21,27 +21,24 @@ const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
   const navBarStyleClasses = "f3 dim nav-bar-button";
 
   const renderHomeOrProfileButton = () => {
-    switch (route) {
-      case "home":
-        return (
-          <p
-            onClick={() => onRouteChange("profile", error)}
-            className={`${navBarStyleClasses} push`}
-          >
-            Profile
-          </p>
-        );
-      case "profile":
-        return (
-          <p
-            onClick={() => onRouteChange("home", error)}
-            className={`${navBarStyleClasses} push`}
-          >
-            Home
-          </p>
-        );
-      default:
-        return <></>;
+    if (route === "home" || route === "practice" || route === "editor") {
+      return (
+        <p
+          onClick={() => onRouteChange("profile", error)}
+          className={`${navBarStyleClasses} push`}
+        >
+          Profile
+        </p>
+      );
+    } else if (route === "profile") {
+      return (
+        <p
+          onClick={() => onRouteChange("home", error)}
+          className={`${navBarStyleClasses} push`}
+        >
+          Home
+        </p>
+      );
     }
   };
 

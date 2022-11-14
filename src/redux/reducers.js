@@ -17,6 +17,8 @@ import {
   UNLOAD_CARDS,
   ADD_CARD,
   REMOVE_CARD,
+  LOAD_SETTINGS,
+  UNLOAD_SETTINGS,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -40,6 +42,8 @@ const initialStateCurrentDeck = {
   currentDeck: null,
   cards: [],
   cardsHaveBeenFetched: false,
+  settings: null,
+  settingsHaveBeenFetched: false,
 };
 
 // ************************************************************ reducers ************************************************************
@@ -124,6 +128,19 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
       return {
         ...state,
         cards: state.cards.filter((card) => card.cardId !== action.payload),
+      };
+    case LOAD_SETTINGS:
+      return {
+        ...state,
+        settings: action.payload,
+        settingsHaveBeenFetched: true,
+      };
+    case UNLOAD_SETTINGS:
+      return {
+        ...state,
+        settings: initialStateCurrentDeck.settings,
+        settingsHaveBeenFetched:
+          initialStateCurrentDeck.settingsHaveBeenFetched,
       };
     default:
       return state;

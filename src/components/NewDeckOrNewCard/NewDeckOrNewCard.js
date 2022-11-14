@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 import { useInputValue } from "../../functions/hooks";
@@ -13,8 +13,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const NewDeckOrNewCard = ({
-  onSave,
-  userId,
+  onSave, // from mapDispatchToProps
+  userId, // userId
   deckId, // undefined if component is for making a new deck, defined if for making a new card
   validationCallback, // validateDeckName or validateNewCardInput "../../functions/validateInput"
   fetchCallback, // fetchCallCreateDeck or fetchCallCreateCard from "../../functions/fetchCalls"

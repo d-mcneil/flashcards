@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { removeDeck } from "../../redux/actions";
+import { removeDeck, selectDeck } from "../../redux/actions";
 import { fetchCallDeleteDeck } from "../../functions/fetchCalls";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import "./Deck.css";
 
 const mapDispatchToProps = (dispatch) => ({
   onDelete: (deckId) => dispatch(removeDeck(deckId)),
+  onSelectDeck: (...args) => dispatch(selectDeck(...args)),
 });
 
 class Deck extends Component {
@@ -33,17 +34,15 @@ class Deck extends Component {
   };
 
   render() {
-    const { userId, deckId, deckName, description } = this.props;
+    const { deck, onSelectDeck } = this.props;
+    const { deckName, description } = deck;
     const { error } = this.state;
     return (
       <div className="deck-grid center">
         {/* **************start deck name***************** */}
         <div
           className="deck-name f3-ns f4 dim"
-          //   onClick={() =>
-          //     selectDeck(
-          //       "practice",
-          //       deckId,
+          onClick={() => onSelectDeck("practice", error, deck)}
         >{`${deckName}`}</div>
 
         {/* **************start description***************** */}
@@ -52,13 +51,10 @@ class Deck extends Component {
         ) : (
           <></>
         )}
+
         {/* **************start edit button***************** */}
         <div
-          //   onClick={() =>
-          //     selectDeck(
-          //       "editor",
-          //        deckId
-          //     )}
+          onClick={() => onSelectDeck("editor", error, deck)}
           className="deck-edit-button f5 f4-ns dim"
           // alternate edit button with text instead of the pencil
           // className="deck-edit-button f6 f5-ns mt3 mb2 dim" > Edit

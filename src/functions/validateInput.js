@@ -73,3 +73,25 @@ export const validateDeckName = (deckName) => {
   }
   return { valid: true };
 };
+
+export const validateNewCardInput = (term, definition) => {
+  if (!term || !definition) {
+    return {
+      valid: false,
+      // reason: "Invalid submission: both term and definition are required."
+    };
+  } else if (term.length > 255) {
+    return {
+      valid: false,
+      reason:
+        "Invalid submission: term must be no more than 255 characters long.",
+    };
+  } else if (definition.length > 255) {
+    return {
+      valid: false,
+      reason:
+        "Invalid submission: definition must be no more than 100 characters long.",
+    };
+  }
+  return { valid: true };
+};

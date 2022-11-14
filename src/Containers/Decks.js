@@ -44,7 +44,7 @@ class Decks extends Component {
         )}
         {Array.isArray(decks) && decks.length ? (
           decks.map((deck) => (
-            <Deck key={deck.deckId} {...deck} userId={userId} />
+            <Deck key={deck.deckId} deck={deck} userId={userId} />
           ))
         ) : (
           <></>
