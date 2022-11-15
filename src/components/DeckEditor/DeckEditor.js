@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { batch, connect } from "react-redux";
-import { setError, resetError, updateCurrentDeck } from "../../redux/actions";
+// prettier-ignore
+import { setError, resetError, updateCurrentDeck, updateDeckList } from "../../redux/actions";
 import { useInputValueWithErrorReset as useInputValue } from "../../functions/hooks";
 import { validateDeckName } from "../../functions/validateInput";
 // prettier-ignore
@@ -16,9 +17,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   updateError: (error) => dispatch(setError(error)),
-  updateDeck: (deckName, description) =>
+  updateDeck: (deckName, description, deckId) =>
     batch(() => {
       dispatch(updateCurrentDeck(deckName, description));
+      dispatch(updateDeckList(deckName, description, deckId));
       dispatch(resetError());
     }),
   resetErrorIfNeeded: () => dispatch(resetError()),
@@ -52,7 +54,7 @@ const DeckEditor = ({ currentDeck, userId, error, updateError, updateDeck, reset
     fetchCallUpdateDeckOrCard(userId, deckId, newDeckNameValue, newDescriptionValue, 'deck')
     .then(data => {
         if (data.deckId === deckId) {
-            updateDeck(newDeckNameValue, newDescriptionValue);
+            updateDeck(newDeckNameValue, newDescriptionValue, deckId);
         } else {
             updateError(data)
         }

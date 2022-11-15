@@ -11,6 +11,7 @@ import {
   UNLOAD_DECKS,
   ADD_DECK,
   REMOVE_DECK,
+  UPDATE_DECK_LIST,
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
   LOAD_CARDS,
@@ -20,6 +21,7 @@ import {
   LOAD_SETTINGS,
   UNLOAD_SETTINGS,
   UPDATE_CURRENT_DECK,
+  UPDATE_CARD,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -104,6 +106,18 @@ const decks = (state = initialStateDecks, action = {}) => {
         ...state,
         decks: state.decks.filter((deck) => deck.deckId !== action.payload),
       };
+    case UPDATE_DECK_LIST:
+      const { deckName, description, deckId } = action.payload;
+      return {
+        ...state,
+        decks: state.decks.map((deck) => {
+          if (deckId === deck.deckId) {
+            return { ...deck, deckName, description };
+          } else {
+            return deck;
+          }
+        }),
+      };
     default:
       return state;
   }
@@ -151,6 +165,18 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
           deckName: action.payload.deckName,
           description: action.payload.description,
         },
+      };
+    case UPDATE_CARD:
+      const { term, definition, cardId } = action.payload;
+      return {
+        ...state,
+        cards: state.cards.map((card) => {
+          if (cardId === card.cardId) {
+            return { ...card, term, definition };
+          } else {
+            return card;
+          }
+        }),
       };
     default:
       return state;

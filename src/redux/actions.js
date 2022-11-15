@@ -15,6 +15,7 @@ import {
   UNLOAD_DECKS,
   ADD_DECK,
   REMOVE_DECK,
+  UPDATE_DECK_LIST,
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
   LOAD_CARDS,
@@ -24,19 +25,35 @@ import {
   LOAD_SETTINGS,
   // UNLOAD_SETTINGS,
   UPDATE_CURRENT_DECK,
+  UPDATE_CARD,
 } from "./constants";
 
+// **************** route reducer****************
 export const routeChange = (route) => ({ type: ROUTE_CHANGE, payload: route });
+
+// **************** userStatus reducer ****************
 const loadUser = (user) => ({ type: LOAD_USER, payload: user });
 const unloadUser = () => ({ type: UNLOAD_USER });
+
+// **************** requestStatus reducer ****************
 export const requestPending = () => ({ type: REQUEST_PENDING });
 export const requestResovled = () => ({ type: REQUEST_RESOLVED });
+
+// **************** error reducer ****************
 export const setError = (error) => ({ type: SET_ERROR, payload: error });
 export const resetError = () => ({ type: RESET_ERROR });
+
+// **************** decks reducer ****************
 export const loadDecks = (decks) => ({ type: LOAD_DECKS, payload: decks });
 const unloadDecks = () => ({ type: UNLOAD_DECKS });
 export const addDeck = (deck) => ({ type: ADD_DECK, payload: deck });
 export const removeDeck = (deckId) => ({ type: REMOVE_DECK, payload: deckId });
+export const updateDeckList = (deckName, description, deckId) => ({
+  type: UPDATE_DECK_LIST,
+  payload: { deckName, description, deckId },
+});
+
+// **************** currentDeck reducer ****************
 const loadCurrentDeck = (deck) => ({ type: LOAD_CURRENT_DECK, payload: deck });
 export const unloadCurrentDeck = () => ({ type: UNLOAD_CURRENT_DECK });
 const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
@@ -49,7 +66,14 @@ export const updateCurrentDeck = (deckName, description) => ({
   type: UPDATE_CURRENT_DECK,
   payload: { deckName, description },
 });
+const updateCard = (term, definition, cardId) => ({
+  type: UPDATE_CARD,
+  payload: { term, definition, cardId },
+});
+//
+//
 
+// ************************************************************ batched actions ************************************************************
 export const routeChangeAndResetError =
   (route, error = "error") =>
   // if I forget to pass the error as an argument, at least the error will automatically by reset on route change
