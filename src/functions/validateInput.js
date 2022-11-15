@@ -74,7 +74,7 @@ export const validateDeckName = (deckName) => {
   return { valid: true };
 };
 
-export const validateNewCardInput = (term, definition) => {
+export const validateCardInput = (term, definition) => {
   if (!term || !definition) {
     return {
       valid: false,

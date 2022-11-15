@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// called in the Register and SignIn components
+// called in the Register, SignIn, and NewDeckOrCard components
 export const useInputValueWithErrorReset = (
   initialValue,
   error,
@@ -15,11 +15,11 @@ export const useInputValueWithErrorReset = (
   };
   return {
     value,
+    setValue,
     onChange: handleChange,
   };
 };
 
-// called in the NewDeckOrCard component
 export const useInputValue = (initialValue) => {
   const [value, setValue] = useState(initialValue);
   const handleChange = (event) => setValue(event.target.value);

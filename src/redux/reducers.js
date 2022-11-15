@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import {
   ROUTE_CHANGE,
   LOAD_USER,
-  SIGN_OUT_USER,
+  UNLOAD_USER,
   REQUEST_PENDING,
   REQUEST_RESOLVED,
   SET_ERROR,
@@ -19,6 +19,7 @@ import {
   REMOVE_CARD,
   LOAD_SETTINGS,
   UNLOAD_SETTINGS,
+  UPDATE_CURRENT_DECK,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -61,7 +62,7 @@ const userStatus = (state = initialStateUserStatus, action = {}) => {
   switch (action.type) {
     case LOAD_USER:
       return { ...state, user: action.payload, signedIn: true };
-    case SIGN_OUT_USER:
+    case UNLOAD_USER:
       return { ...state, ...initialStateUserStatus };
     default:
       return state;
@@ -141,6 +142,15 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
         settings: initialStateCurrentDeck.settings,
         settingsHaveBeenFetched:
           initialStateCurrentDeck.settingsHaveBeenFetched,
+      };
+    case UPDATE_CURRENT_DECK:
+      return {
+        ...state,
+        currentDeck: {
+          ...state.currentDeck,
+          deckName: action.payload.deckName,
+          description: action.payload.description,
+        },
       };
     default:
       return state;

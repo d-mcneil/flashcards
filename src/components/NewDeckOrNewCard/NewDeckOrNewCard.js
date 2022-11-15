@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useState, useEffect } from "react";
-import { useInputValue } from "../../functions/hooks";
+import { useInputValueWithErrorReset as useInputValue } from "../../functions/hooks";
 // prettier-ignore
 import { setTextAreaHeight, onEnterCallback, onBlurSave } from "../../functions/repeatedFunctions";
 import Message from "../Message/Message";
@@ -26,8 +26,8 @@ const NewDeckOrNewCard = ({
   secondaryFieldPlaceholder, // "Enter New Deck Description (Optional)" or "Enter New Definition"
 }) => {
   const [error, setError] = useState("");
-  const mainField = useInputValue("");
-  const secondaryField = useInputValue("");
+  const mainField = useInputValue("", error, () => setError(""));
+  const secondaryField = useInputValue("", error, () => setError(""));
 
   const resetInput = () => {
     mainField.setValue("");

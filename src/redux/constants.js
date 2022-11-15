@@ -1,6 +1,6 @@
 export const ROUTE_CHANGE = "ROUTE_CHANGE";
 export const LOAD_USER = "LOAD_USER";
-export const SIGN_OUT_USER = "SIGN_OUT_USER";
+export const UNLOAD_USER = "UNLOAD_USER";
 export const REQUEST_PENDING = "REQUEST_PENDING";
 export const REQUEST_RESOLVED = "REQUEST_RESOLVED";
 export const SET_ERROR = "SET_ERROR";
@@ -17,3 +17,4 @@ export const ADD_CARD = "ADD_CARD";
 export const REMOVE_CARD = "REMOVE_CARD"
 export const LOAD_SETTINGS = "LOAD_SETTINGS";
 export const UNLOAD_SETTINGS = "UNLOAD_SETTINGS";
+export const UPDATE_CURRENT_DECK = "UPDATE_CURRENT_DECK"

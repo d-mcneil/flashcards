@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { removeDeck, selectDeck } from "../../redux/actions";
-import { fetchCallDeleteDeck } from "../../functions/fetchCalls";
+import { fetchCallDelete } from "../../functions/fetchCalls";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -21,8 +21,9 @@ class Deck extends Component {
   }
 
   deleteDeck = () => {
-    const { userId, deckId } = this.props;
-    fetchCallDeleteDeck(userId, deckId)
+    const { userId, deck } = this.props;
+    const { deckId } = deck;
+    fetchCallDelete(userId, deckId, "deck")
       .then((data) => {
         if (data.deckId === deckId) {
           this.props.onDelete(deckId);

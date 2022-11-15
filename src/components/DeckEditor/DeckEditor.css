@@ -1,0 +1,37 @@
+#deck-editor-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 36rem;
+}
+
+#name-area {
+    margin-bottom: var(--spacing-medium);
+    text-align: center;
+}
+
+#description-area {
+    margin-bottom: var(--spacing-large);
+    text-align: justify;
+    font-style: italic;
+}
+
+#name-area,
+#description-area {
+    border: none;
+    cursor: text;
+    resize: none;
+    max-height: 30vh;
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-small);
+    padding-left: var(--spacing-extra-small);
+    padding-right: var(--spacing-extra-small);
+}
+
+@media screen and (min-width: 30rem) {
+
+    #name-area,
+    #description-area {
+        margin-left: var(--spacing-large);
+        margin-right: var(--spacing-large);
+    }
+}

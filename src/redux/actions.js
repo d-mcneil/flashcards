@@ -1,12 +1,12 @@
 import { batch } from "react-redux";
 import {
   fetchCallGetDecksOrCards,
-  fetchCallDeleteUser,
+  fetchCallDelete,
 } from "../functions/fetchCalls";
 import {
   ROUTE_CHANGE,
   LOAD_USER,
-  SIGN_OUT_USER,
+  UNLOAD_USER,
   REQUEST_PENDING,
   REQUEST_RESOLVED,
   SET_ERROR,
@@ -23,11 +23,12 @@ import {
   REMOVE_CARD,
   LOAD_SETTINGS,
   // UNLOAD_SETTINGS,
+  UPDATE_CURRENT_DECK,
 } from "./constants";
 
 export const routeChange = (route) => ({ type: ROUTE_CHANGE, payload: route });
 const loadUser = (user) => ({ type: LOAD_USER, payload: user });
-const unloadUser = () => ({ type: SIGN_OUT_USER });
+const unloadUser = () => ({ type: UNLOAD_USER });
 export const requestPending = () => ({ type: REQUEST_PENDING });
 export const requestResovled = () => ({ type: REQUEST_RESOLVED });
 export const setError = (error) => ({ type: SET_ERROR, payload: error });
@@ -37,13 +38,17 @@ const unloadDecks = () => ({ type: UNLOAD_DECKS });
 export const addDeck = (deck) => ({ type: ADD_DECK, payload: deck });
 export const removeDeck = (deckId) => ({ type: REMOVE_DECK, payload: deckId });
 const loadCurrentDeck = (deck) => ({ type: LOAD_CURRENT_DECK, payload: deck });
-const unloadCurrentDeck = () => ({ type: UNLOAD_CURRENT_DECK });
+export const unloadCurrentDeck = () => ({ type: UNLOAD_CURRENT_DECK });
 const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
 // const unloadCards = () => ({ type: UNLOAD_CARDS });
 export const addCard = (card) => ({ type: ADD_CARD, payload: card });
 export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
 const loadSettings = (settings) => ({ type: LOAD_SETTINGS, payload: settings });
 // const unloadSettings = () => ({ type: UNLOAD_SETTINGS });
+export const updateCurrentDeck = (deckName, description) => ({
+  type: UPDATE_CURRENT_DECK,
+  payload: { deckName, description },
+});
 
 export const routeChangeAndResetError =
   (route, error = "error") =>
@@ -165,7 +170,7 @@ export const signOutUser = (error) => (dispatch) => {
 
 export const deleteUserRequest = (userId, username, error) => (dispatch) => {
   dispatch(requestPending());
-  fetchCallDeleteUser(userId, username)
+  fetchCallDelete(userId, username, "user")
     .then((data) => {
       if (data.userId === userId) {
         dispatch(signOutUser(error));

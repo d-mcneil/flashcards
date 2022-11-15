@@ -20,7 +20,6 @@ const Practice = ({ error, isPending }) => {
       ) : (
         <></>
       )}
-      ;
     </>
   );
 };

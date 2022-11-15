@@ -15,29 +15,27 @@
     align-self: end;
     text-overflow: ellipsis;
     overflow: hidden;
-    cursor: text;
-    /* this would be used if I were to go back to using a save button instead of doing an onBlur action to save
-    grid-column: 1 / span 1; */
-    border: none;
     margin-bottom: var(--spacing-extra-small);
     margin-top: var(--spacing-medium);
-    margin-left: var(--spacing-small);
-    margin-right: var(--spacing-small);
-    padding-left: var(--spacing-extra-small);
 }
 
 .new-deck-description-or-card-definition {
     align-self: start;
     resize: none;
-    cursor: text;
-    /* this would be used if I were to go back to using a save button instead of doing an onBlur action to save
-    grid-column: 1 / span 1; */
     margin-bottom: 0;
     margin-top: var(--spacing-small);
+}
+
+.new-deck-description-or-card-definition,
+.new-deck-name-or-card-term {
+    padding-left: var(--spacing-extra-small);
+    padding-right: var(--spacing-extra-small);
     margin-left: var(--spacing-small);
     margin-right: var(--spacing-small);
     border: none;
-    padding-left: var(--spacing-extra-small);
+    cursor: text;
+    /* this would be used if I were to go back to using a save button instead of doing an onBlur action to save
+        grid-column: 1 / span 1; */
 }
 
 .new-deck-or-card-error-message {
@@ -53,6 +51,5 @@
     .new-deck-description-or-card-definition {
         margin-left: var(--spacing-large);
         margin-right: var(--spacing-large);
-
     }
 }

@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import Header from "../components/Header/Header";
+// import Header from "../components/Header/Header";
 import Message from "../components/Message/Message";
 import NewDeckOrNewCard from "../components/NewDeckOrNewCard/NewDeckOrNewCard";
 import { fetchCallCreateCard } from "../functions/fetchCalls";
 import { addCard } from "../redux/actions";
-import { validateNewCardInput } from "../functions/validateInput";
+import { validateCardInput } from "../functions/validateInput";
+import DeckEditor from "../components/DeckEditor/DeckEditor";
 
 const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
@@ -21,7 +22,8 @@ const Editor = ({ error, isPending, deckId, userId }) => {
 
   return (
     <>
-      <Header text="Editor" />
+      {/* <Header text="Editor" /> */}
+      <DeckEditor />
       {message ? (
         <Message message={message} wrapperClass="decks-error-message" />
       ) : (
@@ -30,7 +32,7 @@ const Editor = ({ error, isPending, deckId, userId }) => {
       <NewDeckOrNewCard
         userId={userId}
         deckId={deckId}
-        validationCallback={validateNewCardInput}
+        validationCallback={validateCardInput}
         fetchCallback={fetchCallCreateCard}
         actionAddDeckOrCardCallback={addCard}
         idPropertyName="cardId"

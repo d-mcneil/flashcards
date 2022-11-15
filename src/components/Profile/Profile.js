@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { deleteUserRequest, requestResovled } from "../../redux/actions";
-import "./Profile.css";
+import { connect, batch } from "react-redux";
+// prettier-ignore
+import { deleteUserRequest, requestResovled, unloadCurrentDeck } from "../../redux/actions";
 import Message from "../Message/Message";
 import Header from "../Header/Header";
+import "./Profile.css";
 
 const mapStateToProps = (state) => ({
   error: state.error.error,
@@ -14,24 +15,23 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   deleteUser: (userId, username, error) =>
     dispatch(deleteUserRequest(userId, username, error)),
-  showResolvedPreviousRequest: () => dispatch(requestResovled()),
+  cleanUpStateOnMount: () =>
+    batch(() => {
+      dispatch(unloadCurrentDeck());
+      // this is done because navigation from the Profile component goes to the Decks component,
+      // which implies that a deck has not been selected
+
+      dispatch(requestResovled());
+      // this is done so that, if there is a previous request that's unresolved,
+      // the user doesn't get a "Deleting user..." message upon navigating to Profile
+    }),
 });
 
-const Profile = ({
-  error,
-  user,
-  isPending,
-  deleteUser,
-  showResolvedPreviousRequest,
-}) => {
-  useEffect(() => {
-    // this is done so that, if there is a previous request that's unresolved,
-    //  the user doesn't get a "Deleting user..." message upon navigating to Profile
-    if (isPending) {
-      showResolvedPreviousRequest();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+// prettier-ignore
+const Profile = ({ error, user, isPending, deleteUser, cleanUpStateOnMount }) => {
+ 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => cleanUpStateOnMount(), []);
 
   const message = isPending ? "Deleting user..." : error;
   const { userId, firstName, lastName, email, username, joined } = user;
@@ -40,11 +40,11 @@ const Profile = ({
   return (
     <>
       <Header text="Profile" />
-      <div className={profileStyleClasses}>{`First Name: ${firstName}`}</div>
-      <div className={profileStyleClasses}>{`Last Name: ${lastName}`}</div>
-      <div className={profileStyleClasses}>{`Username: ${username}`}</div>
-      <div className={profileStyleClasses}>{`Email: ${email}`}</div>
-      <div className={profileStyleClasses}>{`Joined: ${joined
+      <div className={profileStyleClasses}><strong>First Name</strong>: {`${firstName}`}</div>
+      <div className={profileStyleClasses}><strong>Last Name</strong>: {`${lastName}`}</div>
+      <div className={profileStyleClasses}><strong>Username</strong>: {`${username}`}</div>
+      <div className={profileStyleClasses}><strong>Email</strong>: {`${email}`}</div>
+      <div className={profileStyleClasses}><strong>Joined</strong>: {`${joined
         .replace("T", " ")
         .replace("Z", " UTC")}`}</div>
       <p
