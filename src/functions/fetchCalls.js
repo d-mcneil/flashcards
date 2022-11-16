@@ -61,6 +61,14 @@ export const fetchCallUpdateDeckOrCard = (
   }).then(responseToJson);
 };
 
+export const fetchCallUpdateCardScore = (userId, cardId, incrementValue) => {
+  return fetch(`${mainUrl}/update-card-score`, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ userId, cardId, incrementValue }),
+  }).then(responseToJson);
+};
+
 // ************************************************* delete *************************************************
 export const fetchCallDelete = (
   userId,

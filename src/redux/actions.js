@@ -26,6 +26,7 @@ import {
   // UNLOAD_SETTINGS,
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
+  UPDATE_CARD_SCORE,
 } from "./constants";
 
 // **************** route reducer****************
@@ -69,6 +70,10 @@ export const updateCurrentDeck = (deckName, description) => ({
 export const updateCard = (term, definition, cardId) => ({
   type: UPDATE_CARD,
   payload: { term, definition, cardId },
+});
+export const updateCardScore = (cardId, incrementValue) => ({
+  type: UPDATE_CARD_SCORE,
+  payload: { cardId, incrementValue },
 });
 //
 //

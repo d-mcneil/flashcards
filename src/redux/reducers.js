@@ -22,6 +22,7 @@ import {
   UNLOAD_SETTINGS,
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
+  UPDATE_CARD_SCORE,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -166,7 +167,7 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
           description: action.payload.description,
         },
       };
-    case UPDATE_CARD:
+    case UPDATE_CARD: {
       const { term, definition, cardId } = action.payload;
       return {
         ...state,
@@ -178,6 +179,20 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
           }
         }),
       };
+    }
+    case UPDATE_CARD_SCORE: {
+      const { incrementValue, cardId } = action.payload;
+      return {
+        ...state,
+        cards: state.cards.map((card) => {
+          if (cardId === card.cardId) {
+            return { ...card, score: card.score + incrementValue };
+          } else {
+            return card;
+          }
+        }),
+      };
+    }
     default:
       return state;
   }
