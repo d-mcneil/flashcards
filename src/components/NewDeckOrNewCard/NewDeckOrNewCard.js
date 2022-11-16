@@ -17,13 +17,13 @@ const mapDispatchToProps = (dispatch) => ({
 const NewDeckOrNewCard = ({
   onSave, // from mapDispatchToProps
   userId, // userId
-  deckId, // newDeck: undefined | newCard: deckId
+  deckId = undefined, // newDeck: undefined | newCard: deckId
   validationCallback, // newDeck: validateDeckName | newCard: validateCardInput from "../../functions/validateInput"
   fetchCallback, // newDeck: fetchCallCreateDeck | newCard: fetchCallCreateCard from "../../functions/fetchCalls"
   actionCallback, // newDeck: addDeck | newCard: addCard from "../../redux/actions";
   idPropertyName, // newDeck: deckId | newCard: cardId
   maxLengthMainField, // newDeck: 100 | newCard: 255
-  maxLengthSecondaryField, // newDeck: undefined | newCard: 255
+  maxLengthSecondaryField = undefined, // newDeck: undefined | newCard: 255
   placeholderMainField, // newDeck: "Enter New Deck Name" | newCard: "Enter New Term"
   placeholderSecondaryField, // newDeck: "Enter New Deck Description (Optional)" | newCard: "Enter New Definition"
 }) => {
@@ -91,13 +91,7 @@ const NewDeckOrNewCard = ({
 
       {/* **************start save button***************** */}
       {/* alternate save button if I decide to get rid of the onBlur action for saving
-        <div
-            onClick={save}
-            className="f6 f5-ns mt3 mb2 dim pointer"
-            style={{ alignSelf: "end", justifySelf: "center" }}
-          >
-            Save
-          </div> */}
+        <div onClick={save} className="f6 f5-ns mt3 mb2 dim pointer" style={{ alignSelf: "end", justifySelf: "center" }}>Save</div> */}
 
       {/* **************start error notification***************** */}
       {error ? (

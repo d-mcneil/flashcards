@@ -49,16 +49,13 @@ class Decks extends Component {
         ) : (
           <></>
         )}
-        {/* <NewDeck /> */}
         <NewDeckOrNewCard
           userId={userId}
-          deckId={undefined}
           validationCallback={validateDeckName}
           fetchCallback={fetchCallCreateDeck}
           actionCallback={addDeck}
           idPropertyName="deckId"
           maxLengthMainField={100}
-          maxLengthSecondaryField={undefined}
           placeholderMainField="Enter New Deck Name"
           placeholderSecondaryField="Enter New Deck Description (Optional)"
         />
