@@ -1,13 +1,3 @@
-.deck-grid {
-    display: grid;
-    grid-template-columns: 5fr 1fr;
-    grid-auto-flow: dense;
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-color: var(--light-black-border);
-    max-width: 36rem;
-}
-
 .deck-name {
     cursor: pointer;
     margin-right: var(--spacing-large);
@@ -48,15 +38,6 @@
     margin-bottom: var(--spacing-extra-small);
     cursor: pointer;
     align-self: end;
-    justify-self: center;
-    grid-column: 2 / span 1;
-}
-
-.deck-delete-button {
-    cursor: pointer;
-    margin-top: var(--spacing-extra-small);
-    margin-bottom: var(--spacing-medium);
-    align-self: start;
     justify-self: center;
     grid-column: 2 / span 1;
 }

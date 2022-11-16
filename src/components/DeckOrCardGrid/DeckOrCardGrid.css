@@ -1,0 +1,31 @@
+.deck-or-card-grid {
+    display: grid;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: var(--light-black-border);
+    max-width: 36rem;
+    /*  
+    this would be used if I were to go back to using a save button 
+    instead of doing an onBlur action to save for new cards
+        grid-template-columns: 5fr 1fr; 
+    */
+}
+
+.new-item-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: var(--spacing-medium);
+}
+
+.existing-item-grid {
+    grid-template-columns: 5fr 1fr;
+    grid-auto-flow: dense;
+}
+
+.delete-button {
+    cursor: pointer;
+    margin-top: var(--spacing-extra-small);
+    margin-bottom: var(--spacing-medium);
+    align-self: start;
+    justify-self: center;
+    grid-column: 2 / span 1;
+}

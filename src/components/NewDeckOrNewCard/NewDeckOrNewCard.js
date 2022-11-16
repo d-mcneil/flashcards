@@ -2,38 +2,46 @@ import React from "react";
 import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 import { useInputValueWithErrorReset as useInputValue } from "../../functions/hooks";
-// prettier-ignore
-import { setTextAreaHeight, onEnterCallback, onBlurSave } from "../../functions/repeatedFunctions";
+import { setTextAreaHeight } from "../../functions/repeatedFunctions";
+import DeckOrCardGrid from "../DeckOrCardGrid/DeckOrCardGrid";
+import MainFieldInputBox from "../InputBoxes/MainFieldInputBox";
+import SecondaryFieldInputBox from "../InputBoxes/SecondaryFieldInputBox";
 import Message from "../Message/Message";
 import "./NewDeckOrNewCard.css";
 
 const mapDispatchToProps = (dispatch) => ({
-  onSave: (deckOrCardObject, actionAddDeckOrCardCallback) =>
-    dispatch(actionAddDeckOrCardCallback(deckOrCardObject)),
+  onSave: (deckOrCardObject, actionCallback) =>
+    dispatch(actionCallback(deckOrCardObject)),
 });
 
 const NewDeckOrNewCard = ({
   onSave, // from mapDispatchToProps
   userId, // userId
-  deckId, // undefined if component is for making a new deck, defined if for making a new card
-  validationCallback, // validateDeckName or validateNewCardInput "../../functions/validateInput"
-  fetchCallback, // fetchCallCreateDeck or fetchCallCreateCard from "../../functions/fetchCalls"
-  actionAddDeckOrCardCallback, // addDeck or addCard from "../../redux/actions"
-  idPropertyName, // deckId or cardId
-  maxLengthMainField, // {100} for deck name or {255} for term
-  maxLengthSecondaryField, // {undefined} for deck description or {255} for definition
-  mainFieldPlaceholder, // "Enter New Deck Name" or "Enter New Term"
-  secondaryFieldPlaceholder, // "Enter New Deck Description (Optional)" or "Enter New Definition"
+  deckId, // newDeck: undefined | newCard: deckId
+  validationCallback, // newDeck: validateDeckName | newCard: validateCardInput from "../../functions/validateInput"
+  fetchCallback, // newDeck: fetchCallCreateDeck | newCard: fetchCallCreateCard from "../../functions/fetchCalls"
+  actionCallback, // newDeck: addDeck | newCard: addCard from "../../redux/actions";
+  idPropertyName, // newDeck: deckId | newCard: cardId
+  maxLengthMainField, // newDeck: 100 | newCard: 255
+  maxLengthSecondaryField, // newDeck: undefined | newCard: 255
+  placeholderMainField, // newDeck: "Enter New Deck Name" | newCard: "Enter New Term"
+  placeholderSecondaryField, // newDeck: "Enter New Deck Description (Optional)" | newCard: "Enter New Definition"
 }) => {
   const [error, setError] = useState("");
   const mainField = useInputValue("", error, () => setError(""));
   const secondaryField = useInputValue("", error, () => setError(""));
 
+  // once a new card or new deck has been saved, the input needs to be cleared so another deck or card can be created
   const resetInput = () => {
+    for (const item of document.getElementsByClassName(
+      "reset-new-deck-or-card-info"
+    )) {
+      item.value = "";
+    }
     mainField.setValue("");
     secondaryField.setValue("");
     setError("");
-    setTextAreaHeight("new-text-area");
+    setTextAreaHeight("text-area-new");
   };
 
   const save = () => {
@@ -48,12 +56,7 @@ const NewDeckOrNewCard = ({
     fetchCallback(userId, mainField.value, secondaryField.value, deckId)
       .then((data) => {
         if (data[`${idPropertyName}`]) {
-          onSave(data, actionAddDeckOrCardCallback);
-          for (const item of document.getElementsByClassName(
-            "reset-new-deck-or-card-info"
-          )) {
-            item.value = "";
-          }
+          onSave(data, actionCallback);
           resetInput();
         } else {
           setError(data);
@@ -64,34 +67,27 @@ const NewDeckOrNewCard = ({
       );
   };
 
-  useEffect(() => setTextAreaHeight("new-text-area"), []);
+  useEffect(() => setTextAreaHeight("text-area-new"), []);
 
   return (
-    <div className="new-deck-or-card-grid center">
+    <DeckOrCardGrid newItem={true}>
       {/* **************start deck name / card term***************** */}
-      <input
-        type="text"
+      <MainFieldInputBox
+        saveCallback={save}
         maxLength={maxLengthMainField}
         onChange={mainField.onChange}
-        onKeyDown={(event) => onEnterCallback(event, save)}
-        onBlur={(event) => onBlurSave(event, save)}
-        placeholder={mainFieldPlaceholder}
-        className="new-deck-name-or-card-term reset-new-deck-or-card-info f3-ns f4 outline-hover"
-      ></input>
+        placeholder={placeholderMainField}
+        newItem={true}
+      />
 
       {/* **************start deck description / card definition***************** */}
-      <textarea
+      <SecondaryFieldInputBox
+        saveCallback={save}
         maxLength={maxLengthSecondaryField}
-        onChange={(event) => {
-          setTextAreaHeight("new-text-area");
-          secondaryField.onChange(event);
-        }}
-        onKeyDown={(event) => onEnterCallback(event, save)}
-        onBlur={(event) => onBlurSave(event, save)}
-        placeholder={secondaryFieldPlaceholder}
-        className="new-deck-description-or-card-definition reset-new-deck-or-card-info outline-hover f6"
-        id="new-text-area"
-      ></textarea>
+        onChange={secondaryField.onChange}
+        placeholder={placeholderSecondaryField}
+        newItem={true}
+      />
 
       {/* **************start save button***************** */}
       {/* alternate save button if I decide to get rid of the onBlur action for saving
@@ -112,7 +108,7 @@ const NewDeckOrNewCard = ({
       ) : (
         <></>
       )}
-    </div>
+    </DeckOrCardGrid>
   );
 };
 

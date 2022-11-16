@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { removeDeck, selectDeck } from "../../redux/actions";
 import { fetchCallDelete } from "../../functions/fetchCalls";
+import DeckOrCardGrid from "../DeckOrCardGrid/DeckOrCardGrid";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -39,7 +40,7 @@ class Deck extends Component {
     const { deckName, description } = deck;
     const { error } = this.state;
     return (
-      <div className="deck-grid center">
+      <DeckOrCardGrid>
         {/* **************start deck name***************** */}
         <div
           className="deck-name f3-ns f4 dim"
@@ -66,7 +67,7 @@ class Deck extends Component {
         {/* **************start delete button***************** */}
         <div
           onClick={this.deleteDeck}
-          className="deck-delete-button f5 f4-ns dim pointer"
+          className="delete-button f5 f4-ns dim pointer"
           // alternate delete button with text instead of the trash can
           // className="deck-delete-button f6 f5-ns mb3 mt2 dim" > Delete
         >
@@ -79,7 +80,7 @@ class Deck extends Component {
         ) : (
           <></>
         )}
-      </div>
+      </DeckOrCardGrid>
     );
   }
 }

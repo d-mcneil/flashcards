@@ -34,12 +34,12 @@ const Editor = ({ error, isPending, deckId, userId }) => {
         deckId={deckId}
         validationCallback={validateCardInput}
         fetchCallback={fetchCallCreateCard}
-        actionAddDeckOrCardCallback={addCard}
+        actionCallback={addCard}
         idPropertyName="cardId"
         maxLengthMainField={255}
         maxLengthSecondaryField={255}
-        mainFieldPlaceholder="Enter New Term"
-        secondaryFieldPlaceholder="Enter New Definition"
+        placeholderMainField="Enter New Term"
+        placeholderSecondaryField="Enter New Definition"
       />
     </>
   );
