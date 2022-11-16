@@ -88,7 +88,10 @@ const Register = ({ error, isPending, registerUser, resetErrorIfNeeded }) => {
         onClick={onSubmit}
         onEnterSubmit={(event) => onEnterCallback(event, onSubmit)}
       />
-      <Message message={message} wrapperClass="form-error-message" />
+      <Message
+        message={message}
+        wrapperClass="form-error-message" // in index.css
+      />
     </Form>
   );
 };

@@ -5,8 +5,7 @@ import { setError, resetError, updateCurrentDeck, updateDeckList } from "../../r
 import { useInputValueWithErrorReset as useInputValue } from "../../functions/hooks";
 import { validateDeckName } from "../../functions/validateInput";
 // prettier-ignore
-import { setTextAreaHeight, onEnterCallback, onBlurSave } from "../../functions/repeatedFunctions";
-import { fetchCallUpdateDeckOrCard } from "../../functions/fetchCalls";
+import { setTextAreaHeight, onEnterCallback, onBlurSave, saveChangesDeckOrCard } from "../../functions/repeatedFunctions";
 import "./DeckEditor.css";
 
 const mapStateToProps = (state) => ({
@@ -36,29 +35,7 @@ const DeckEditor = ({ currentDeck, userId, error, updateError, updateDeck, reset
   const currentDescription = currentDeck.description;
 
   const saveChanges = () => {
-    const newDeckNameValue = newDeckName.value;
-    const newDescriptionValue = newDescription.value;
-
-    // this prevents sending information to the server if it's exactly the same as what it already has
-    if (newDeckNameValue === currentDeckName && newDescriptionValue === currentDescription) {return;}
-    
-    const validity = validateDeckName(newDeckNameValue, newDescriptionValue);
-    if (!validity.valid) {
-      if (validity.reason) {
-        updateError(validity.reason);
-      }
-      return;
-    }
-
-    // prettier-ignore
-    fetchCallUpdateDeckOrCard(userId, deckId, newDeckNameValue, newDescriptionValue, 'deck')
-    .then(data => {
-        if (data.deckId === deckId) {
-            updateDeck(newDeckNameValue, newDescriptionValue, deckId);
-        } else {
-            updateError(data)
-        }
-    }).catch(err => updateError("Error updating deck: 0"))
+    saveChangesDeckOrCard(currentDeckName, newDeckName.value, currentDescription, newDescription.value, validateDeckName, updateError, updateDeck, userId, deckId, 'deck')
   };
 
   useEffect(() => {
@@ -73,7 +50,7 @@ const DeckEditor = ({ currentDeck, userId, error, updateError, updateDeck, reset
     <div id='deck-editor-grid' className="center">
       {/* **************start deck name***************** */}
       <textarea
-        className="f2 outline-hover"
+        className="f3 outline-hover"
         id="name-area"
         defaultValue={currentDeckName}
         placeholder="Enter Deck Name"

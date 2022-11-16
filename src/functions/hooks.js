@@ -4,13 +4,13 @@ import { useState } from "react";
 export const useInputValueWithErrorReset = (
   initialValue,
   error,
-  resetError
+  resetErrorCallback
 ) => {
   const [value, setValue] = useState(initialValue);
   const handleChange = (event) => {
     setValue(event.target.value);
     if (error) {
-      resetError();
+      resetErrorCallback();
     }
   };
   return {

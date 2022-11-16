@@ -11,6 +11,7 @@
 
 #description-area {
     margin-bottom: var(--spacing-large);
+    margin-top: var(--spacing-small);
     text-align: justify;
     font-style: italic;
 }

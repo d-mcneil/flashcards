@@ -16,7 +16,10 @@ const Practice = ({ error, isPending }) => {
     <>
       <Header text="Practice" />
       {message ? (
-        <Message message={message} wrapperClass="decks-error-message" />
+        <Message
+          message={message}
+          wrapperClass="main-error-message" // in index.css
+        />
       ) : (
         <></>
       )}

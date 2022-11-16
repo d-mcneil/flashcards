@@ -7,9 +7,9 @@ const MainFieldInputBox = ({
   // the inputs for each of the 3 cases are in the comments below
   saveCallback, // newDeck: save | newCard: save | cardEditor: saveChanges
   maxLength, // newDeck: 100 | newCard: 255 | cardEditor: 255
-  onChange, // mainField.onChange
+  onChange, // newDeck: mainField.onChange | newCard: mainField.onChange | cardEditor: newTerm.onChange
   placeholder, // newDeck: "Enter New Deck Name" | newCard: "Enter New Term" | cardEditor: "Enter Term"
-  defaultValue = undefined, // newDeck: undefined | newCard: undefined | cardEditor: card.term
+  defaultValue = undefined, // newDeck: undefined | newCard: undefined | cardEditor: currentTerm (=== card.term)
   newItem = false, // newDeck: true | newCard: true | cardEditor: false
 }) => {
   const newDeckOrNewCardResetClass = newItem

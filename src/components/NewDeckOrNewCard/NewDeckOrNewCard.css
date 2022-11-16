@@ -1,5 +1,3 @@
 .new-deck-or-card-error-message {
     grid-column: 1 / -1;
-    margin-top: var(--spacing-medium);
-    padding-top: 0;
 }

@@ -67,6 +67,7 @@ const NewDeckOrNewCard = ({
       );
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setTextAreaHeight("text-area-new"), []);
 
   return (

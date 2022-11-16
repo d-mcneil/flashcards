@@ -1,0 +1,9 @@
+.delete-button {
+    cursor: pointer;
+    margin-top: var(--spacing-extra-small);
+    margin-bottom: var(--spacing-medium);
+    align-self: start;
+    justify-self: center;
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
+}

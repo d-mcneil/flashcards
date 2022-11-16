@@ -16,6 +16,7 @@
     margin-top: var(--spacing-small);
     margin-bottom: var(--spacing-medium);
     max-height: 3.7rem;
+    text-align: justify;
 }
 
 .deck-name,
@@ -40,11 +41,4 @@
     align-self: end;
     justify-self: center;
     grid-column: 2 / span 1;
-}
-
-.deck-error-message {
-    margin-top: 0;
-    padding-top: 0;
-    margin-bottom: var(--spacing-medium);
-    grid-column: 1 / -1;
 }

@@ -5,7 +5,8 @@ import { fetchCallDelete } from "../../functions/fetchCalls";
 import DeckOrCardGrid from "../DeckOrCardGrid/DeckOrCardGrid";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import DeleteButton from "../DeleteButton/DeleteButton";
 import "./Deck.css";
 
 const mapDispatchToProps = (dispatch) => ({
@@ -65,18 +66,14 @@ class Deck extends Component {
         </div>
 
         {/* **************start delete button***************** */}
-        <div
-          onClick={this.deleteDeck}
-          className="delete-button f5 f4-ns dim pointer"
-          // alternate delete button with text instead of the trash can
-          // className="deck-delete-button f6 f5-ns mb3 mt2 dim" > Delete
-        >
-          <FontAwesomeIcon icon={faTrashCan} />
-        </div>
+        <DeleteButton deleteCallback={this.deleteDeck} />
 
         {/* **************start error notification***************** */}
         {error ? (
-          <Message message={error} wrapperClass="deck-error-message" />
+          <Message
+            message={error}
+            wrapperClass="main-error-message" // in index.css
+          />
         ) : (
           <></>
         )}

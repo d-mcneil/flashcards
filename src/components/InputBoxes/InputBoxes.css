@@ -9,8 +9,10 @@
 .deck-description-or-card-definition {
     align-self: start;
     resize: none;
-    margin-bottom: 0;
     margin-top: var(--spacing-small);
+    margin-bottom: var(--spacing-medium);
+    text-align: justify;
+    /* max-height: 4.5em; */
 }
 
 .deck-description-or-card-definition,
@@ -29,6 +31,12 @@
     .deck-name-or-card-term,
     .deck-description-or-card-definition {
         margin-left: var(--spacing-large);
+        /* margin-right: var(--spacing-large); */
+    }
+
+    .reset-new-deck-or-card-info {
+        margin-left: var(--spacing-large);
         margin-right: var(--spacing-large);
     }
+
 }

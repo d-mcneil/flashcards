@@ -9,9 +9,9 @@ const SecondaryFieldInputBox = ({
   saveCallback, // newDeck: save | newCard: save | cardEditor: saveChanges
   cardId = undefined, // newDeck: undefined | newCard: undefined | cardEditor: cardId
   maxLength, // newDeck: undefined | newCard: 255 | cardEditor: 255
-  onChange, // secondaryField.onChange
+  onChange, // newDeck: secondaryField.onChange | newCard: secondaryField.onChange | cardEditor: newDefinition.onChange
   placeholder, // newDeck: "Enter New Deck Description (Optional)" | newCard: "Enter New Definition" | cardEditor: "Enter Definition"
-  defaultValue = undefined, // newDeck: undefined | newCard: undefined | cardEditor: card.definition
+  defaultValue = undefined, // newDeck: undefined | newCard: undefined | cardEditor: currentDefinition (=== card.definition)
   newItem = false, // newDeck: true | newCard: true | cardEditor: false
 }) => {
   const newDeckOrNewCardResetClass = newItem

@@ -66,7 +66,7 @@ export const updateCurrentDeck = (deckName, description) => ({
   type: UPDATE_CURRENT_DECK,
   payload: { deckName, description },
 });
-const updateCard = (term, definition, cardId) => ({
+export const updateCard = (term, definition, cardId) => ({
   type: UPDATE_CARD,
   payload: { term, definition, cardId },
 });

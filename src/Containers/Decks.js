@@ -38,7 +38,10 @@ class Decks extends Component {
       <>
         <Header text="Decks" />
         {message ? (
-          <Message message={message} wrapperClass="decks-error-message" />
+          <Message
+            message={message}
+            wrapperClass="main-error-message" // in index.css
+          />
         ) : (
           <></>
         )}

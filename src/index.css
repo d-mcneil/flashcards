@@ -32,16 +32,18 @@ path {
     cursor: pointer;
 }
 
-/* for signin and register */
+/* SignIn and Register */
 .form-error-message {
     margin-top: var(--spacing-medium);
     padding-top: var(--spacing-small);
 }
 
-.decks-error-message {
+/* Decks, Editor, Practice, CardEditor, Deck */
+.main-error-message {
     margin-top: 0;
     padding-top: 0;
     margin-bottom: var(--spacing-medium);
+    grid-column: 1 / -1;
 }
 
 .push {
