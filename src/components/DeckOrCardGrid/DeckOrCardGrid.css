@@ -6,7 +6,7 @@
     max-width: 36rem;
     /*  
     this would be used if I were to go back to using a save button 
-    instead of doing an onBlur action to save for new cards
+    instead of doing an onBlur action to save for new cards and decks
         grid-template-columns: 5fr 1fr; 
     */
 }

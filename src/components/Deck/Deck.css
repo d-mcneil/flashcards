@@ -1,14 +1,10 @@
 .deck-name {
     cursor: pointer;
-    margin-right: var(--spacing-large);
-    margin-left: var(--spacing-small);
     margin-bottom: var(--spacing-small);
     margin-top: var(--spacing-medium);
     align-self: end;
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
-    grid-column: 1 / span 1;
 }
 
 .deck-description {
@@ -17,13 +13,17 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    overflow: hidden;
     margin-top: var(--spacing-small);
-    margin-left: var(--spacing-small);
-    margin-right: var(--spacing-large);
     margin-bottom: var(--spacing-medium);
-    grid-column: 1 / span 1;
     max-height: 3.7rem;
+}
+
+.deck-name,
+.deck-description {
+    overflow: hidden;
+    grid-column: 1 / span 1;
+    margin-right: var(--spacing-large);
+    margin-left: var(--spacing-small);
 }
 
 @media screen and (min-width: 30rem) {
@@ -46,5 +46,5 @@
     margin-top: 0;
     padding-top: 0;
     margin-bottom: var(--spacing-medium);
-    grid-column: span 2;
+    grid-column: 1 / -1;
 }

@@ -1,6 +1,5 @@
 .new-deck-or-card-error-message {
-    /* this would be used if I were to go back to using a save button instead of doing an onBlur action to save
-    grid-column: 1 / span 2; */
+    grid-column: 1 / -1;
     margin-top: var(--spacing-medium);
     padding-top: 0;
 }
