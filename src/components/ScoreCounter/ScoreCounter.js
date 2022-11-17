@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { updateCardScore } from "../../redux/actions";
 import { fetchCallUpdateCardScore } from "../../functions/fetchCalls";
+import "./ScoreCounter.css";
 
 const mapDispatchToProps = (dispatch) => ({
-  onUpdateScore: (cardId, incrementValue) =>
-    dispatch(updateCardScore(cardId, incrementValue)),
+  onUpdateScore: (...args) => dispatch(updateCardScore(...args)),
 });
 
 const ScoreCounter = ({
@@ -14,6 +14,7 @@ const ScoreCounter = ({
   userId,
   setErrorCallback,
   onUpdateScore,
+  wrapperClass = "",
   arrowKeysChangeScore = false, // only true in practice mode
 }) => {
   const updateScore = (incrementValue, event) => {
@@ -62,12 +63,16 @@ const ScoreCounter = ({
   }, []);
 
   return (
-    <div
-      className="score-counter-grid center"
-      onClick={(event) => updaateScore(-1, event)}
-    >
-      <div className="score-button-left hover-bg-black hover-white ba">-</div>
+    <div className={`score-counter-grid ${wrapperClass}`}>
+      <div
+        className="score-button-left hover-bg-black hover-white ba"
+        onClick={(event) => updateScore(-1, event)}
+      >
+        -
+      </div>
+
       <div className="score-counter-center">{score}</div>
+
       <div
         className="score-button-right hover-bg-black hover-white ba"
         onClick={(event) => updateScore(1, event)}

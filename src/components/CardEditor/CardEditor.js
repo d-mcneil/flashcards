@@ -3,19 +3,17 @@ import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 import { updateCard, removeCard } from "../../redux/actions";
 import { useInputValueWithErrorReset as useInputValue } from "../../functions/hooks";
-// prettier-ignore
 import { fetchCallDelete } from "../../functions/fetchCalls";
-import {
-  setTextAreaHeight,
-  saveChangesDeckOrCard,
-} from "../../functions/repeatedFunctions";
+// prettier-ignore
+import {setTextAreaHeight, saveChangesDeckOrCard } from "../../functions/repeatedFunctions";
 import { validateCardInput } from "../../functions/validateInput";
 import DeckOrCardGrid from "../DeckOrCardGrid/DeckOrCardGrid";
 import MainFieldInputBox from "../InputBoxes/MainFieldInputBox";
 import SecondaryFieldInputBox from "../InputBoxes/SecondaryFieldInputBox";
 import Message from "../Message/Message";
-// import "./CardEditor.css";
 import DeleteButton from "../DeleteButton/DeleteButton";
+import ScoreCounter from "../ScoreCounter/ScoreCounter";
+import "./CardEditor.css";
 
 const mapDispatchToProps = (dispatch) => ({
   onDelete: (cardId) => dispatch(removeCard(cardId)),
@@ -77,6 +75,13 @@ const CardEditor = ({ onSave, onDelete, userId, cardId, score, currentTerm, curr
       />
 
       {/* **************start score counter***************** */}
+      <ScoreCounter 
+      score={score}
+      cardId={cardId}
+      userId={userId}
+      setErrorCallback={setError}
+      wrapperClass='score-counter-wrapper-card-editor f6 f5-ns'
+      />
 
       {/* **************start delete button***************** */}
       <DeleteButton deleteCallback={deleteCard} />

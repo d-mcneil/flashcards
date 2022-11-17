@@ -1,12 +1,15 @@
 .score-counter-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    height: min-content;
+    width: min-content;
 }
 
 .score-button-left,
 .score-button-right {
     cursor: pointer;
     background-color: transparent;
+    width: 1.5em;
 }
 
 .score-button-left {
@@ -24,6 +27,8 @@
     border-top-width: 1px;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    max-width: 2em;
+    width: min-content;
 }
 
 .score-button-left,
@@ -33,5 +38,4 @@
     text-align: center;
     padding: var(--spacing-extra-small);
     overflow: hidden;
-    width: 1.5em;
 }

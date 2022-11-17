@@ -2,7 +2,7 @@
     align-self: end;
     text-overflow: ellipsis;
     overflow: hidden;
-    margin-bottom: var(--spacing-extra-small);
+    margin-bottom: var(--spacing-small);
     margin-top: var(--spacing-medium);
 }
 

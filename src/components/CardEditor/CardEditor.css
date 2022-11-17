@@ -1,0 +1,7 @@
+.score-counter-wrapper-card-editor {
+    margin-bottom: var(--spacing-small);
+    margin-top: var(--spacing-medium);
+    align-self: end;
+    justify-self: center;
+    grid-column: 2 / span 1;
+}
