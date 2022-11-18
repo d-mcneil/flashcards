@@ -1,8 +1,5 @@
 import { batch } from "react-redux";
-import {
-  fetchCallGetDecksOrCards,
-  fetchCallDelete,
-} from "../functions/fetchCalls";
+import { fetchCallGet, fetchCallDelete } from "../functions/fetchCalls";
 import {
   ROUTE_CHANGE,
   LOAD_USER,
@@ -27,6 +24,9 @@ import {
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
   UPDATE_CARD_SCORE,
+  CHANGE_CURRENT_INDEX,
+  RESET_INDEX,
+  SET_PRACTICE_CARDS,
 } from "./constants";
 
 // **************** route reducer****************
@@ -61,7 +61,10 @@ const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
 // const unloadCards = () => ({ type: UNLOAD_CARDS });
 export const addCard = (card) => ({ type: ADD_CARD, payload: card });
 export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
-const loadSettings = (settings) => ({ type: LOAD_SETTINGS, payload: settings });
+export const loadSettings = (settings) => ({
+  type: LOAD_SETTINGS,
+  payload: settings,
+});
 // const unloadSettings = () => ({ type: UNLOAD_SETTINGS });
 export const updateCurrentDeck = (deckName, description) => ({
   type: UPDATE_CURRENT_DECK,
@@ -75,8 +78,17 @@ export const updateCardScore = (cardId, incrementValue) => ({
   type: UPDATE_CARD_SCORE,
   payload: { cardId, incrementValue },
 });
-//
-//
+
+// **************** practice reducer ****************
+export const changeCurrentIndex = (incrementValue) => ({
+  type: CHANGE_CURRENT_INDEX,
+  payload: incrementValue,
+});
+const resetIndex = () => ({ type: RESET_INDEX });
+export const setPracticeCards = (cards) => ({
+  type: SET_PRACTICE_CARDS,
+  payload: cards,
+});
 
 // ************************************************************ batched actions ************************************************************
 export const routeChangeAndResetError =
@@ -136,7 +148,7 @@ export const getDecksOrCardsRequest =
   (id, actionLoadCallback, decksOrCards = "decks") =>
   (dispatch) => {
     dispatch(requestPending());
-    fetchCallGetDecksOrCards(id, decksOrCards)
+    fetchCallGet(id, decksOrCards)
       .then((data) => {
         if (Array.isArray(data) && data.length > 1) {
           const idPropertyName = `${decksOrCards.replace("s", "")}Id`;

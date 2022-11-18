@@ -3,8 +3,8 @@ const headers = { "Content-Type": "application/json" };
 const responseToJson = (res) => res.json();
 
 // ************************************************* get *************************************************
-export const fetchCallGetDecksOrCards = (id, decksOrCards = "decks") => {
-  return fetch(`${mainUrl}/${decksOrCards}/${id}`).then(responseToJson);
+export const fetchCallGet = (id, route) => {
+  return fetch(`${mainUrl}/${route}/${id}`).then(responseToJson);
 };
 
 // ************************************************* post *************************************************

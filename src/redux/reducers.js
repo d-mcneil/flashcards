@@ -23,6 +23,9 @@ import {
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
   UPDATE_CARD_SCORE,
+  CHANGE_CURRENT_INDEX,
+  RESET_INDEX,
+  SET_PRACTICE_CARDS,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -46,8 +49,20 @@ const initialStateCurrentDeck = {
   currentDeck: null,
   cards: [],
   cardsHaveBeenFetched: false,
-  settings: null,
+  settings: {
+    definitionFirst: false,
+    practiceDeckPercentage: 100,
+    termLanguageCode: "en-US",
+    termLanguageName: "Google US English",
+    definitionLanguageCode: "en-US",
+    definitionLanguageName: "Google US English",
+    readOutOnFlip: false,
+  },
   settingsHaveBeenFetched: false,
+};
+const initialStatePractice = {
+  currentIndex: 0,
+  practiceCards: [],
 };
 
 // ************************************************************ reducers ************************************************************
@@ -198,6 +213,19 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
   }
 };
 
+const practice = (state = initialStatePractice, action = {}) => {
+  switch (action.type) {
+    case CHANGE_CURRENT_INDEX:
+      return { ...state, currentIndex: (state.currentIndex += action.payload) };
+    case RESET_INDEX:
+      return { ...state, currentIndex: initialStatePractice.currentIndex };
+    case SET_PRACTICE_CARDS:
+      return { ...state, practiceCards: action.payload };
+    default:
+      return state;
+  }
+};
+
 // ************************************************************ combine reducers ************************************************************
 
 export const rootReducer = combineReducers({
@@ -207,4 +235,5 @@ export const rootReducer = combineReducers({
   error,
   decks,
   currentDeck,
+  practice,
 });

@@ -47,7 +47,6 @@ body {
     .f5-ns {
         font-size: 1rem;
     }
-
 }
 
 .w-100 {
@@ -59,9 +58,17 @@ body {
     border-width: 1px;
 }
 
+.tc {
+    text-align: center;
+}
+
 .center {
     margin-right: auto;
     margin-left: auto;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .input-reset {

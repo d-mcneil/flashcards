@@ -1,0 +1,118 @@
+.notecard-main-extra-class {
+    max-width: 36rem;
+}
+
+.notecard-grid {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    cursor: pointer;
+}
+
+.notecard-icon-wrapper {
+    height: min-content;
+    width: min-content;
+    cursor: pointer;
+}
+
+.speaker-icon-wrapper {
+    justify-self: start;
+}
+
+.shuffle-icon-wrapper {
+    justify-self: center;
+}
+
+.index-counter {
+    cursor: pointer;
+    justify-self: end;
+    margin-bottom: var(--spacing-small);
+}
+
+.notecard-text-wrapper {
+    grid-column: 1 / 4;
+    cursor: pointer;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    overflow: hidden;
+    /* max-height: 11.2rem; */
+}
+
+.notecard-text {
+    /* max-height: 8.25em; */
+    overflow: auto;
+    cursor: pointer;
+    width: 100%;
+    /* padding-bottom: var(--spacing-extra-small); */
+}
+
+/* @media screen and (min-width: 30em) {
+    .notecard-text {
+      max-height: 7em;
+    }
+  } */
+
+.left-arrow {
+    justify-self: end;
+    margin-right: var(--spacing-extra-small);
+}
+
+.right-arrow {
+    justify-self: start;
+    margin-left: var(--spacing-extra-small);
+}
+
+.left-arrow,
+.right-arrow {
+    cursor: pointer;
+    border-color: black;
+    padding-top: var(--spacing-extra-small);
+    padding-bottom: var(--spacing-extra-small);
+    padding-left: var(--spacing-small);
+    padding-right: var(--spacing-small);
+    margin-top: var(--spacing-small);
+    border-radius: .125rem;
+}
+
+@media screen and (min-width: 30rem) {
+
+    .left-arrow,
+    .right-arrow {
+        padding-right: var(--spacing-large);
+        padding-left: var(--spacing-large);
+    }
+}
+
+.notecard-score-counter-wrapper {
+    margin-top: var(--spacing-small);
+}
+
+.row-1 {
+    grid-row: 1 / 2;
+    align-self: start;
+}
+
+.row-2 {
+    grid-row: 2 / 3;
+}
+
+.row-3 {
+    grid-row: 3 / 4;
+    align-self: end;
+}
+
+.column-1 {
+    grid-column: 1 / 2;
+}
+
+.column-2 {
+    grid-column: 2 / 3;
+    justify-self: center;
+}
+
+.column-3 {
+    grid-column: 3 / 4;
+}

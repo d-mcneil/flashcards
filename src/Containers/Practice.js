@@ -1,16 +1,71 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Header from "../components/Header/Header";
 import Message from "../components/Message/Message";
+import { fetchCallGet } from "../functions/fetchCalls";
+import { loadSettings, setPracticeCards } from "../redux/actions";
+import MainCard from "../components/MainCard/MainCard";
+import Notecards from "./Notecards";
 
 const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
   error: state.error.error,
+  deckId: state.currentDeck.currentDeck.deckId,
+  settingsHaveBeenFetched: state.currentDeck.settingsHaveBeenFetched,
+  practiceCards: state.practice.practiceCards,
+  cards: state.currentDeck.cards,
+  cardsHaveBeenFetched: state.currentDeck.cardsHaveBeenFetched,
 });
-const mapDispatchToProps = (dispatch) => ({});
 
-const Practice = ({ error, isPending }) => {
+const mapDispatchToProps = (dispatch) => ({
+  onGetSettings: (settings) => dispatch(loadSettings(settings)),
+  loadPracticeCards: (cards) => dispatch(setPracticeCards(cards)),
+});
+
+const Practice = ({
+  error,
+  isPending,
+  settingsHaveBeenFetched,
+  cardsHaveBeenFetched,
+  deckId,
+  practiceCards,
+  cards,
+  onGetSettings,
+  loadPracticeCards,
+}) => {
   const message = isPending ? "Loading cards..." : error;
+
+  useEffect(() => {
+    if (!settingsHaveBeenFetched) {
+      fetchCallGet(deckId, "practice-settings").then((data) => {
+        if (data.deckId) {
+          onGetSettings(data);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (cardsHaveBeenFetched) {
+      loadPracticeCards(cards);
+    }
+  }, [cardsHaveBeenFetched]);
+
+  const renderNotecards = practiceCards.length ? (
+    <Notecards />
+  ) : cards.length ? (
+    <MainCard>
+      <Message
+        message="Setting up practice session..."
+        wrapperClass="main-error-message" // in index.css
+      />
+    </MainCard>
+  ) : (
+    <MainCard>
+      <div className="f3-ns f4 tc">Add cards to this deck to practice!</div>
+    </MainCard>
+  );
 
   return (
     <>
@@ -23,6 +78,7 @@ const Practice = ({ error, isPending }) => {
       ) : (
         <></>
       )}
+      {renderNotecards}
     </>
   );
 };
