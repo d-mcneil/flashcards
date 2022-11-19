@@ -82,7 +82,7 @@ export const changeCurrentIndex = (incrementValue) => ({
   type: CHANGE_CURRENT_INDEX,
   payload: incrementValue,
 });
-const resetIndex = () => ({ type: RESET_INDEX });
+export const resetIndex = () => ({ type: RESET_INDEX });
 export const setPracticeCards = (cards) => ({
   type: SET_PRACTICE_CARDS,
   payload: cards,

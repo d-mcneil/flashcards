@@ -1,19 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
-import { changeCurrentIndex, setError } from "../../redux/actions";
+import { changeCurrentIndex, setError, resetIndex } from "../../redux/actions";
+import { useWindowEventHandler } from "../../functions/hooks";
 import { validateIndexChange } from "../../functions/validateInput";
 import MainCard from "../MainCard/MainCard";
 import ScoreCounter from "../ScoreCounter/ScoreCounter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShuffle, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
+import {
+  faShuffle,
+  faVolumeHigh,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import "./NotecardFace.css";
-import { useWindowEventHandler } from "../../functions/hooks";
 
 const mapStateToProps = (state) => ({
-  currentIndex: state.currentDeck.practice.currentIndex,
   userId: state.userStatus.user.userId,
-  practiceCards: state.currentDeck.practice.practiceCards,
   error: state.error.error,
+  currentIndex: state.currentDeck.practice.currentIndex,
+  practiceCards: state.currentDeck.practice.practiceCards,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -24,19 +28,21 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCurrentIndex(incrementValue));
   },
   updateError: (error) => dispatch(setError(error)),
+  restartPractice: () => dispatch(resetIndex()),
 });
 
 const NotecardFace = ({
-  content,
-  voice,
+  content, // frontContent or backContent - from Notecards container
+  voice, // frontVoice or backVoice - from Notecards container
   arrowKeysChangeScore = false,
   arrowKeysChangeIndex = false,
-  currentIndex,
   userId,
-  practiceCards,
   error,
-  updateError,
+  currentIndex,
+  practiceCards,
   changeIndex,
+  updateError,
+  restartPractice,
 }) => {
   const currentCard = practiceCards[currentIndex];
   const { cardId, score } = currentCard;
@@ -116,13 +122,20 @@ const NotecardFace = ({
           wrapperClass="notecard-score-counter-wrapper f6 f5-ns row-3 column-2"
         />
 
-        {/* ******** right arrow ******** */}
+        {/* ******** right arrow / restart practice button ******** */}
         {currentIndex < totalCards - 1 ? (
           <div
             onClick={(event) => changeIndex(1, event)}
             className="hover-bg-black hover-white ba f6 f5-ns row-3 column-3 right-arrow"
           >
             {">"}
+          </div>
+        ) : totalCards > 1 && currentIndex + 1 === totalCards ? (
+          <div
+            onClick={restartPractice}
+            className="hover-bg-black hover-white ba f6 f5-ns row-3 column-3 right-arrow"
+          >
+            <FontAwesomeIcon icon={faRotateLeft} />
           </div>
         ) : (
           <></>

@@ -27,8 +27,9 @@
     border-top-width: 1px;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    max-width: 2em;
-    width: min-content;
+    /* max-width: 2em; */
+    /* width: min-content; */
+    width: 2em;
 }
 
 .score-button-left,
