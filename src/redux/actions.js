@@ -28,7 +28,9 @@ import {
   RESET_INDEX,
   SET_PRACTICE_CARDS,
   UNLOAD_PRACTICE_CARDS,
-  SET_SPEECH_SYNTHESIS_VOICES,
+  SET_TERM_SPEECH_SYNTHESIS_VOICE,
+  SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
+  LOAD_SPEECH_SYNTHESIS_VOICES,
 } from "./constants";
 
 // **************** route reducer****************
@@ -89,10 +91,18 @@ export const setPracticeCards = (cards) => ({
   payload: cards,
 });
 const unloadPracticeCards = () => ({ type: UNLOAD_PRACTICE_CARDS });
+export const setTermSpeechSynthesisVoice = (voice) => ({
+  type: SET_TERM_SPEECH_SYNTHESIS_VOICE,
+  payload: voice,
+});
+export const setDefinitionSpeechSynthesisVoice = (voice) => ({
+  type: SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
+  payload: voice,
+});
 
 // **************** speechSynthesisVoices reducer ****************
-export const setSpeechSynthesisVoices = (voices) => ({
-  type: SET_SPEECH_SYNTHESIS_VOICES,
+export const loadSpeechSynthesisVoices = (voices) => ({
+  type: LOAD_SPEECH_SYNTHESIS_VOICES,
   payload: voices,
 });
 
@@ -206,11 +216,18 @@ export const unselectDeck = (error) => (dispatch) => {
 };
 
 export const shufflePracticeCards =
-  (cards, event = null, currentIndex = 1) =>
+  (
+    cards,
+    event = null,
+    currentIndex = 1,
+    sliceDeck = false,
+    practiceCardsQuantity = 0
+  ) =>
   (dispatch) => {
     if (event) {
       event.stopPropagation();
     }
+    // shuffle cards
     let shuffledCards = [].concat(cards);
     for (let i = shuffledCards.length - 1; i >= 1; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -218,6 +235,11 @@ export const shufflePracticeCards =
       shuffledCards[j] = shuffledCards[i];
       shuffledCards[i] = temp;
     }
+    // slice deck if required
+    if (sliceDeck) {
+      shuffledCards = shuffledCards.slice(0, practiceCardsQuantity);
+    }
+    // dispatch
     if (currentIndex > 0) {
       batch(() => {
         dispatch(resetIndex());

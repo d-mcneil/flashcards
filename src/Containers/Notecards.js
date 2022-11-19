@@ -7,9 +7,17 @@ const mapStateToProps = (state) => ({
   currentIndex: state.currentDeck.practice.currentIndex,
   practiceCards: state.currentDeck.practice.practiceCards,
   definitionFirst: state.currentDeck.practice.settings.definitionFirst,
+  termVoice: state.currentDeck.practice.termSpeechSynthesisVoice,
+  definitionVoice: state.currentDeck.practice.definitionSpeechSynthesisVoice,
 });
 
-const Notecards = ({ currentIndex, practiceCards, definitionFirst }) => {
+const Notecards = ({
+  currentIndex,
+  practiceCards,
+  definitionFirst,
+  termVoice,
+  definitionVoice,
+}) => {
   const currentCard = practiceCards[currentIndex];
   let frontContent,
     backContent = "";
@@ -18,9 +26,13 @@ const Notecards = ({ currentIndex, practiceCards, definitionFirst }) => {
   if (definitionFirst) {
     frontContent = currentCard.definition;
     backContent = currentCard.term;
+    frontVoice = definitionVoice;
+    backVoice = termVoice;
   } else {
     frontContent = currentCard.term;
     backContent = currentCard.definition;
+    frontVoice = termVoice;
+    backVoice = definitionVoice;
   }
 
   return (

@@ -27,7 +27,9 @@ import {
   RESET_INDEX,
   SET_PRACTICE_CARDS,
   UNLOAD_PRACTICE_CARDS,
-  SET_SPEECH_SYNTHESIS_VOICES,
+  LOAD_SPEECH_SYNTHESIS_VOICES,
+  SET_TERM_SPEECH_SYNTHESIS_VOICE,
+  SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -64,6 +66,8 @@ const initialStateCurrentDeck = {
     },
     currentIndex: 0,
     practiceCards: [],
+    termSpeechSynthesisVoice: null,
+    definitionSpeechSynthesisVoice: null,
   },
 };
 const initialStateSpeechSynthesisVoices = { speechSynthesisVoices: [] };
@@ -252,6 +256,22 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
           practiceCards: initialStateCurrentDeck.practice.practiceCards,
         },
       };
+    case SET_TERM_SPEECH_SYNTHESIS_VOICE:
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          termSpeechSynthesisVoice: action.payload,
+        },
+      };
+    case SET_DEFINITION_SPEECH_SYNTHESIS_VOICE:
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          definitionSpeechSynthesisVoice: action.payload,
+        },
+      };
     default:
       return state;
   }
@@ -262,7 +282,7 @@ const speechSynthesisVoices = (
   action = {}
 ) => {
   switch (action.type) {
-    case SET_SPEECH_SYNTHESIS_VOICES:
+    case LOAD_SPEECH_SYNTHESIS_VOICES:
       return { ...state, speechSynthesisVoices: action.payload };
     default:
       return state;

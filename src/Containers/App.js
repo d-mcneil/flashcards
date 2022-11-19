@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setSpeechSynthesisVoices } from "../redux/actions";
+import { loadSpeechSynthesisVoices } from "../redux/actions";
 import SignIn from "./SignIn";
 import Register from "./Register";
 import Decks from "./Decks";
@@ -16,8 +16,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadSpeechSynthesisVoices: (voices) =>
-    dispatch(setSpeechSynthesisVoices(voices)),
+  setSpeechSynthesisVoices: (voices) =>
+    dispatch(loadSpeechSynthesisVoices(voices)),
 });
 
 class App extends Component {
@@ -26,7 +26,7 @@ class App extends Component {
     if (speechSynthesizer) {
       const _handleVoicesChanged = () => {
         const voices = speechSynthesizer.getVoices();
-        this.props.loadSpeechSynthesisVoices(voices);
+        this.props.setSpeechSynthesisVoices(voices);
         speechSynthesizer.removeEventListener(
           "voiceschanged",
           _handleVoicesChanged
