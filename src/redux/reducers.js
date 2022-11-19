@@ -15,17 +15,18 @@ import {
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
   LOAD_CARDS,
-  UNLOAD_CARDS,
+  // UNLOAD_CARDS,
   ADD_CARD,
   REMOVE_CARD,
-  LOAD_SETTINGS,
-  UNLOAD_SETTINGS,
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
   UPDATE_CARD_SCORE,
+  LOAD_SETTINGS,
+  // UNLOAD_SETTINGS,
   CHANGE_CURRENT_INDEX,
   RESET_INDEX,
   SET_PRACTICE_CARDS,
+  UNLOAD_PRACTICE_CARDS,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -49,20 +50,20 @@ const initialStateCurrentDeck = {
   currentDeck: null,
   cards: [],
   cardsHaveBeenFetched: false,
-  settings: {
-    definitionFirst: false,
-    practiceDeckPercentage: 100,
-    termLanguageCode: "en-US",
-    termLanguageName: "Google US English",
-    definitionLanguageCode: "en-US",
-    definitionLanguageName: "Google US English",
-    readOutOnFlip: false,
+  practice: {
+    settingsHaveBeenFetched: false,
+    settings: {
+      definitionFirst: false,
+      practiceDeckPercentage: 100,
+      termLanguageCode: "en-US",
+      termLanguageName: "Google US English",
+      definitionLanguageCode: "en-US",
+      definitionLanguageName: "Google US English",
+      readOutOnFlip: false,
+    },
+    currentIndex: 0,
+    practiceCards: [],
   },
-  settingsHaveBeenFetched: false,
-};
-const initialStatePractice = {
-  currentIndex: 0,
-  practiceCards: [],
 };
 
 // ************************************************************ reducers ************************************************************
@@ -147,31 +148,18 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
       return { ...state, ...initialStateCurrentDeck };
     case LOAD_CARDS:
       return { ...state, cards: action.payload, cardsHaveBeenFetched: true };
-    case UNLOAD_CARDS:
-      return {
-        ...state,
-        cards: initialStateCurrentDeck.cards,
-        cardsHaveBeenFetched: initialStateCurrentDeck.cardsHaveBeenFetched,
-      };
+    // case UNLOAD_CARDS:
+    //   return {
+    //     ...state,
+    //     cards: initialStateCurrentDeck.cards,
+    //     cardsHaveBeenFetched: initialStateCurrentDeck.cardsHaveBeenFetched,
+    //   };
     case ADD_CARD:
       return { ...state, cards: [...state.cards, action.payload] };
     case REMOVE_CARD:
       return {
         ...state,
         cards: state.cards.filter((card) => card.cardId !== action.payload),
-      };
-    case LOAD_SETTINGS:
-      return {
-        ...state,
-        settings: action.payload,
-        settingsHaveBeenFetched: true,
-      };
-    case UNLOAD_SETTINGS:
-      return {
-        ...state,
-        settings: initialStateCurrentDeck.settings,
-        settingsHaveBeenFetched:
-          initialStateCurrentDeck.settingsHaveBeenFetched,
       };
     case UPDATE_CURRENT_DECK:
       return {
@@ -197,30 +185,71 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
     }
     case UPDATE_CARD_SCORE: {
       const { incrementValue, cardId } = action.payload;
-      return {
-        ...state,
-        cards: state.cards.map((card) => {
+      const updateScore = (cardsArray) =>
+        cardsArray.map((card) => {
           if (cardId === card.cardId) {
             return { ...card, score: card.score + incrementValue };
           } else {
             return card;
           }
-        }),
+        });
+      return {
+        ...state,
+        cards: updateScore(state.cards),
+        practice: {
+          ...state.practice,
+          practiceCards: updateScore(state.practice.practiceCards),
+        },
       };
     }
-    default:
-      return state;
-  }
-};
-
-const practice = (state = initialStatePractice, action = {}) => {
-  switch (action.type) {
+    case LOAD_SETTINGS:
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          settings: action.payload,
+          settingsHaveBeenFetched: true,
+        },
+      };
+    // case UNLOAD_SETTINGS:
+    //   return {
+    //     ...state,
+    //     practice: {
+    //       ...state.practice,
+    //       settings: initialStateCurrentDeck.practice.settings,
+    //       settingsHaveBeenFetched:
+    //         initialStateCurrentDeck.practice.settingsHaveBeenFetched,
+    //     },
+    //   };
     case CHANGE_CURRENT_INDEX:
-      return { ...state, currentIndex: (state.currentIndex += action.payload) };
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          currentIndex: (state.practice.currentIndex += action.payload),
+        },
+      };
     case RESET_INDEX:
-      return { ...state, currentIndex: initialStatePractice.currentIndex };
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          currentIndex: initialStateCurrentDeck.practice.currentIndex,
+        },
+      };
     case SET_PRACTICE_CARDS:
-      return { ...state, practiceCards: action.payload };
+      return {
+        ...state,
+        practice: { ...state.practice, practiceCards: action.payload },
+      };
+    case UNLOAD_PRACTICE_CARDS:
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          practiceCards: initialStateCurrentDeck.practice.practiceCards,
+        },
+      };
     default:
       return state;
   }
@@ -235,5 +264,4 @@ export const rootReducer = combineReducers({
   error,
   decks,
   currentDeck,
-  practice,
 });

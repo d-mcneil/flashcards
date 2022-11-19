@@ -1,5 +1,8 @@
 .notecard-main-extra-class {
     max-width: 36rem;
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .notecard-grid {
@@ -38,22 +41,15 @@
     justify-self: center;
     text-align: center;
     overflow: hidden;
-    /* max-height: 11.2rem; */
+    max-height: 11.7rem;
 }
 
 .notecard-text {
-    /* max-height: 8.25em; */
+    max-height: 8.4em;
     overflow: auto;
     cursor: pointer;
     width: 100%;
-    /* padding-bottom: var(--spacing-extra-small); */
 }
-
-/* @media screen and (min-width: 30em) {
-    .notecard-text {
-      max-height: 7em;
-    }
-  } */
 
 .left-arrow {
     justify-self: end;
@@ -74,15 +70,22 @@
     padding-left: var(--spacing-small);
     padding-right: var(--spacing-small);
     margin-top: var(--spacing-small);
-    border-radius: .125rem;
+    border-radius: .5rem;
+    background-color: transparent;
 }
 
 @media screen and (min-width: 30rem) {
 
+    .notecard-text {
+        max-height: 7em;
+    }
+
     .left-arrow,
     .right-arrow {
-        padding-right: var(--spacing-large);
-        padding-left: var(--spacing-large);
+        padding-right: var(--spacing-medium);
+        padding-left: var(--spacing-medium);
+        margin-left: var(--spacing-medium);
+        margin-right: var(--spacing-medium);
     }
 }
 

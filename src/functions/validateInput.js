@@ -95,3 +95,18 @@ export const validateCardInput = (term, definition) => {
   }
   return { valid: true };
 };
+
+export const validateIndexChange = (
+  totalCards,
+  currentIndex,
+  incrementValue
+) => {
+  if (totalCards < 2) {
+    return false;
+  } else if (currentIndex === 0 && incrementValue < 0) {
+    return false;
+  } else if (currentIndex === totalCards - 1 && incrementValue > 0) {
+    return false;
+  }
+  return true;
+};

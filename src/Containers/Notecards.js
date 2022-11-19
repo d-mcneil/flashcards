@@ -4,9 +4,9 @@ import Flipcard from "../components/Filpcard/Flipcard";
 import NotecardFace from "../components/NotecardFace/NotecardFace";
 
 const mapStateToProps = (state) => ({
-  currentIndex: state.practice.currentIndex,
-  practiceCards: state.practice.practiceCards,
-  definitionFirst: state.currentDeck.settings.definitionFirst,
+  currentIndex: state.currentDeck.practice.currentIndex,
+  practiceCards: state.currentDeck.practice.practiceCards,
+  definitionFirst: state.currentDeck.practice.settings.definitionFirst,
 });
 
 const Notecards = ({ currentIndex, practiceCards, definitionFirst }) => {
@@ -24,11 +24,12 @@ const Notecards = ({ currentIndex, practiceCards, definitionFirst }) => {
   }
 
   return (
-    <Flipcard>
+    <Flipcard key={currentCard.cardId}>
       <NotecardFace
         content={frontContent}
         voice={frontVoice}
         arrowKeysChangeScore={true}
+        arrowKeysChangeIndex={true}
       />
       <NotecardFace content={backContent} voice={backVoice} />
     </Flipcard>

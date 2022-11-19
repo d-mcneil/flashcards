@@ -1,40 +1,69 @@
 import React from "react";
 import { connect } from "react-redux";
 import { changeCurrentIndex, setError } from "../../redux/actions";
+import { validateIndexChange } from "../../functions/validateInput";
 import MainCard from "../MainCard/MainCard";
+import ScoreCounter from "../ScoreCounter/ScoreCounter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShuffle, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import "./NotecardFace.css";
-import ScoreCounter from "../ScoreCounter/ScoreCounter";
+import { useWindowEventHandler } from "../../functions/hooks";
 
 const mapStateToProps = (state) => ({
-  currentIndex: state.practice.currentIndex,
+  currentIndex: state.currentDeck.practice.currentIndex,
   userId: state.userStatus.user.userId,
-  practiceCards: state.practice.practiceCards,
+  practiceCards: state.currentDeck.practice.practiceCards,
+  error: state.error.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeIndex: (incrementValue) => dispatch(changeCurrentIndex(incrementValue)),
+  changeIndex: (incrementValue, event = null) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    dispatch(changeCurrentIndex(incrementValue));
+  },
   updateError: (error) => dispatch(setError(error)),
 });
 
 const NotecardFace = ({
   content,
   voice,
+  arrowKeysChangeScore = false,
+  arrowKeysChangeIndex = false,
   currentIndex,
   userId,
   practiceCards,
+  error,
   updateError,
-  arrowKeysChangeScore = false,
+  changeIndex,
 }) => {
   const currentCard = practiceCards[currentIndex];
   const { cardId, score } = currentCard;
   const totalCards = practiceCards.length;
 
+  const handleArrowKeys = (event) => {
+    if (event.code === "ArrowRight" || event.code === "ArrowLeft") {
+      let incrementValue = 1;
+      if (event.code === "ArrowLeft") {
+        incrementValue = -1;
+      }
+      // prettier-ignore
+      const valid = validateIndexChange(totalCards, currentIndex, incrementValue)
+      if (valid) {
+        changeIndex(incrementValue);
+      }
+    }
+  };
+
+  // handles changing the curent index number with arrow keys
+  useWindowEventHandler(handleArrowKeys, arrowKeysChangeIndex, [currentIndex]);
+
   return (
     <MainCard extraClassName="w-100 pointer notecard-main-extra-class">
       <div className="notecard-grid">
         {/* **************start row 1***************** */}
+        {/* ******** speaker icon ******** */}
         {voice ? (
           <div
             // onClick={speak}
@@ -45,12 +74,16 @@ const NotecardFace = ({
         ) : (
           <></>
         )}
+
+        {/* ******** shuffle icon ******** */}
         <div
           // onClick={shufflePracticeCards}
           className="f6 f5-ns dim row-1 column-2 notecard-icon-wrapper shuffle-icon-wrapper"
         >
           <FontAwesomeIcon icon={faShuffle} />
         </div>
+
+        {/* ******** index/cards counter ******** */}
         <div className="f6 f5-ns row-1 column-3 index-counter">
           {`${currentIndex + 1} / ${totalCards}`}
         </div>
@@ -61,28 +94,33 @@ const NotecardFace = ({
         </div>
 
         {/* **************start row 3***************** */}
+        {/* ******** left arrow ******** */}
         {currentIndex > 0 ? (
           <div
-            onClick={(event) => changeCurrentIndex(-1, event)}
-            className="bg-transparent hover-bg-black hover-white ba f6 f5-ns column-1 row-3 left-arrow"
+            onClick={(event) => changeIndex(-1, event)}
+            className="hover-bg-black hover-white ba f6 f5-ns column-1 row-3 left-arrow"
           >
             {"<"}
           </div>
         ) : (
           <></>
         )}
+
         <ScoreCounter
           score={score}
           cardId={cardId}
           userId={userId}
           setErrorCallback={updateError}
+          error={error}
           arrowKeysChangeScore={arrowKeysChangeScore}
           wrapperClass="notecard-score-counter-wrapper f6 f5-ns row-3 column-2"
         />
-        {currentIndex < totalCards ? (
+
+        {/* ******** right arrow ******** */}
+        {currentIndex < totalCards - 1 ? (
           <div
-            onClick={(event) => changeCurrentIndex(1, event)}
-            className="bg-transparent hover-bg-black hover-white ba f6 f5-ns row-3 column-3 right-arrow"
+            onClick={(event) => changeIndex(1, event)}
+            className="hover-bg-black hover-white ba f6 f5-ns row-3 column-3 right-arrow"
           >
             {">"}
           </div>
@@ -92,40 +130,6 @@ const NotecardFace = ({
       </div>
     </MainCard>
   );
-
-  //   return (
-  //     <>
-  //       <div className="br3 ba b--black-10 w-100 h-100 mw6 shadow-5 center">
-  //         <main className="pa4 black-80 w-100 h-100 center pointer">
-
-  //             {/* **************start row 3***************** */}
-  //
-  //
-  //               <ScoreCounter
-  //                 score={score}
-  //                 setScoreError={setScoreError}
-  //                 updateScore={updateScore}
-  //                 userId={userId}
-  //                 cardId={cardId}
-  //                 arrowKeysChangeScore={arrowKeysChangeScore}
-  //               />
-  //             </div>
-  //             {currentIndex < totalCards ? (
-  //               <div
-
-  //                 className="pointer ba b--black br1 pv1 ph4-ns ph2 bg-transparent hover-bg-black hover-white f6 f5-ns mt2 ml1"
-  //                 onClick={(event) => changeCurrentIndex(1, event)}
-  //               >
-  //                 {">"}
-  //               </div>
-  //             ) : (
-  //               <></>
-  //             )}
-  //           </div>
-  //         </main>
-  //       </div>
-  //     </>
-  //   );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotecardFace);

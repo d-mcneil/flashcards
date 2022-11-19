@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import Header from "../components/Header/Header";
 import Message from "../components/Message/Message";
 import { fetchCallGet } from "../functions/fetchCalls";
-import { loadSettings, setPracticeCards } from "../redux/actions";
+import {
+  endPracticeSession,
+  loadSettings,
+  setPracticeCards,
+} from "../redux/actions";
 import MainCard from "../components/MainCard/MainCard";
 import Notecards from "./Notecards";
 
@@ -11,15 +15,16 @@ const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
   error: state.error.error,
   deckId: state.currentDeck.currentDeck.deckId,
-  settingsHaveBeenFetched: state.currentDeck.settingsHaveBeenFetched,
-  practiceCards: state.practice.practiceCards,
   cards: state.currentDeck.cards,
   cardsHaveBeenFetched: state.currentDeck.cardsHaveBeenFetched,
+  settingsHaveBeenFetched: state.currentDeck.practice.settingsHaveBeenFetched,
+  practiceCards: state.currentDeck.practice.practiceCards,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onGetSettings: (settings) => dispatch(loadSettings(settings)),
   loadPracticeCards: (cards) => dispatch(setPracticeCards(cards)),
+  onExitPractice: () => dispatch(endPracticeSession()),
 });
 
 const Practice = ({
@@ -32,6 +37,7 @@ const Practice = ({
   cards,
   onGetSettings,
   loadPracticeCards,
+  onExitPractice,
 }) => {
   const message = isPending ? "Loading cards..." : error;
 
@@ -43,6 +49,7 @@ const Practice = ({
         }
       });
     }
+    return onExitPractice;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,6 +57,7 @@ const Practice = ({
     if (cardsHaveBeenFetched) {
       loadPracticeCards(cards);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsHaveBeenFetched]);
 
   const renderNotecards = practiceCards.length ? (

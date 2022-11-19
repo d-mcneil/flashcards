@@ -19,14 +19,15 @@ import {
   // UNLOAD_CARDS,
   ADD_CARD,
   REMOVE_CARD,
-  LOAD_SETTINGS,
-  // UNLOAD_SETTINGS,
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
   UPDATE_CARD_SCORE,
+  LOAD_SETTINGS,
+  // UNLOAD_SETTINGS,
   CHANGE_CURRENT_INDEX,
   RESET_INDEX,
   SET_PRACTICE_CARDS,
+  UNLOAD_PRACTICE_CARDS,
 } from "./constants";
 
 // **************** route reducer****************
@@ -61,11 +62,6 @@ const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
 // const unloadCards = () => ({ type: UNLOAD_CARDS });
 export const addCard = (card) => ({ type: ADD_CARD, payload: card });
 export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
-export const loadSettings = (settings) => ({
-  type: LOAD_SETTINGS,
-  payload: settings,
-});
-// const unloadSettings = () => ({ type: UNLOAD_SETTINGS });
 export const updateCurrentDeck = (deckName, description) => ({
   type: UPDATE_CURRENT_DECK,
   payload: { deckName, description },
@@ -78,8 +74,10 @@ export const updateCardScore = (cardId, incrementValue) => ({
   type: UPDATE_CARD_SCORE,
   payload: { cardId, incrementValue },
 });
-
-// **************** practice reducer ****************
+export const loadSettings = (settings) => ({
+  type: LOAD_SETTINGS,
+  payload: settings,
+});
 export const changeCurrentIndex = (incrementValue) => ({
   type: CHANGE_CURRENT_INDEX,
   payload: incrementValue,
@@ -89,6 +87,7 @@ export const setPracticeCards = (cards) => ({
   type: SET_PRACTICE_CARDS,
   payload: cards,
 });
+const unloadPracticeCards = () => ({ type: UNLOAD_PRACTICE_CARDS });
 
 // ************************************************************ batched actions ************************************************************
 export const routeChangeAndResetError =
@@ -196,6 +195,13 @@ export const unselectDeck = (error) => (dispatch) => {
   batch(() => {
     dispatch(routeChangeAndResetError("home", error));
     dispatch(unloadCurrentDeck());
+  });
+};
+
+export const endPracticeSession = () => (dispatch) => {
+  batch(() => {
+    dispatch(resetIndex());
+    dispatch(unloadPracticeCards());
   });
 };
 

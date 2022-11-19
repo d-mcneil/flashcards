@@ -80,6 +80,7 @@ const CardEditor = ({ onSave, onDelete, userId, cardId, score, currentTerm, curr
       cardId={cardId}
       userId={userId}
       setErrorCallback={setError}
+      error={error}
       wrapperClass='score-counter-wrapper-card-editor f6 f5-ns'
       />
 

@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { updateCardScore } from "../../redux/actions";
 import { fetchCallUpdateCardScore } from "../../functions/fetchCalls";
 import "./ScoreCounter.css";
+import { useWindowEventHandler } from "../../functions/hooks";
 
 const mapDispatchToProps = (dispatch) => ({
   onUpdateScore: (...args) => dispatch(updateCardScore(...args)),
@@ -13,6 +14,7 @@ const ScoreCounter = ({
   cardId,
   userId,
   setErrorCallback,
+  error,
   onUpdateScore,
   wrapperClass = "",
   arrowKeysChangeScore = false, // only true in practice mode
@@ -23,7 +25,9 @@ const ScoreCounter = ({
       .then((data) => {
         if (data.cardId) {
           onUpdateScore(cardId, incrementValue);
-          setErrorCallback("");
+          if (error) {
+            setErrorCallback("");
+          }
         } else {
           setErrorCallback(data);
         }
@@ -41,26 +45,8 @@ const ScoreCounter = ({
     }
   };
 
-  useEffect(() => {
-    if (arrowKeysChangeScore && window) {
-      window.addEventListener("keydown", handleArrowKeys);
-      return () => {
-        window.removeEventListener("keydown", handleArrowKeys);
-      };
-    }
-    // this function produces the following eslint warning:
-    //    React Hook useEffect has missing dependencies: 'arrowKeysChangeScore' and 'handleArrowKeys'. Either include them or remove the dependency array
-    // however, removing the dependency array makes the event handler unnecessarily detach and reattach
-    // and adding handleArrowKeys to the dependencies makes an infinte loop, giving this message:
-    //    The 'handleArrowKeys' function makes the dependencies of useEffect Hook (at line 56) change on every render. Move it inside the useEffect callback. Alternatively, wrap the definition of 'handleArrowKeys' in its own useCallback() Hook
-    // moving handleArrowKeys inside the useEffect Hook then causes the same problem with the changeScore function,
-    // but that function is called elsewhere
-    // thus, i could use the useCallback hook to make a memo funciton, but it seems to be making the code unnecessarily long and obfuscatory,
-    // when all that's desired is to make the useEffect Hook function like componentDidMount
-    // thus, I decided to leave an empty dependencies array and disable the eslint warning with the following line:
-    //
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // handles changing the score of the current card in a practice session with arrow keys
+  useWindowEventHandler(handleArrowKeys, arrowKeysChangeScore, [error]);
 
   return (
     <div className={`score-counter-grid ${wrapperClass}`}>
