@@ -1,6 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { changeCurrentIndex, setError, resetIndex } from "../../redux/actions";
+import {
+  changeCurrentIndex,
+  setError,
+  shufflePracticeCards,
+} from "../../redux/actions";
 import { useWindowEventHandler } from "../../functions/hooks";
 import { validateIndexChange } from "../../functions/validateInput";
 import MainCard from "../MainCard/MainCard";
@@ -28,7 +32,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCurrentIndex(incrementValue));
   },
   updateError: (error) => dispatch(setError(error)),
-  restartPractice: () => dispatch(resetIndex()),
+  shuffleCards: (...args) => {
+    dispatch(shufflePracticeCards(...args));
+  },
 });
 
 const NotecardFace = ({
@@ -42,7 +48,7 @@ const NotecardFace = ({
   practiceCards,
   changeIndex,
   updateError,
-  restartPractice,
+  shuffleCards,
 }) => {
   const currentCard = practiceCards[currentIndex];
   const { cardId, score } = currentCard;
@@ -83,7 +89,7 @@ const NotecardFace = ({
 
         {/* ******** shuffle icon ******** */}
         <div
-          // onClick={shufflePracticeCards}
+          onClick={(event) => shuffleCards(practiceCards, event, currentIndex)}
           className="f6 f5-ns dim row-1 column-2 notecard-icon-wrapper shuffle-icon-wrapper"
         >
           <FontAwesomeIcon icon={faShuffle} />
@@ -132,7 +138,7 @@ const NotecardFace = ({
           </div>
         ) : totalCards > 1 && currentIndex + 1 === totalCards ? (
           <div
-            onClick={restartPractice}
+            onClick={(event) => shuffleCards(practiceCards, event)}
             className="hover-bg-black hover-white ba f6 f5-ns row-3 column-3 right-arrow"
           >
             <FontAwesomeIcon icon={faRotateLeft} />

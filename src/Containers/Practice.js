@@ -6,7 +6,7 @@ import { fetchCallGet } from "../functions/fetchCalls";
 import {
   endPracticeSession,
   loadSettings,
-  setPracticeCards,
+  shufflePracticeCards,
 } from "../redux/actions";
 import MainCard from "../components/MainCard/MainCard";
 import Notecards from "./Notecards";
@@ -23,7 +23,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onGetSettings: (settings) => dispatch(loadSettings(settings)),
-  loadPracticeCards: (cards) => dispatch(setPracticeCards(cards)),
+  loadPracticeCards: (cards) => dispatch(shufflePracticeCards(cards, null, 0)),
   onExitPractice: () => dispatch(endPracticeSession()),
 });
 

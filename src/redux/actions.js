@@ -82,7 +82,7 @@ export const changeCurrentIndex = (incrementValue) => ({
   type: CHANGE_CURRENT_INDEX,
   payload: incrementValue,
 });
-export const resetIndex = () => ({ type: RESET_INDEX });
+const resetIndex = () => ({ type: RESET_INDEX });
 export const setPracticeCards = (cards) => ({
   type: SET_PRACTICE_CARDS,
   payload: cards,
@@ -197,6 +197,29 @@ export const unselectDeck = (error) => (dispatch) => {
     dispatch(unloadCurrentDeck());
   });
 };
+
+export const shufflePracticeCards =
+  (cards, event = null, currentIndex = 1) =>
+  (dispatch) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    let shuffledCards = [].concat(cards);
+    for (let i = shuffledCards.length - 1; i >= 1; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = shuffledCards[j];
+      shuffledCards[j] = shuffledCards[i];
+      shuffledCards[i] = temp;
+    }
+    if (currentIndex > 0) {
+      batch(() => {
+        dispatch(resetIndex());
+        dispatch(setPracticeCards(shuffledCards));
+      });
+    } else {
+      dispatch(setPracticeCards(shuffledCards));
+    }
+  };
 
 export const endPracticeSession = () => (dispatch) => {
   batch(() => {
