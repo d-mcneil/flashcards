@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { setSpeechSynthesisVoices } from "../redux/actions";
 import SignIn from "./SignIn";
 import Register from "./Register";
 import Decks from "./Decks";
@@ -14,7 +15,27 @@ const mapStateToProps = (state) => ({
   route: state.route.route,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  loadSpeechSynthesisVoices: (voices) =>
+    dispatch(setSpeechSynthesisVoices(voices)),
+});
+
 class App extends Component {
+  componentDidMount() {
+    const speechSynthesizer = window.speechSynthesis;
+    if (speechSynthesizer) {
+      const _handleVoicesChanged = () => {
+        const voices = speechSynthesizer.getVoices();
+        this.props.loadSpeechSynthesisVoices(voices);
+        speechSynthesizer.removeEventListener(
+          "voiceschanged",
+          _handleVoicesChanged
+        );
+      };
+      speechSynthesizer.addEventListener("voiceschanged", _handleVoicesChanged);
+    }
+  }
+
   mainRender = () => {
     switch (this.props.route) {
       case "signed-out":
@@ -54,4 +75,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

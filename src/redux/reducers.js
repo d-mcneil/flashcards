@@ -27,6 +27,7 @@ import {
   RESET_INDEX,
   SET_PRACTICE_CARDS,
   UNLOAD_PRACTICE_CARDS,
+  SET_SPEECH_SYNTHESIS_VOICES,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -65,6 +66,7 @@ const initialStateCurrentDeck = {
     practiceCards: [],
   },
 };
+const initialStateSpeechSynthesisVoices = { speechSynthesisVoices: [] };
 
 // ************************************************************ reducers ************************************************************
 
@@ -255,6 +257,18 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
   }
 };
 
+const speechSynthesisVoices = (
+  state = initialStateSpeechSynthesisVoices,
+  action = {}
+) => {
+  switch (action.type) {
+    case SET_SPEECH_SYNTHESIS_VOICES:
+      return { ...state, speechSynthesisVoices: action.payload };
+    default:
+      return state;
+  }
+};
+
 // ************************************************************ combine reducers ************************************************************
 
 export const rootReducer = combineReducers({
@@ -264,4 +278,5 @@ export const rootReducer = combineReducers({
   error,
   decks,
   currentDeck,
+  speechSynthesisVoices,
 });

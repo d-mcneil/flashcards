@@ -28,6 +28,7 @@ import {
   RESET_INDEX,
   SET_PRACTICE_CARDS,
   UNLOAD_PRACTICE_CARDS,
+  SET_SPEECH_SYNTHESIS_VOICES,
 } from "./constants";
 
 // **************** route reducer****************
@@ -88,6 +89,12 @@ export const setPracticeCards = (cards) => ({
   payload: cards,
 });
 const unloadPracticeCards = () => ({ type: UNLOAD_PRACTICE_CARDS });
+
+// **************** speechSynthesisVoices reducer ****************
+export const setSpeechSynthesisVoices = (voices) => ({
+  type: SET_SPEECH_SYNTHESIS_VOICES,
+  payload: voices,
+});
 
 // ************************************************************ batched actions ************************************************************
 export const routeChangeAndResetError =
@@ -156,7 +163,7 @@ export const getDecksOrCardsRequest =
             dispatch(
               actionLoadCallback(
                 data.sort(
-                  (a, b) => a[`${idPropertyName}`] - b[`${idPropertyName}`]
+                  (a, b) => b[`${idPropertyName}`] - a[`${idPropertyName}`]
                 )
               )
             );

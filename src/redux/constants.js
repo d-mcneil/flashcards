@@ -35,4 +35,6 @@ export const LOAD_SETTINGS = "LOAD_SETTINGS";
 export const CHANGE_CURRENT_INDEX = "CHANGE_CURRENT_INDEX";
 export const RESET_INDEX = "RESET_INDEX";
 export const SET_PRACTICE_CARDS = "SET_PRACTICE_CARDS";
-export const UNLOAD_PRACTICE_CARDS = "UNLOAD_PRACTICE_CARDS"
+export const UNLOAD_PRACTICE_CARDS = "UNLOAD_PRACTICE_CARDS";
+// **************** speechSynthesisVoices reducer ****************
+export const SET_SPEECH_SYNTHESIS_VOICES = "SET_SPEECH_SYNTHESIS_VOICES"; 

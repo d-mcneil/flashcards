@@ -1,20 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  changeCurrentIndex,
-  setError,
-  shufflePracticeCards,
-} from "../../redux/actions";
+// prettier-ignore
+import { changeCurrentIndex, setError, shufflePracticeCards } from "../../redux/actions";
 import { useWindowEventHandler } from "../../functions/hooks";
 import { validateIndexChange } from "../../functions/validateInput";
 import MainCard from "../MainCard/MainCard";
 import ScoreCounter from "../ScoreCounter/ScoreCounter";
+// prettier-ignore
+import { faShuffle, faVolumeHigh, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShuffle,
-  faVolumeHigh,
-  faRotateLeft,
-} from "@fortawesome/free-solid-svg-icons";
 import "./NotecardFace.css";
 
 const mapStateToProps = (state) => ({
@@ -54,6 +48,15 @@ const NotecardFace = ({
   const { cardId, score } = currentCard;
   const totalCards = practiceCards.length;
 
+  const speak = (event) => {
+    event.stopPropagation();
+    if (voice) {
+      const utterThis = new SpeechSynthesisUtterance(content);
+      utterThis.voice = voice;
+      window.speechSynthesis.speak(utterThis);
+    }
+  };
+
   const handleArrowKeys = (event) => {
     if (event.code === "ArrowRight" || event.code === "ArrowLeft") {
       let incrementValue = 1;
@@ -78,7 +81,7 @@ const NotecardFace = ({
         {/* ******** speaker icon ******** */}
         {voice ? (
           <div
-            // onClick={speak}
+            onClick={speak}
             className="f6 f5-ns dim row-1 column-1 notecard-icon-wrapper speaker-icon-wrapper"
           >
             <FontAwesomeIcon icon={faVolumeHigh} />
