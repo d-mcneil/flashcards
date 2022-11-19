@@ -18,6 +18,7 @@ const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
   error: state.error.error,
   deckId: state.currentDeck.currentDeck.deckId,
+  deckName: state.currentDeck.currentDeck.deckName,
   cards: state.currentDeck.cards,
   cardsHaveBeenFetched: state.currentDeck.cardsHaveBeenFetched,
   settingsHaveBeenFetched: state.currentDeck.practice.settingsHaveBeenFetched,
@@ -42,6 +43,7 @@ const Practice = ({
   settingsHaveBeenFetched,
   cardsHaveBeenFetched,
   deckId,
+  deckName,
   practiceCards,
   speechSynthesisVoices,
   settings,
@@ -149,6 +151,18 @@ const Practice = ({
   return (
     <>
       <Header text="Practice" />
+
+      <div
+        className="center"
+        id="practice-deck-name-title-wrapper" // in index.css
+      >
+        <div
+          className="f3"
+          id="practice-deck-name-title" // in index.css
+        >
+          {deckName}
+        </div>
+      </div>
 
       {message ? (
         <Message

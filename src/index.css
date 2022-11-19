@@ -32,6 +32,30 @@ path {
     cursor: pointer;
 }
 
+#practice-deck-name-title-wrapper {
+    max-width: 36rem;
+}
+
+#practice-deck-name-title {
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-small);
+    margin-bottom: var(--spacing-large);
+    padding-top: 2px;
+    max-width: 36rem;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 30rem) {
+
+    #practice-deck-name-title {
+        margin-left: var(--spacing-large);
+        margin-right: var(--spacing-large);
+    }
+}
+
 /* SignIn and Register */
 .form-error-message {
     margin-top: var(--spacing-medium);
