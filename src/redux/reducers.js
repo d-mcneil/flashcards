@@ -30,6 +30,7 @@ import {
   LOAD_SPEECH_SYNTHESIS_VOICES,
   SET_TERM_SPEECH_SYNTHESIS_VOICE,
   SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
+  UPDATE_SETTINGS,
 } from "./constants";
 
 // ************************************************************ initial states ************************************************************
@@ -270,6 +271,17 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
         practice: {
           ...state.practice,
           definitionSpeechSynthesisVoice: action.payload,
+        },
+      };
+    case UPDATE_SETTINGS:
+      return {
+        ...state,
+        practice: {
+          ...state.practice,
+          settings: {
+            ...state.practice.settings,
+            [action.payload.settingPropertyName]: action.payload.settingValue,
+          },
         },
       };
     default:

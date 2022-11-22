@@ -31,6 +31,7 @@ import {
   SET_TERM_SPEECH_SYNTHESIS_VOICE,
   SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
   LOAD_SPEECH_SYNTHESIS_VOICES,
+  UPDATE_SETTINGS,
 } from "./constants";
 
 // **************** route reducer****************
@@ -98,6 +99,10 @@ export const setTermSpeechSynthesisVoice = (voice) => ({
 export const setDefinitionSpeechSynthesisVoice = (voice) => ({
   type: SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
   payload: voice,
+});
+export const updateSettings = (settingPropertyName, settingValue) => ({
+  type: UPDATE_SETTINGS,
+  payload: { settingPropertyName, settingValue },
 });
 
 // **************** speechSynthesisVoices reducer ****************
