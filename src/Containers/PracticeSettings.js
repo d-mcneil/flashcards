@@ -25,11 +25,9 @@ const PracticeSettings = ({
 
   const { definitionFirst, readOutOnFlip } = currentSettings;
 
-  const toggleSwitch = (event) => {
-    const settingPropertyName = event.target.value;
-    const settingValue = event.target.checked;
+  const saveDeckSettingsChanges = (settingPropertyName, settingValue) => {
     onUpdateSettings(settingPropertyName, settingValue);
-    fetchCallUpdateDeckPracticeSettings(userId, deckId, {
+    return fetchCallUpdateDeckPracticeSettings(userId, deckId, {
       ...currentSettings,
       [settingPropertyName]: settingValue,
     })
@@ -45,8 +43,19 @@ const PracticeSettings = ({
       .catch((err) => setError("Error saving updated deck settings: 0"));
   };
 
+  const toggleSwitch = (event) => {
+    const { value, checked } = event.target;
+    saveDeckSettingsChanges(value, checked);
+  };
+
   return (
     <>
+      <div
+        className="f3 center dim"
+        id="practice-settings-header" // in index.css
+      >
+        Settings
+      </div>
       <ToggleSwitch
         labelLeft="Term First"
         labelRight="Definition First"

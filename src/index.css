@@ -56,6 +56,13 @@ path {
     }
 }
 
+#practice-settings-header {
+    margin-top: var(--spacing-large);
+    margin-bottom: var(--spacing-medium);
+    width: min-content;
+    cursor: pointer;
+}
+
 /* SignIn and Register */
 .form-error-message {
     margin-top: var(--spacing-medium);
