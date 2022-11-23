@@ -5,6 +5,7 @@ import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
 import { updateSettings } from "../redux/actions";
 import { fetchCallUpdateDeckPracticeSettings } from "../functions/fetchCalls";
 import PracticeSettingsHeader from "../components/PracticeSettingsHeader/PracticeSettingsHeader";
+import PracticeDeckPercentageInput from "../components/PracticeDeckPercentageInput/PracticeDeckPercentageInput";
 
 const mapStateToProps = (state) => ({
   currentSettings: state.currentDeck.practice.settings,
@@ -85,6 +86,7 @@ const PracticeSettings = ({
           onChange={toggleSwitch}
           onAndOff={true}
         />
+        <PracticeDeckPercentageInput />
         {error ? (
           <Message
             message={error}

@@ -12,6 +12,7 @@ html {
 body {
     --light-black-border: rgba(0, 0, 0, .1);
     --border-radius-3: .5rem;
+    --border-radius-2: .25rem;
     --border-radius-1: .125rem;
 }
 
