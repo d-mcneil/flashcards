@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { useWindowEventHandler } from "../../functions/hooks";
 import "./Flipcard.css";
 
-const Flipcard = ({ children }) => {
+const mapStateToProps = (state) => ({
+  readOutOnFlip: state.currentDeck.practice.settings.readOutOnFlip,
+});
+
+const Flipcard = ({
+  children,
+  frontContent,
+  backContent,
+  frontVoice,
+  backVoice,
+  speak,
+  readOutOnFlip,
+}) => {
+  // prettier-ignore
+  const [currentBackfaceContent, setCurrentBackfaceContent] = useState(backContent);
+  const [currentBackfaceVoice, setCurrentBackfaceVoice] = useState(backVoice);
+
+  const alternateBackfaceContentAndVoice = () => {
+    if (currentBackfaceContent === backContent) {
+      setCurrentBackfaceContent(frontContent);
+      setCurrentBackfaceVoice(frontVoice);
+    } else {
+      setCurrentBackfaceContent(backContent);
+      setCurrentBackfaceVoice(backVoice);
+    }
+  };
+
   const flipTheCard = () => {
     const card = document.getElementById("flip-card-inner");
     if (card) {
@@ -11,6 +38,10 @@ const Flipcard = ({ children }) => {
       card.classList.toggle("flipped");
       cardFront.classList.toggle("flipped-front");
       cardBack.classList.toggle("flipped-back");
+      if (readOutOnFlip) {
+        speak(currentBackfaceVoice, currentBackfaceContent);
+      }
+      alternateBackfaceContentAndVoice();
     }
   };
 
@@ -22,7 +53,10 @@ const Flipcard = ({ children }) => {
   };
 
   // handles flipping the card with the space bar
-  useWindowEventHandler(handleSpaceBar);
+  useWindowEventHandler(handleSpaceBar, true, [
+    currentBackfaceContent,
+    readOutOnFlip,
+  ]);
 
   return (
     <div id="flip-card" onClick={flipTheCard}>
@@ -34,4 +68,4 @@ const Flipcard = ({ children }) => {
   );
 };
 
-export default Flipcard;
+export default connect(mapStateToProps)(Flipcard);

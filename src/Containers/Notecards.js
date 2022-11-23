@@ -35,15 +35,34 @@ const Notecards = ({
     backVoice = definitionVoice;
   }
 
+  const speak = (voice, content, event = null) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (voice) {
+      const utterThis = new SpeechSynthesisUtterance(content);
+      utterThis.voice = voice;
+      window.speechSynthesis.speak(utterThis);
+    }
+  };
+
   return (
-    <Flipcard key={currentCard.cardId}>
+    <Flipcard
+      key={currentCard.cardId}
+      frontContent={frontContent}
+      backContent={backContent}
+      frontVoice={frontVoice}
+      backVoice={backVoice}
+      speak={speak}
+    >
       <NotecardFace
         content={frontContent}
         voice={frontVoice}
         arrowKeysChangeScore={true}
         arrowKeysChangeIndex={true}
+        speak={speak}
       />
-      <NotecardFace content={backContent} voice={backVoice} />
+      <NotecardFace content={backContent} voice={backVoice} speak={speak} />
     </Flipcard>
   );
 };

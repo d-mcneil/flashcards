@@ -36,6 +36,7 @@ const NotecardFace = ({
   voice, // frontVoice or backVoice - from Notecards container
   arrowKeysChangeScore = false,
   arrowKeysChangeIndex = false,
+  speak,
   userId,
   error,
   currentIndex,
@@ -47,15 +48,6 @@ const NotecardFace = ({
   const currentCard = practiceCards[currentIndex];
   const { cardId, score } = currentCard;
   const totalCards = practiceCards.length;
-
-  const speak = (event) => {
-    event.stopPropagation();
-    if (voice) {
-      const utterThis = new SpeechSynthesisUtterance(content);
-      utterThis.voice = voice;
-      window.speechSynthesis.speak(utterThis);
-    }
-  };
 
   const handleArrowKeys = (event) => {
     if (event.code === "ArrowRight" || event.code === "ArrowLeft") {
@@ -81,7 +73,7 @@ const NotecardFace = ({
         {/* ******** speaker icon ******** */}
         {voice ? (
           <div
-            onClick={speak}
+            onClick={(event) => speak(voice, content, event)}
             className="f6 f5-ns dim row-1 column-1 notecard-icon-wrapper speaker-icon-wrapper"
           >
             <FontAwesomeIcon icon={faVolumeHigh} />
