@@ -21,7 +21,7 @@ const LanguageSelector = ({
   settingsHaveBeenFetched,
 }) => {
   const labelLowercase = label.toLowerCase();
-  const selectElementId = `select-${labelLowercase}-language`;
+  const selectElementId = `select-${labelLowercase}-language`; // exists for the htmlFor property of the label, not for styling
   const defaultLanguageValue = voice ? voice.name : "select-a-language";
 
   const handleSelectVoice = (event) => {
