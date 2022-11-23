@@ -56,13 +56,6 @@ path {
     }
 }
 
-#practice-settings-header {
-    margin-top: var(--spacing-large);
-    margin-bottom: var(--spacing-medium);
-    width: min-content;
-    cursor: pointer;
-}
-
 /* SignIn and Register */
 .form-error-message {
     margin-top: var(--spacing-medium);
@@ -75,6 +68,10 @@ path {
     padding-top: 0;
     margin-bottom: var(--spacing-medium);
     grid-column: 1 / -1;
+}
+
+.hide {
+    display: none;
 }
 
 .push {

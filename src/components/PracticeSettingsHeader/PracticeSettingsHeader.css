@@ -1,0 +1,25 @@
+#practice-settings-header-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: min-content;
+    margin-top: var(--spacing-large);
+    margin-bottom: var(--spacing-medium);
+}
+
+#practice-settings-header-icon-wrapper {
+    width: min-content;
+    display: flex;
+    cursor: pointer;
+}
+
+#practice-settings-icon-wrapper {
+    padding-top: var(--spacing-small);
+    padding-right: var(--spacing-small);
+    cursor: pointer;
+    text-align: end;
+}
+
+#practice-settings-icon-wrapper,
+#practice-settings-header-balancer-right {
+    width: var(--spacing-medium);
+}

@@ -4,6 +4,7 @@ import Message from "../components/Message/Message";
 import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
 import { updateSettings } from "../redux/actions";
 import { fetchCallUpdateDeckPracticeSettings } from "../functions/fetchCalls";
+import PracticeSettingsHeader from "../components/PracticeSettingsHeader/PracticeSettingsHeader";
 
 const mapStateToProps = (state) => ({
   currentSettings: state.currentDeck.practice.settings,
@@ -22,6 +23,7 @@ const PracticeSettings = ({
   deckId,
 }) => {
   const [error, setError] = useState("");
+  const [menuExpanded, setMenuExpanded] = useState(false);
 
   const { definitionFirst, readOutOnFlip } = currentSettings;
 
@@ -48,36 +50,50 @@ const PracticeSettings = ({
     saveDeckSettingsChanges(value, checked);
   };
 
+  const handleExpandSettingsMenu = () => {
+    document
+      .getElementById("practice-settings-wrapper")
+      .classList.toggle("hide");
+    if (menuExpanded) {
+      setMenuExpanded(false);
+    } else {
+      setMenuExpanded(true);
+    }
+  };
+
   return (
     <>
+      <PracticeSettingsHeader
+        menuExpanded={menuExpanded}
+        handleExpandSettingsMenu={handleExpandSettingsMenu}
+      />
       <div
-        className="f3 center dim"
-        id="practice-settings-header" // in index.css
+        id="practice-settings-wrapper" // used for toggling the hide class, not for styling directly
+        className="hide" // in index.css
       >
-        Settings
-      </div>
-      <ToggleSwitch
-        labelLeft="Term First"
-        labelRight="Definition First"
-        value="definitionFirst"
-        checked={definitionFirst}
-        onChange={toggleSwitch}
-      />
-      <ToggleSwitch
-        labelRight="Read Out on Flip"
-        value="readOutOnFlip"
-        checked={readOutOnFlip}
-        onChange={toggleSwitch}
-        onAndOff={true}
-      />
-      {error ? (
-        <Message
-          message={error}
-          wrapperClass="main-error-message" // in index.css
+        <ToggleSwitch
+          labelLeft="Term First"
+          labelRight="Definition First"
+          value="definitionFirst"
+          checked={definitionFirst}
+          onChange={toggleSwitch}
         />
-      ) : (
-        <></>
-      )}
+        <ToggleSwitch
+          labelRight="Read Out on Flip"
+          value="readOutOnFlip"
+          checked={readOutOnFlip}
+          onChange={toggleSwitch}
+          onAndOff={true}
+        />
+        {error ? (
+          <Message
+            message={error}
+            wrapperClass="main-error-message" // in index.css
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
 };
