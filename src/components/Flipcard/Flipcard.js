@@ -38,7 +38,7 @@ const Flipcard = ({
       card.classList.toggle("flipped");
       cardFront.classList.toggle("flipped-front");
       cardBack.classList.toggle("flipped-back");
-      if (readOutOnFlip) {
+      if (readOutOnFlip && currentBackfaceVoice) {
         speak(currentBackfaceVoice, currentBackfaceContent);
       }
       alternateBackfaceContentAndVoice();

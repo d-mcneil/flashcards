@@ -92,13 +92,17 @@ const PracticeSettings = ({
           checked={definitionFirst}
           onChange={toggleSwitch}
         />
-        <ToggleSwitch
-          labelRight="Read Out on Flip"
-          value="readOutOnFlip"
-          checked={readOutOnFlip}
-          onChange={toggleSwitch}
-          onAndOff={true}
-        />
+        {speechSynthesisVoices.length ? (
+          <ToggleSwitch
+            labelRight="Read Out on Flip"
+            value="readOutOnFlip"
+            checked={readOutOnFlip}
+            onChange={toggleSwitch}
+            onAndOff={true}
+          />
+        ) : (
+          <></>
+        )}
         <PracticeDeckPercentageInput
           saveDeckSettingsChanges={saveDeckSettingsChanges}
           error={error}
