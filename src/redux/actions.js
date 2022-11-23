@@ -1,37 +1,42 @@
 import { batch } from "react-redux";
 import { fetchCallGet, fetchCallDelete } from "../functions/fetchCalls";
 import {
+  // **************** route reducer****************
   ROUTE_CHANGE,
+  // **************** userStatus reducer ****************
   LOAD_USER,
   UNLOAD_USER,
+  // **************** requestStatus reducer ****************
   REQUEST_PENDING,
   REQUEST_RESOLVED,
+  // **************** error reducer ****************
   SET_ERROR,
   RESET_ERROR,
+  // **************** decks reducer ****************
   LOAD_DECKS,
   UNLOAD_DECKS,
   ADD_DECK,
   REMOVE_DECK,
   UPDATE_DECK_LIST,
+  // **************** currentDeck reducer ****************
   LOAD_CURRENT_DECK,
   UNLOAD_CURRENT_DECK,
   LOAD_CARDS,
-  // UNLOAD_CARDS,
   ADD_CARD,
   REMOVE_CARD,
   UPDATE_CURRENT_DECK,
   UPDATE_CARD,
   UPDATE_CARD_SCORE,
-  LOAD_SETTINGS,
-  // UNLOAD_SETTINGS,
-  CHANGE_CURRENT_INDEX,
-  RESET_INDEX,
   SET_PRACTICE_CARDS,
   UNLOAD_PRACTICE_CARDS,
+  LOAD_SETTINGS,
+  UPDATE_SETTINGS,
+  CHANGE_CURRENT_INDEX,
+  RESET_INDEX,
   SET_TERM_SPEECH_SYNTHESIS_VOICE,
   SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
+  // **************** speechSynthesisVoices reducer ****************
   LOAD_SPEECH_SYNTHESIS_VOICES,
-  UPDATE_SETTINGS,
 } from "./constants";
 
 // **************** route reducer****************
@@ -63,7 +68,6 @@ export const updateDeckList = (deckName, description, deckId) => ({
 const loadCurrentDeck = (deck) => ({ type: LOAD_CURRENT_DECK, payload: deck });
 export const unloadCurrentDeck = () => ({ type: UNLOAD_CURRENT_DECK });
 const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
-// const unloadCards = () => ({ type: UNLOAD_CARDS });
 export const addCard = (card) => ({ type: ADD_CARD, payload: card });
 export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
 export const updateCurrentDeck = (deckName, description) => ({
@@ -78,20 +82,24 @@ export const updateCardScore = (cardId, incrementValue) => ({
   type: UPDATE_CARD_SCORE,
   payload: { cardId, incrementValue },
 });
+export const setPracticeCards = (cards) => ({
+  type: SET_PRACTICE_CARDS,
+  payload: cards,
+});
+const unloadPracticeCards = () => ({ type: UNLOAD_PRACTICE_CARDS });
 export const loadSettings = (settings) => ({
   type: LOAD_SETTINGS,
   payload: settings,
+});
+export const updateSettings = (settingPropertyName, settingValue) => ({
+  type: UPDATE_SETTINGS,
+  payload: { settingPropertyName, settingValue },
 });
 export const changeCurrentIndex = (incrementValue) => ({
   type: CHANGE_CURRENT_INDEX,
   payload: incrementValue,
 });
 const resetIndex = () => ({ type: RESET_INDEX });
-export const setPracticeCards = (cards) => ({
-  type: SET_PRACTICE_CARDS,
-  payload: cards,
-});
-const unloadPracticeCards = () => ({ type: UNLOAD_PRACTICE_CARDS });
 export const setTermSpeechSynthesisVoice = (voice) => ({
   type: SET_TERM_SPEECH_SYNTHESIS_VOICE,
   payload: voice,
@@ -99,10 +107,6 @@ export const setTermSpeechSynthesisVoice = (voice) => ({
 export const setDefinitionSpeechSynthesisVoice = (voice) => ({
   type: SET_DEFINITION_SPEECH_SYNTHESIS_VOICE,
   payload: voice,
-});
-export const updateSettings = (settingPropertyName, settingValue) => ({
-  type: UPDATE_SETTINGS,
-  payload: { settingPropertyName, settingValue },
 });
 
 // **************** speechSynthesisVoices reducer ****************
