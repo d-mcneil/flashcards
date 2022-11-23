@@ -25,12 +25,21 @@ const mapStateToProps = (state) => ({
   practiceCards: state.currentDeck.practice.practiceCards,
   speechSynthesisVoices: state.speechSynthesisVoices.speechSynthesisVoices,
   settings: state.currentDeck.practice.settings,
+  currentIndex: state.currentDeck.practice.currentIndex,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onGetSettings: (settings) => dispatch(loadSettings(settings)),
-  loadPracticeCards: (cards, practiceCardsQuantity) =>
-    dispatch(shufflePracticeCards(cards, null, 0, true, practiceCardsQuantity)),
+  loadPracticeCards: (cards, practiceCardsQuantity, currentIndex) =>
+    dispatch(
+      shufflePracticeCards(
+        cards,
+        null,
+        currentIndex,
+        true,
+        practiceCardsQuantity
+      )
+    ),
   onExitPractice: () => dispatch(endPracticeSession()),
   setTermVoice: (voice) => dispatch(setTermSpeechSynthesisVoice(voice)),
   setDefinitionVoice: (voice) =>
@@ -53,6 +62,7 @@ const Practice = ({
   onExitPractice,
   setTermVoice,
   setDefinitionVoice,
+  currentIndex,
 }) => {
   const message = isPending ? "Loading cards..." : error;
   const {
@@ -143,7 +153,7 @@ const Practice = ({
       };
 
       const practiceCardsQuantity = calculatePracticeCardsQuantity(cards);
-      loadPracticeCards(cards, practiceCardsQuantity);
+      loadPracticeCards(cards, practiceCardsQuantity, currentIndex);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsHaveBeenFetched, practiceDeckPercentage]);

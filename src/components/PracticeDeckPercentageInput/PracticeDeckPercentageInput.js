@@ -17,8 +17,13 @@ const PracticeDeckPercentageInput = ({
   currentDeckPercentage,
   onUpdateSettings,
   saveDeckSettingsChanges,
+  error,
+  setError,
 }) => {
   const handleOnChange = (event) => {
+    if (error) {
+      setError("");
+    }
     let percentageInput = event.target;
     const percentageInputValue = percentageInput.value;
     if (percentageInputValue > 100) {
@@ -28,7 +33,10 @@ const PracticeDeckPercentageInput = ({
     } else if (percentageInputValue > 0 && percentageInputValue < 1) {
       percentageInput.value = 1;
     }
-    onUpdateSettings("practiceDeckPercentage", percentageInput.value);
+    if (Number(currentDeckPercentage) !== Number(percentageInput.value)) {
+      // this way, the cards won't be unnecessarily regenerated
+      onUpdateSettings("practiceDeckPercentage", percentageInput.value);
+    }
   };
 
   const handleOnBlur = (event) => {

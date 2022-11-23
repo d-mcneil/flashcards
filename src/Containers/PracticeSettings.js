@@ -88,6 +88,8 @@ const PracticeSettings = ({
         />
         <PracticeDeckPercentageInput
           saveDeckSettingsChanges={saveDeckSettingsChanges}
+          error={error}
+          setError={setError}
         />
         {error ? (
           <Message
