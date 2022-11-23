@@ -262,6 +262,14 @@ export const endPracticeSession = () => (dispatch) => {
   });
 };
 
+export const selectVoice =
+  (languageName, languageCode, termOrDefinition) => (dispatch) => {
+    batch(() => {
+      dispatch(updateSettings(`${termOrDefinition}LanguageName`, languageName));
+      dispatch(updateSettings(`${termOrDefinition}LanguageCode`, languageCode));
+    });
+  };
+
 export const signOutUser = (error) => (dispatch) => {
   batch(() => {
     dispatch(routeChangeAndResetError("signed-out", error));

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import Flipcard from "../components/Filpcard/Flipcard";
+import Flipcard from "../components/Flipcard/Flipcard";
 import NotecardFace from "../components/NotecardFace/NotecardFace";
 
 const mapStateToProps = (state) => ({

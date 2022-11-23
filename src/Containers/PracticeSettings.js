@@ -6,11 +6,15 @@ import { updateSettings } from "../redux/actions";
 import { fetchCallUpdateDeckPracticeSettings } from "../functions/fetchCalls";
 import PracticeSettingsHeader from "../components/PracticeSettingsHeader/PracticeSettingsHeader";
 import PracticeDeckPercentageInput from "../components/PracticeDeckPercentageInput/PracticeDeckPercentageInput";
+import LanguageSelector from "../components/LanguageSelector/LanguageSelector";
 
 const mapStateToProps = (state) => ({
   currentSettings: state.currentDeck.practice.settings,
   userId: state.userStatus.user.userId,
   deckId: state.currentDeck.currentDeck.deckId,
+  speechSynthesisVoices: state.speechSynthesisVoices.speechSynthesisVoices,
+  termVoice: state.currentDeck.practice.termSpeechSynthesisVoice,
+  definitionVoice: state.currentDeck.practice.definitionSpeechSynthesisVoice,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -22,16 +26,25 @@ const PracticeSettings = ({
   onUpdateSettings,
   userId,
   deckId,
+  speechSynthesisVoices,
+  termVoice,
+  definitionVoice,
 }) => {
   const [error, setError] = useState("");
   const [menuExpanded, setMenuExpanded] = useState(false);
 
   const { definitionFirst, readOutOnFlip } = currentSettings;
 
-  const saveDeckSettingsChanges = (settingPropertyName, settingValue) => {
+  const saveDeckSettingsChanges = (
+    settingPropertyName1,
+    settingValue1,
+    settingPropertyName2 = undefined,
+    settingValue2 = undefined
+  ) => {
     return fetchCallUpdateDeckPracticeSettings(userId, deckId, {
       ...currentSettings,
-      [settingPropertyName]: settingValue,
+      [settingPropertyName1]: settingValue1,
+      [settingPropertyName2]: settingValue2,
     })
       .then((data) => {
         if (data.deckId) {
@@ -91,6 +104,22 @@ const PracticeSettings = ({
           error={error}
           setError={setError}
         />
+        {speechSynthesisVoices.length ? (
+          <>
+            <LanguageSelector
+              label="Term"
+              voice={termVoice}
+              saveDeckSettingsChanges={saveDeckSettingsChanges}
+            />
+            <LanguageSelector
+              label="Definition"
+              voice={definitionVoice}
+              saveDeckSettingsChanges={saveDeckSettingsChanges}
+            />
+          </>
+        ) : (
+          <></>
+        )}
         {error ? (
           <Message
             message={error}

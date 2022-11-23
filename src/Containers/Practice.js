@@ -89,42 +89,46 @@ const Practice = ({
   //
   //
 
-  // set speech synthesis voices for term and definition on mount
-  // set voices again when get request for settings resolves (if settings hadn't already been fetched on mount)
-  // set voices again if any of the settings for them are changed by the user
-  useEffect(() => {
-    const matchVoiceToSpeechSynthesisVoice = (voiceName, langCode) => {
-      // prettier-ignore
-      const matchingVoicesByName = speechSynthesisVoices.filter(voice => voice.name === voiceName)
-      if (matchingVoicesByName.length) {
-        return matchingVoicesByName[0];
-      }
-      // prettier-ignore
-      const matchingVoicesByLangCode = speechSynthesisVoices.filter(voice => voice.lang === langCode)
-      if (matchingVoicesByLangCode.length) {
-        return matchingVoicesByLangCode[0];
-      }
-      return null;
-    };
+  const matchVoiceToSpeechSynthesisVoice = (voiceName, langCode) => {
+    // prettier-ignore
+    const matchingVoicesByName = speechSynthesisVoices.filter(voice => voice.name === voiceName)
+    if (matchingVoicesByName.length) {
+      return matchingVoicesByName[0];
+    }
+    // prettier-ignore
+    const matchingVoicesByLangCode = speechSynthesisVoices.filter(voice => voice.lang === langCode)
+    if (matchingVoicesByLangCode.length) {
+      return matchingVoicesByLangCode[0];
+    }
+    return null;
+  };
 
+  // set speech synthesis voice for term on mount
+  // set voice again when get request for settings resolves (if settings hadn't already been fetched on mount)
+  // set voice again if the setting for it is changed by the user
+  useEffect(() => {
     const termVoice = matchVoiceToSpeechSynthesisVoice(
       termLanguageName,
       termLanguageCode
     );
+    setTermVoice(termVoice);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settingsHaveBeenFetched, termLanguageCode, termLanguageName]);
+  //
+  //
+  //
+
+  // set speech synthesis voice for definition on mount
+  // set voice again when get request for settings resolves (if settings hadn't already been fetched on mount)
+  // set voice again if the setting for it is changed by the user
+  useEffect(() => {
     const definitionVoice = matchVoiceToSpeechSynthesisVoice(
       definitionLanguageName,
       definitionLanguageCode
     );
-    setTermVoice(termVoice);
     setDefinitionVoice(definitionVoice);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    settingsHaveBeenFetched,
-    termLanguageCode,
-    termLanguageName,
-    definitionLanguageCode,
-    definitionLanguageName,
-  ]);
+  }, [settingsHaveBeenFetched, definitionLanguageCode, definitionLanguageName]);
   //
   //
   //
