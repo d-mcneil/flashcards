@@ -110,3 +110,12 @@ export const validateIndexChange = (
   }
   return true;
 };
+
+export const validatePracticeDeckPercentage = (userInput) => {
+  if (userInput < 1) {
+    return 1;
+  } else if (userInput > 100) {
+    return 100;
+  }
+  return Math.round(userInput);
+};

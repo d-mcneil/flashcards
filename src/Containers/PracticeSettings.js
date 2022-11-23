@@ -29,7 +29,6 @@ const PracticeSettings = ({
   const { definitionFirst, readOutOnFlip } = currentSettings;
 
   const saveDeckSettingsChanges = (settingPropertyName, settingValue) => {
-    onUpdateSettings(settingPropertyName, settingValue);
     return fetchCallUpdateDeckPracticeSettings(userId, deckId, {
       ...currentSettings,
       [settingPropertyName]: settingValue,
@@ -48,6 +47,7 @@ const PracticeSettings = ({
 
   const toggleSwitch = (event) => {
     const { value, checked } = event.target;
+    onUpdateSettings(value, checked);
     saveDeckSettingsChanges(value, checked);
   };
 
@@ -86,7 +86,9 @@ const PracticeSettings = ({
           onChange={toggleSwitch}
           onAndOff={true}
         />
-        <PracticeDeckPercentageInput />
+        <PracticeDeckPercentageInput
+          saveDeckSettingsChanges={saveDeckSettingsChanges}
+        />
         {error ? (
           <Message
             message={error}
