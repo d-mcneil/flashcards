@@ -26,6 +26,7 @@ const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
         <p
           onClick={() => onRouteChange("profile", error)}
           className={`${navBarStyleClasses} push`}
+          id="push-right-small-screen"
         >
           Profile
         </p>
@@ -34,7 +35,8 @@ const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
       return (
         <p
           onClick={() => onRouteChange("home", error)}
-          className={`${navBarStyleClasses} push`}
+          className={`${navBarStyleClasses} push push-right-small-screen`}
+          id="push-right-small-screen"
         >
           Home
         </p>

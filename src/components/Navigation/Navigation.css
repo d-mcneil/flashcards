@@ -11,3 +11,14 @@
     margin-top: 0;
     margin-bottom: 0;
 }
+
+@media screen and (max-width: 25rem) {
+    #nav-bar {
+        margin-left: var(--spacing-medium);
+    }
+
+    #push-right-small-screen {
+        margin-left: 0;
+        margin-right: auto;
+    }
+}

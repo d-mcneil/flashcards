@@ -107,16 +107,19 @@ body {
     transform: scale(.90);
 }
 
-.dim {
-    opacity: 1;
-    transition: opacity .15s ease-in;
-}
+/* media query added by me to handle sticky hover effects on touch screens when clicked */
+@media (hover: hover) {
+    .dim {
+        opacity: 1;
+        transition: opacity .15s ease-in;
+    }
 
-.dim:hover,
-.dim:focus,
-.dim:active {
-    opacity: .5;
-    transition: opacity .15s ease-in;
+    .dim:hover,
+    .dim:focus,
+    .dim:active {
+        opacity: .5;
+        transition: opacity .15s ease-in;
+    }
 }
 
 /* 
