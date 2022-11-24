@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const DeckNavigation = ({ route, error, onRouteChange, onNavigateToDecks }) => {
-  const deckNavBarStyleClasses = "f5 dim deck-nav-bar-button";
+  const deckNavBarStyleClasses = "f5 f4-ns dim deck-nav-bar-button";
 
   const renderPracticeOrEditButton = () => {
     switch (route) {

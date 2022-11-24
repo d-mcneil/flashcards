@@ -1,5 +1,7 @@
 #deck-nav-bar {
     display: flex;
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-small);
 }
 
 .deck-nav-bar-button {
@@ -8,4 +10,20 @@
     padding: 0;
     margin-top: 0;
     margin-bottom: var(--spacing-medium);
+}
+
+@media screen and (min-width: 25rem) {
+
+    #deck-nav-bar {
+        margin-left: var(--spacing-medium);
+        margin-right: var(--spacing-medium);
+    }
+}
+
+@media screen and (min-width: 43rem) {
+
+    #deck-nav-bar {
+        margin-left: var(--spacing-extra-large);
+        margin-right: var(--spacing-extra-large);
+    }
 }

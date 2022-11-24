@@ -1,7 +1,7 @@
 import React from "react";
 import "./Message.css";
 
-const Message = ({ message, wrapperClass }) => {
+const Message = ({ message, wrapperClass = "" }) => {
   return (
     <>
       {message ? (

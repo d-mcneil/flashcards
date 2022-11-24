@@ -9,10 +9,13 @@ import {
   setDefinitionSpeechSynthesisVoice,
   setTermSpeechSynthesisVoice,
   shufflePracticeCards,
+  routeChangeAndResetError,
 } from "../redux/actions";
 import MainCard from "../components/MainCard/MainCard";
 import Notecards from "./Notecards";
 import PracticeSettings from "./PracticeSettings";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
@@ -44,6 +47,8 @@ const mapDispatchToProps = (dispatch) => ({
   setTermVoice: (voice) => dispatch(setTermSpeechSynthesisVoice(voice)),
   setDefinitionVoice: (voice) =>
     dispatch(setDefinitionSpeechSynthesisVoice(voice)),
+  routeChange: (route, error) =>
+    dispatch(routeChangeAndResetError(route, error)),
 });
 
 const Practice = ({
@@ -63,6 +68,7 @@ const Practice = ({
   setTermVoice,
   setDefinitionVoice,
   currentIndex,
+  routeChange,
 }) => {
   const message = isPending ? "Loading cards..." : error;
   const {
@@ -192,16 +198,21 @@ const Practice = ({
           <Notecards />
           <PracticeSettings />
         </>
-      ) : cards.length ? (
-        <MainCard>
-          <Message
-            message="Setting up practice session..."
-            wrapperClass="main-error-message" // in index.css
-          />
-        </MainCard>
       ) : (
-        <MainCard>
-          <div className="f3-ns f4 tc">Add cards to this deck to practice!</div>
+        <MainCard
+          extraClassName="notecard-main-extra-class-practice" // in index.css
+        >
+          {!cardsHaveBeenFetched ? (
+            <Message message="Setting up practice session..." />
+          ) : (
+            <div
+              className="f3-ns f4 center pointer dim"
+              id="add-cards-message" // in index.css
+              onClick={() => routeChange("editor", error)}
+            >
+              <FontAwesomeIcon icon={faPlus} /> Add Cards
+            </div>
+          )}
         </MainCard>
       )}
     </>

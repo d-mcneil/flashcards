@@ -50,6 +50,8 @@
     overflow: auto;
     cursor: pointer;
     width: 100%;
+    padding-left: var(--spacing-medium);
+    padding-right: var(--spacing-medium);
 }
 
 .left-arrow {

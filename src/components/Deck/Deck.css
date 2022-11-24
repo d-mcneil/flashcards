@@ -9,7 +9,7 @@
 
 .deck-description {
     align-self: start;
-    word-break: break-all;
+    overflow-wrap: break-word;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;

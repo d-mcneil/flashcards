@@ -58,13 +58,22 @@ path {
     }
 }
 
-/* SignIn and Register */
+#add-cards-message {
+    width: fit-content;
+}
+
+.notecard-main-extra-class-practice {
+    max-width: 36rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: var(--border-radius-3);
+}
+
 .form-error-message {
     margin-top: var(--spacing-medium);
     padding-top: var(--spacing-small);
 }
 
-/* Decks, Editor, Practice, CardEditor, Deck */
 .main-error-message {
     margin-top: 0;
     padding-top: 0;

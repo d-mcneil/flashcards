@@ -13,12 +13,16 @@
     color: #f5f5f5;
 }
 
+#push-right-but-push-left-small-screen {
+    margin-left: auto;
+}
+
 @media screen and (max-width: 25rem) {
     #nav-bar {
         margin-left: var(--spacing-medium);
     }
 
-    #push-right-small-screen {
+    #push-right-but-push-left-small-screen {
         margin-left: 0;
         margin-right: auto;
     }
