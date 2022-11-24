@@ -1,164 +1,91 @@
+html,
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    width: 100%;
+}
+
+html {
+    width: 100vw;
+    overflow-x: hidden;
+    min-height: 100%;
+}
+
+body {
+    --light-black-border: rgba(0, 0, 0, .1);
+    --border-radius-3: .5rem;
+    --border-radius-2: .25rem;
+    --border-radius-1: .125rem;
 }
 
 * {
-  cursor: default;
+    cursor: default;
+    line-height: 1.4;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, .8);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 svg,
 path {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-svg {
-  padding: .25rem;
+#practice-deck-name-title-wrapper {
+    max-width: 36rem;
 }
 
-.outline-hover:hover,
-#percentage {
-  outline: solid 1px;
-  outline: -webkit-focus-ring-color auto 1px;
+#practice-deck-name-title {
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-small);
+    margin-bottom: var(--spacing-large);
+    padding-top: 2px;
+    max-width: 36rem;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-/* .justify-content-center {
-  display: flex;
-  justify-content: center;
-} */
+@media screen and (min-width: 30rem) {
 
-#flip-card {
-  perspective: 1000px;
-  height: 19rem;
-  width: 100%;
+    #practice-deck-name-title {
+        margin-left: var(--spacing-large);
+        margin-right: var(--spacing-large);
+    }
 }
 
-#flip-card-inner {
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
-  position: relative;
-  width: 100%;
-  height: 100%;
+/* SignIn and Register */
+.form-error-message {
+    margin-top: var(--spacing-medium);
+    padding-top: var(--spacing-small);
 }
 
-.flipped {
-  transform: rotateX(-180deg);
+/* Decks, Editor, Practice, CardEditor, Deck */
+.main-error-message {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: var(--spacing-medium);
+    grid-column: 1 / -1;
 }
 
-#flip-card-front,
-#flip-card-back {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-#flip-card-back {
-  transform: rotateX(-180deg);
+.hide {
+    display: none;
 }
 
 .push {
-  margin-left: auto;
+    margin-left: auto;
 }
 
-.notecard-text {
-  max-height: 8.25em;
+.outline-hover:hover {
+    outline: solid 1px;
+    outline: -webkit-focus-ring-color auto 1px;
 }
 
-@media screen and (min-width: 30em) {
-  .width-30-em-after-break {
-    width: 30em;
-  }
-
-  .notecard-text {
-    max-height: 7em;
-  }
-}
-
-@media screen and (max-width:22rem) {
-  .settings-definition-first {
-    width: min-content;
-    text-align: center;
-  }
-}
-
-/* hide arrows in the number input field */
-input::-webkit-inner-spin-button,
-input::-webkit-outer-spin-button {
-  appearance: none;
-  margin: 0;
-}
-
-
-/* input[type=number] {
-  -moz-appearance: textfield;
-} this is supposed to hide the arrows in the number input field for firefox */
-
-
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked+.slider {
-  /* background-color: #2196F3; */
-  background-color: #ccc;
-}
-
-input:focus+.slider {
-  /* box-shadow: 0 0 1px #2196F3; */
-  box-shadow: 0 0 1px #ccc;
-}
-
-input:checked+.slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
+html {
+    background-color: #4096ee;
+    background: linear-gradient(45deg, #5bbad5, #4096ee);
 }

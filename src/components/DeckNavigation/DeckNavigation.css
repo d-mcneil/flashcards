@@ -1,0 +1,11 @@
+#deck-nav-bar {
+    display: flex;
+}
+
+.deck-nav-bar-button {
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+}

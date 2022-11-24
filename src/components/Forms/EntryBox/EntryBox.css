@@ -1,0 +1,27 @@
+.entry-box-outer {
+    margin-top: var(--spacing-medium);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.entry-box-label {
+    text-align: start;
+    font-weight: 600;
+    font-size: 100%;
+    display: block;
+    width: 100%;
+    max-width: 30em;
+}
+
+.entry-box {
+    cursor: text;
+    padding: var(--spacing-small);
+    border-radius: var(--border-radius-1);
+    border-color: black;
+    background-color: transparent;
+    font-size: 100%;
+    display: block;
+    width: 100%;
+    max-width: 30em;
+}

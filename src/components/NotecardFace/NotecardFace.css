@@ -1,0 +1,137 @@
+.notecard-main-extra-class {
+    max-width: 36rem;
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: var(--border-radius-3);
+}
+
+.notecard-grid {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    cursor: pointer;
+}
+
+.notecard-icon-wrapper {
+    height: min-content;
+    width: min-content;
+    cursor: pointer;
+}
+
+.speaker-icon-wrapper {
+    justify-self: start;
+}
+
+.shuffle-icon-wrapper {
+    justify-self: center;
+}
+
+.index-counter {
+    cursor: pointer;
+    justify-self: end;
+    margin-bottom: var(--spacing-small);
+}
+
+.notecard-text-wrapper {
+    grid-column: 1 / 4;
+    cursor: pointer;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    overflow: hidden;
+    max-height: 11.7rem;
+}
+
+.notecard-text {
+    max-height: 8.4em;
+    overflow: auto;
+    cursor: pointer;
+    width: 100%;
+}
+
+.left-arrow {
+    justify-self: end;
+    margin-right: var(--spacing-small);
+}
+
+.right-arrow {
+    justify-self: start;
+    margin-left: var(--spacing-small);
+}
+
+.left-arrow,
+.right-arrow {
+    cursor: pointer;
+    border-color: black;
+    padding-top: var(--spacing-extra-small);
+    padding-bottom: var(--spacing-extra-small);
+    /* padding-left: var(--spacing-small);
+    padding-right: var(--spacing-small); */
+    margin-top: var(--spacing-small);
+    border-radius: .5rem;
+    background-color: transparent;
+    font-weight: bold;
+    text-align: center;
+    width: 2.5em;
+}
+
+.right-arrow:hover>svg>path,
+.right-arrow:focus>svg>path {
+    color: white;
+}
+
+.notecard-score-counter-wrapper {
+    margin-top: var(--spacing-small);
+}
+
+@media screen and (min-width: 30rem) {
+
+    .notecard-text {
+        max-height: 7em;
+    }
+
+    .left-arrow,
+    .right-arrow {
+        /* padding-right: var(--spacing-medium);
+        padding-left: var(--spacing-medium); */
+        width: 3em;
+    }
+
+    .right-arrow {
+        margin-left: var(--spacing-medium);
+    }
+
+    .left-arrow {
+        margin-right: var(--spacing-medium);
+    }
+}
+
+.row-1 {
+    grid-row: 1 / 2;
+    align-self: start;
+}
+
+.row-2 {
+    grid-row: 2 / 3;
+}
+
+.row-3 {
+    grid-row: 3 / 4;
+    align-self: end;
+}
+
+.column-1 {
+    grid-column: 1 / 2;
+}
+
+.column-2 {
+    grid-column: 2 / 3;
+    justify-self: center;
+}
+
+.column-3 {
+    grid-column: 3 / 4;
+}

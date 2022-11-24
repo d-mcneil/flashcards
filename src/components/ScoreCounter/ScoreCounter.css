@@ -1,0 +1,42 @@
+.score-counter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: min-content;
+    width: min-content;
+}
+
+.score-button-left,
+.score-button-right {
+    cursor: pointer;
+    background-color: transparent;
+    width: 1.5em;
+}
+
+.score-button-left {
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+}
+
+.score-button-right {
+    border-top-right-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+}
+
+.score-counter-center {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    /* max-width: 2em; */
+    /* width: min-content; */
+    width: 2em;
+}
+
+.score-button-left,
+.score-button-right,
+.score-counter-center {
+    border-color: black;
+    text-align: center;
+    padding: var(--spacing-extra-small);
+    overflow: hidden;
+}

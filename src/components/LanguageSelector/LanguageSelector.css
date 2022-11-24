@@ -1,0 +1,16 @@
+.language-selector-wrapper {
+    margin-bottom: var(--spacing-medium);
+    width: min-content;
+}
+
+.language-selector-label {
+    display: block;
+    margin-bottom: var(--spacing-extra-small);
+    width: fit-content;
+}
+
+select {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+}

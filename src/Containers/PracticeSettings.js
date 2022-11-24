@@ -1,138 +1,140 @@
-import React from "react";
-import LanguageSelector from "../Components/LanguageSelector";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import Message from "../components/Message/Message";
+import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
+import { updateSettings } from "../redux/actions";
+import { fetchCallUpdateDeckPracticeSettings } from "../functions/fetchCalls";
+import PracticeSettingsHeader from "../components/PracticeSettingsHeader/PracticeSettingsHeader";
+import PracticeDeckPercentageInput from "../components/PracticeDeckPercentageInput/PracticeDeckPercentageInput";
+import LanguageSelector from "../components/LanguageSelector/LanguageSelector";
+
+const mapStateToProps = (state) => ({
+  currentSettings: state.currentDeck.practice.settings,
+  userId: state.userStatus.user.userId,
+  deckId: state.currentDeck.currentDeck.deckId,
+  speechSynthesisVoices: state.speechSynthesisVoices.speechSynthesisVoices,
+  termVoice: state.currentDeck.practice.termSpeechSynthesisVoice,
+  definitionVoice: state.currentDeck.practice.definitionSpeechSynthesisVoice,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onUpdateSettings: (...args) => dispatch(updateSettings(...args)),
+});
 
 const PracticeSettings = ({
-  definitionFirst,
-  toggleSwitch,
-  initialDeckPercentage,
-  deckPercentage,
-  termLanguage,
-  definitionLanguage,
-  updatePracticeCards,
-  saveDeckSettings,
-  voices,
-  matchVoices,
-  selectSpeechSynthesisVoice,
+  currentSettings,
+  onUpdateSettings,
+  userId,
+  deckId,
+  speechSynthesisVoices,
+  termVoice,
+  definitionVoice,
 }) => {
-  const setNewTermLanguage = (newTermLanguage) => {
-    if (newTermLanguage === termLanguage) {
-      return;
-    }
-    saveDeckSettings(
-      definitionFirst,
-      deckPercentage,
-      newTermLanguage,
-      definitionLanguage
-    );
+  const [error, setError] = useState("");
+  const [menuExpanded, setMenuExpanded] = useState(false);
+
+  const { definitionFirst, readOutOnFlip } = currentSettings;
+
+  const saveDeckSettingsChanges = (
+    settingPropertyName1,
+    settingValue1,
+    settingPropertyName2 = undefined,
+    settingValue2 = undefined
+  ) => {
+    return fetchCallUpdateDeckPracticeSettings(userId, deckId, {
+      ...currentSettings,
+      [settingPropertyName1]: settingValue1,
+      [settingPropertyName2]: settingValue2,
+    })
+      .then((data) => {
+        if (data.deckId) {
+          if (error) {
+            setError("");
+          }
+        } else {
+          setError(data);
+        }
+      })
+      .catch((err) => setError("Error saving updated deck settings: 0"));
   };
-  const setNewDefinitionLanguage = (newDefinitionLanguage) => {
-    if (newDefinitionLanguage === definitionLanguage) {
-      return;
-    }
-    saveDeckSettings(
-      definitionFirst,
-      deckPercentage,
-      termLanguage,
-      newDefinitionLanguage
-    );
+
+  const toggleSwitch = (event) => {
+    const { value, checked } = event.target;
+    onUpdateSettings(value, checked);
+    saveDeckSettingsChanges(value, checked);
   };
+
+  const handleExpandSettingsMenu = () => {
+    document
+      .getElementById("practice-settings-wrapper")
+      .classList.toggle("hide");
+    if (menuExpanded) {
+      setMenuExpanded(false);
+    } else {
+      setMenuExpanded(true);
+    }
+  };
+
   return (
     <>
-      <div className="f3-ns f4 w-100 mt4 mb4" style={{ textAlign: "center" }}>
-        Settings
-      </div>
-      {/* **************start term/definition first toggle switch***************** */}
+      <PracticeSettingsHeader
+        menuExpanded={menuExpanded}
+        handleExpandSettingsMenu={handleExpandSettingsMenu}
+      />
       <div
-        className="w-100"
-        style={{
-          display: "grid",
-          alignItems: "center",
-          justifyItems: "center",
-          gridTemplateColumns: "1fr auto 1fr",
-        }}
+        id="practice-settings-wrapper" // used for toggling the hide class, not for styling directly
+        className="hide" // in index.css
       >
-        <span
-          className="pr2 f6 f5-ns settings-definition-first "
-          style={{ justifySelf: "end" }}
-        >
-          Term First
-        </span>
-
-        <label className="switch">
-          <input
-            type="checkbox"
-            value="definition-first"
-            id="definition-first"
-            checked={definitionFirst}
+        <ToggleSwitch
+          labelLeft="Term First"
+          labelRight="Definition First"
+          value="definitionFirst"
+          checked={definitionFirst}
+          onChange={toggleSwitch}
+        />
+        {speechSynthesisVoices.length ? (
+          <ToggleSwitch
+            labelRight="Read Out on Flip"
+            value="readOutOnFlip"
+            checked={readOutOnFlip}
             onChange={toggleSwitch}
-          ></input>
-          <span className="slider round"></span>
-        </label>
-
-        <span
-          className="pl2 f6 f5-ns settings-definition-first"
-          style={{ justifySelf: "start" }}
-        >
-          Definition First
-        </span>
-      </div>
-      {/* **************start deck percentage input***************** */}
-      <div
-        className="w-100 f6 f5-ns mt3"
-        style={{
-          display: "grid",
-          alignItems: "center",
-          justifyItems: "center",
-          gridTemplateColumns: "1fr auto 1fr",
-        }}
-      >
-        <div style={{ justifySelf: "end" }}>Practice</div>
-        <input
-          type="number"
-          className="tc bn mh1 pa1"
-          id="percentage"
-          style={{ width: "2.5em", cursor: "text" }}
-          min={1}
-          max={100}
-          defaultValue={initialDeckPercentage}
-          placeholder={deckPercentage}
-          onChange={updatePracticeCards}
-          onBlur={() =>
-            saveDeckSettings(
-              definitionFirst,
-              deckPercentage,
-              termLanguage,
-              definitionLanguage
-            )
-          }
-        ></input>
-        <div style={{ justifySelf: "start" }}>% of Deck</div>
-      </div>
-      {/* **************start language selection input***************** */}
-      {voices.length ? (
-        <>
-          <LanguageSelector
-            label="Term"
-            voices={voices}
-            language={termLanguage}
-            setNewLanguage={setNewTermLanguage}
-            matchVoices={matchVoices}
-            selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
+            onAndOff={true}
           />
-          <LanguageSelector
-            label="Definition"
-            voices={voices}
-            language={definitionLanguage}
-            setNewLanguage={setNewDefinitionLanguage}
-            matchVoices={matchVoices}
-            selectSpeechSynthesisVoice={selectSpeechSynthesisVoice}
+        ) : (
+          <></>
+        )}
+        <PracticeDeckPercentageInput
+          saveDeckSettingsChanges={saveDeckSettingsChanges}
+          error={error}
+          setError={setError}
+        />
+        {speechSynthesisVoices.length ? (
+          <>
+            <LanguageSelector
+              label="Term"
+              voice={termVoice}
+              saveDeckSettingsChanges={saveDeckSettingsChanges}
+            />
+            <LanguageSelector
+              label="Definition"
+              voice={definitionVoice}
+              saveDeckSettingsChanges={saveDeckSettingsChanges}
+            />
+          </>
+        ) : (
+          <></>
+        )}
+        {error ? (
+          <Message
+            message={error}
+            wrapperClass="main-error-message" // in index.css
           />
-        </>
-      ) : (
-        <></>
-      )}
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
 };
 
-export default PracticeSettings;
+export default connect(mapStateToProps, mapDispatchToProps)(PracticeSettings);

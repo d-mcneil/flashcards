@@ -1,0 +1,42 @@
+.deck-name-or-card-term {
+    align-self: end;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: var(--spacing-small);
+    margin-top: var(--spacing-medium);
+}
+
+.deck-description-or-card-definition {
+    align-self: start;
+    resize: none;
+    margin-top: var(--spacing-small);
+    margin-bottom: var(--spacing-medium);
+    text-align: justify;
+    /* max-height: 4.5em; */
+}
+
+.deck-description-or-card-definition,
+.deck-name-or-card-term {
+    padding-left: var(--spacing-extra-small);
+    padding-right: var(--spacing-extra-small);
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-small);
+    border: none;
+    cursor: text;
+    grid-column: 1 / span 1;
+}
+
+@media screen and (min-width: 30rem) {
+
+    .deck-name-or-card-term,
+    .deck-description-or-card-definition {
+        margin-left: var(--spacing-large);
+        /* margin-right: var(--spacing-large); */
+    }
+
+    .reset-new-deck-or-card-info {
+        margin-left: var(--spacing-large);
+        margin-right: var(--spacing-large);
+    }
+
+}

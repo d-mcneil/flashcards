@@ -1,0 +1,132 @@
+body {
+    /* 5 */
+    --spacing-extra-large: 4rem;
+    /* 4 */
+    --spacing-large: 2rem;
+    /* 3 */
+    --spacing-medium: 1rem;
+    /* 2 */
+    --spacing-small: .5rem;
+    /* 1 */
+    --spacing-extra-small: .25rem;
+}
+
+.f1 {
+    font-size: 3rem;
+}
+
+.f2 {
+    font-size: 2.25rem
+}
+
+.f3 {
+    font-size: 1.5rem;
+}
+
+.f4 {
+    font-size: 1.25rem;
+}
+
+.f5 {
+    font-size: 1rem;
+}
+
+.f6 {
+    font-size: .875rem;
+}
+
+@media screen and (min-width: 30rem) {
+    .f3-ns {
+        font-size: 1.5rem;
+    }
+
+    .f4-ns {
+        font-size: 1.25rem;
+    }
+
+    .f5-ns {
+        font-size: 1rem;
+    }
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.ba {
+    border-style: solid;
+    border-width: 1px;
+}
+
+.tc {
+    text-align: center;
+}
+
+.center {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.input-reset {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.input-reset::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+.hover-white:hover,
+.hover-white:focus {
+    color: white;
+}
+
+.hover-bg-black:hover,
+.hover-bg-black:focus {
+    background-color: black;
+}
+
+.grow {
+    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: transform 0.25s ease-out;
+}
+
+.grow:hover,
+.grow:focus {
+    transform: scale(1.05);
+}
+
+.grow:active {
+    transform: scale(.90);
+}
+
+/* media query added by me to handle sticky hover effects on touch screens when clicked */
+@media (hover: hover) {
+    .dim {
+        opacity: 1;
+        transition: opacity .15s ease-in;
+    }
+
+    .dim:hover,
+    .dim:focus,
+    .dim:active {
+        opacity: .5;
+        transition: opacity .15s ease-in;
+    }
+}
+
+/* 
+this was the original Tachyons class, but in the PracticeSettingsHeader component, I didn't like how 
+the words stopped being dim when the item was clicked
+
+.dim:active { 
+    opacity: .8;
+    transition: opacity .15s ease-out;
+} */

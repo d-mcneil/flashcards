@@ -1,0 +1,45 @@
+.deck-name {
+    cursor: pointer;
+    margin-bottom: var(--spacing-small);
+    margin-top: var(--spacing-medium);
+    align-self: end;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.deck-description {
+    align-self: start;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-top: var(--spacing-small);
+    margin-bottom: var(--spacing-medium);
+    max-height: 3.7rem;
+    text-align: justify;
+}
+
+.deck-name,
+.deck-description {
+    overflow: hidden;
+    grid-column: 1 / span 1;
+    margin-right: var(--spacing-large);
+    margin-left: var(--spacing-small);
+}
+
+@media screen and (min-width: 30rem) {
+
+    .deck-name,
+    .deck-description {
+        margin-left: var(--spacing-large);
+    }
+}
+
+.deck-edit-button {
+    margin-bottom: var(--spacing-small);
+    margin-top: var(--spacing-medium);
+    cursor: pointer;
+    align-self: end;
+    justify-self: center;
+    grid-column: 2 / span 1;
+}
