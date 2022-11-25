@@ -1,0 +1,11 @@
+Favicon for Desktop Browsers and Google Result Pages:
+image size - 2 (counting the left-most option as 1)
+
+Favicon for iOS - Web Clip:
+margin size - 8px
+
+Favicon for Android Chrome:
+margin size - 12px
+
+macOS Safari:
+silhouette
