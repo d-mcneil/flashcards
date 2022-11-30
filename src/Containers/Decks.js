@@ -5,6 +5,7 @@ import Message from "../components/Message/Message";
 import Header from "../components/Header/Header";
 import Deck from "../components/Deck/Deck";
 import NewDeckOrNewCard from "../components/NewDeckOrNewCard/NewDeckOrNewCard";
+import SortSelector from "../components/SortSelector/SortSelector";
 // the following functions are passed down as props for the NewDeckOrNewCard component
 import { fetchCallCreateDeck } from "../functions/fetchCalls";
 import { validateDeckName } from "../functions/validateInput";
@@ -45,10 +46,32 @@ class Decks extends Component {
         ) : (
           <></>
         )}
+
         {Array.isArray(decks) && decks.length ? (
-          decks.map((deck) => (
-            <Deck key={deck.deckId} deck={deck} userId={userId} />
-          ))
+          <>
+            {decks.length > 1 ? (
+              <SortSelector
+                actionLoadCallback={loadDecks}
+                cardsOrDecksToSort={decks}
+                optionOne={{
+                  value: "Most Recent First",
+                  descending: "true",
+                  sortProperty: "deckId",
+                }}
+                optionTwo={{
+                  value: "Oldest First",
+                  descending: "false",
+                  sortProperty: "deckId",
+                }}
+              />
+            ) : (
+              <></>
+            )}
+
+            {decks.map((deck) => (
+              <Deck key={deck.deckId} deck={deck} userId={userId} />
+            ))}
+          </>
         ) : (
           <></>
         )}

@@ -9,7 +9,8 @@
     width: fit-content;
 }
 
-select {
+#select-term-language,
+#select-definition-language {
     display: block;
     text-align: center;
     cursor: pointer;

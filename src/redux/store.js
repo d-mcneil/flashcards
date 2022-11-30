@@ -8,10 +8,10 @@ import { rootReducer } from "./reducers";
 const configureStore = () => {
   const store = createStore(
     rootReducer,
+    // prettier-ignore
     applyMiddleware(
       thunkMiddleware
-      // , logger
-      //
+      // ,logger
     )
   );
   return store;

@@ -1,5 +1,6 @@
 import { batch } from "react-redux";
 import { fetchCallGet, fetchCallDelete } from "../functions/fetchCalls";
+import { sortDecksOrCards } from "../functions/repeatedFunctions";
 import {
   // **************** route reducer****************
   ROUTE_CHANGE,
@@ -67,7 +68,7 @@ export const updateDeckList = (deckName, description, deckId) => ({
 // **************** currentDeck reducer ****************
 const loadCurrentDeck = (deck) => ({ type: LOAD_CURRENT_DECK, payload: deck });
 export const unloadCurrentDeck = () => ({ type: UNLOAD_CURRENT_DECK });
-const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
+export const loadCards = (cards) => ({ type: LOAD_CARDS, payload: cards });
 export const addCard = (card) => ({ type: ADD_CARD, payload: card });
 export const removeCard = (cardId) => ({ type: REMOVE_CARD, payload: cardId });
 export const updateCurrentDeck = (deckName, description) => ({
@@ -180,11 +181,7 @@ export const getDecksOrCardsRequest =
           batch(() => {
             dispatch(resetError());
             dispatch(
-              actionLoadCallback(
-                data.sort(
-                  (a, b) => b[`${idPropertyName}`] - a[`${idPropertyName}`]
-                )
-              )
+              sortDecksOrCards(actionLoadCallback, data, idPropertyName)
             );
             dispatch(requestResovled());
           });
@@ -228,7 +225,7 @@ export const shufflePracticeCards =
   (
     cards,
     event = null,
-    currentIndex = 1,
+    currentIndex = 1, // reset currentIndex by default
     sliceDeck = false,
     practiceCardsQuantity = 0
   ) =>

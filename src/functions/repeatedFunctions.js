@@ -68,3 +68,24 @@ export const saveChangesDeckOrCard = (
       }
   }).catch(err => setErrorCallback(`Error updating ${deckOrCard}: 0`))
 };
+
+export const sortDecksOrCards = (
+  actionLoadCallback,
+  cardsOrDecksToSort,
+  sortProperty,
+  descending = true
+) => {
+  if (descending) {
+    return actionLoadCallback(
+      cardsOrDecksToSort.sort(
+        (a, b) => b[`${sortProperty}`] - a[`${sortProperty}`]
+      )
+    );
+  } else {
+    return actionLoadCallback(
+      cardsOrDecksToSort.sort(
+        (a, b) => a[`${sortProperty}`] - b[`${sortProperty}`]
+      )
+    );
+  }
+};

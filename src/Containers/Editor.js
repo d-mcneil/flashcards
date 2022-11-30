@@ -4,10 +4,11 @@ import Header from "../components/Header/Header";
 import Message from "../components/Message/Message";
 import NewDeckOrNewCard from "../components/NewDeckOrNewCard/NewDeckOrNewCard";
 import { fetchCallCreateCard } from "../functions/fetchCalls";
-import { addCard } from "../redux/actions";
+import { addCard, loadCards } from "../redux/actions";
 import { validateCardInput } from "../functions/validateInput";
 import DeckEditor from "../components/DeckEditor/DeckEditor";
 import CardEditor from "../components/CardEditor/CardEditor";
+import SortSelector from "../components/SortSelector/SortSelector";
 
 const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
@@ -16,8 +17,6 @@ const mapStateToProps = (state) => ({
   userId: state.userStatus.user.userId,
   cards: state.currentDeck.cards,
 });
-
-const mapDispatchToProps = (dispatch) => ({});
 
 const Editor = ({ error, isPending, deckId, userId, cards }) => {
   const message = isPending ? "Loading cards..." : error;
@@ -35,19 +34,50 @@ const Editor = ({ error, isPending, deckId, userId, cards }) => {
         <></>
       )}
       {Array.isArray(cards) && cards.length ? (
-        cards.map((card) => {
-          return (
-            <CardEditor
-              // key={`${card.cardId}-${card.term.replace(" ", "-")}`}
-              key={card.cardId}
-              cardId={card.cardId}
-              score={card.score}
-              currentTerm={card.term}
-              currentDefinition={card.definition}
-              userId={userId}
+        <>
+          {cards.length > 1 ? (
+            <SortSelector
+              actionLoadCallback={loadCards}
+              cardsOrDecksToSort={cards}
+              optionOne={{
+                value: "Most Recent First",
+                descending: "true",
+                sortProperty: "cardId",
+              }}
+              optionTwo={{
+                value: "Oldest First",
+                descending: "false",
+                sortProperty: "cardId",
+              }}
+              optionThree={{
+                value: "Highest Score First",
+                descending: "true",
+                sortProperty: "score",
+              }}
+              optionFour={{
+                value: "Lowest Score First",
+                descending: "false",
+                sortProperty: "score",
+              }}
             />
-          );
-        })
+          ) : (
+            <></>
+          )}
+
+          {cards.map((card) => {
+            return (
+              <CardEditor
+                // key={`${card.cardId}-${card.term.replace(" ", "-")}`}
+                key={card.cardId}
+                cardId={card.cardId}
+                score={card.score}
+                currentTerm={card.term}
+                currentDefinition={card.definition}
+                userId={userId}
+              />
+            );
+          })}
+        </>
       ) : (
         <></>
       )}
@@ -67,4 +97,4 @@ const Editor = ({ error, isPending, deckId, userId, cards }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default connect(mapStateToProps)(Editor);
