@@ -5,6 +5,7 @@ import {
   // **************** userStatus reducer ****************
   LOAD_USER,
   UNLOAD_USER,
+  LOAD_SAMPLE_USER,
   // **************** requestStatus reducer ****************
   REQUEST_PENDING,
   REQUEST_RESOLVED,
@@ -51,6 +52,7 @@ const initialStateUserStatus = {
     joined: "",
   },
   signedIn: false,
+  sampleUser: false,
 };
 const initialStateRequestStatus = { isPending: false };
 const initialStateError = { error: "" };
@@ -95,6 +97,20 @@ const userStatus = (state = initialStateUserStatus, action = {}) => {
       return { ...state, user: action.payload, signedIn: true };
     case UNLOAD_USER:
       return { ...state, ...initialStateUserStatus };
+    case LOAD_SAMPLE_USER:
+      return {
+        ...state,
+        user: {
+          userId: 1,
+          firstName: "Sample",
+          lastName: "User",
+          email: "sampleUser@example.com",
+          username: "1",
+          joined: "1970-01-01 00:00:00.000Z",
+        },
+        signedIn: true,
+        sampleUser: true,
+      };
     default:
       return state;
   }

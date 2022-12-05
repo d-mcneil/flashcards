@@ -1,7 +1,7 @@
 import React from "react";
 import "./Button.css";
 
-const Button = ({ label, onClick, onEnterSubmit }) => {
+const Button = ({ label, onClick, onEnterSubmit = undefined }) => {
   return (
     <>
       <div className="submit-button-outer">

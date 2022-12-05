@@ -18,8 +18,6 @@ import "./CardEditor.css";
 const mapDispatchToProps = (dispatch) => ({
   onDelete: (cardId) => dispatch(removeCard(cardId)),
   onSave: (...args) => dispatch(updateCard(...args)),
-  //   onUpdateScore: (cardId, incrementValue) =>
-  //     dispatch(updateCardScore(cardId, incrementValue)),
 });
 
 // prettier-ignore

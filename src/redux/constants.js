@@ -4,6 +4,7 @@ export const ROUTE_CHANGE = "ROUTE_CHANGE";
 // **************** userStatus reducer ****************
 export const LOAD_USER = "LOAD_USER";
 export const UNLOAD_USER = "UNLOAD_USER";
+export const LOAD_SAMPLE_USER = 'SAMPLE_USER';
 
 // **************** requestStatus reducer ****************
 export const REQUEST_PENDING = "REQUEST_PENDING";

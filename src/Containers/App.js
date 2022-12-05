@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadSpeechSynthesisVoices } from "../redux/actions";
+import { loadSpeechSynthesisVoices, signInSampleUser } from "../redux/actions";
 import SignIn from "./SignIn";
 import Register from "./Register";
 import Decks from "./Decks";
@@ -10,14 +10,17 @@ import MainCard from "../components/MainCard/MainCard";
 import Navigation from "../components/Navigation/Navigation";
 import DeckNavigation from "../components/DeckNavigation/DeckNavigation";
 import Profile from "../components/Profile/Profile";
+import Button from "../components/Forms/Button/Button";
 
 const mapStateToProps = (state) => ({
   route: state.route.route,
+  signedIn: state.userStatus.signedIn,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setSpeechSynthesisVoices: (voices) =>
     dispatch(loadSpeechSynthesisVoices(voices)),
+  loadSampleUser: () => dispatch(signInSampleUser()),
 });
 
 class App extends Component {
@@ -62,6 +65,13 @@ class App extends Component {
     }
   };
 
+  sampleUserButtonRender = () => {
+    const { signedIn, loadSampleUser } = this.props;
+    if (!signedIn) {
+      return <Button label="Sign In as Sample User" onClick={loadSampleUser} />;
+    }
+  };
+
   render() {
     return (
       <>
@@ -70,6 +80,7 @@ class App extends Component {
           {this.deckNavigationRender()}
           {this.mainRender()}
         </MainCard>
+        {this.sampleUserButtonRender()}
       </>
     );
   }

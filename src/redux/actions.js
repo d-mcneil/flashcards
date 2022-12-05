@@ -7,6 +7,7 @@ import {
   // **************** userStatus reducer ****************
   LOAD_USER,
   UNLOAD_USER,
+  LOAD_SAMPLE_USER,
   // **************** requestStatus reducer ****************
   REQUEST_PENDING,
   REQUEST_RESOLVED,
@@ -46,6 +47,7 @@ export const routeChange = (route) => ({ type: ROUTE_CHANGE, payload: route });
 // **************** userStatus reducer ****************
 const loadUser = (user) => ({ type: LOAD_USER, payload: user });
 const unloadUser = () => ({ type: UNLOAD_USER });
+const loadSampleUser = () => ({ type: LOAD_SAMPLE_USER });
 
 // **************** requestStatus reducer ****************
 export const requestPending = () => ({ type: REQUEST_PENDING });
@@ -169,6 +171,13 @@ export const registrationAndSignInRequest =
         })
       );
   };
+
+export const signInSampleUser = () => (dispatch) => {
+  batch(() => {
+    dispatch(loadSampleUser());
+    dispatch(routeChangeAndResetError("home"));
+  });
+};
 
 export const getDecksOrCardsRequest =
   (id, actionLoadCallback, decksOrCards = "decks") =>
