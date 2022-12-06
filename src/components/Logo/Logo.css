@@ -17,11 +17,16 @@
     align-items: center;
     justify-content: center;
     margin: var(--spacing-medium);
-    margin-bottom: 0;
 }
 
 @media screen and (max-width: 25rem) {
     #logo-wrapper {
         margin-left: 0;
+    }
+}
+
+@media screen and (min-width: 69rem) {
+    #logo-wrapper {
+        margin-bottom: 0;
     }
 }

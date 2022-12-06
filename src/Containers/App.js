@@ -11,6 +11,7 @@ import Navigation from "../components/Navigation/Navigation";
 import DeckNavigation from "../components/DeckNavigation/DeckNavigation";
 import Profile from "../components/Profile/Profile";
 import Button from "../components/Forms/Button/Button";
+import Message from "../components/Message/Message";
 
 const mapStateToProps = (state) => ({
   route: state.route.route,
@@ -68,7 +69,24 @@ class App extends Component {
   sampleUserButtonRender = () => {
     const { signedIn, loadSampleUser } = this.props;
     if (!signedIn) {
-      return <Button label="Sign In as Sample User" onClick={loadSampleUser} />;
+      return (
+        <>
+          {" "}
+          <Button
+            label="Sign In as Sample User"
+            onClick={loadSampleUser}
+            wrapperExtraClassName="sample-user-button-wrapper" // in index.css
+            buttonExtraClassName="sample-user-button" // in index.css
+          />
+          <Message
+            wrapperClass="sample-user-message-wrapper" // in index.css
+            messageExtraClassName="sample-user-message" // in index.css
+            message={
+              "Note: All changes made as the sample user will be discarded when the session is ended."
+            }
+          />
+        </>
+      );
     }
   };
 

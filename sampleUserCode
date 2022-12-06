@@ -1,0 +1,66 @@
+-
+-
+- App.js
+  sampleUserButtonRender function
+  loadSampleUser: () => dispatch(signInSampleUser()),
+  signedIn: state.userStatus.signedIn,
+  import { signInSampleUser } from "../redux/actions";
+  import Message from "../components/Message/Message";
+  import Button from "../components/Forms/Button/Button";
+
+-
+-
+- index.css
+  .sample-user-message-wrapper {
+  margin: var(--spacing-large);
+  margin-top: var(--spacing-medium);
+  }
+  .sample-user-message {
+  color: #f5f5f5;
+  }
+  .sample-user-button-wrapper {
+  margin-top: 3rem
+  }
+  .sample-user-button {
+  color: #f5f5f5;
+  border-color: #f5f5f5;
+  }
+  .sample-user-button:hover,
+  .sample-user-button:focus {
+  border-color: black;
+  }
+
+-
+-
+- constants.js
+  export const LOAD_SAMPLE_USER = 'SAMPLE_USER';
+
+-
+-
+- reducers.js
+  sampleUser: false,
+  case LOAD_SAMPLE_USER:
+  return {
+  ...state,
+  user: {
+  userId: 1,
+  firstName: "Sample",
+  lastName: "User",
+  email: "sampleUser@example.com",
+  username: "1",
+  joined: "1970-01-01 00:00:00.000Z",
+  },
+  signedIn: true,
+  sampleUser: true,
+  };
+
+-
+-
+- actions.js
+  const loadSampleUser = () => ({ type: LOAD_SAMPLE_USER });
+  export const signInSampleUser = () => (dispatch) => {
+  batch(() => {
+  dispatch(loadSampleUser());
+  dispatch(routeChangeAndResetError("home"));
+  });
+  };
