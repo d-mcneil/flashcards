@@ -1,0 +1,27 @@
+#logo-picture {
+    height: 5rem;
+    width: 9rem;
+    border-radius: var(--border-radius-3);
+    z-index: -1;
+}
+
+#logo-text {
+    position: absolute;
+    font-weight: 700;
+}
+
+#logo-wrapper {
+    height: 5rem;
+    width: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: var(--spacing-medium);
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 25rem) {
+    #logo-wrapper {
+        margin-left: 0;
+    }
+}

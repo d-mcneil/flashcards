@@ -2,6 +2,7 @@ import React from "react";
 import { routeChangeAndResetError, signOutUser } from "../../redux/actions";
 import { connect } from "react-redux";
 import "./Navigation.css";
+import Logo from "../Logo/Logo";
 
 const mapStateToProps = (state) => ({
   signedIn: state.userStatus.signedIn,
@@ -19,6 +20,12 @@ const mapDispatchToProps = (dispatch) => ({
 
 const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
   const navBarStyleClasses = "f3 dim nav-bar-button";
+
+  const renderLogo = () => {
+    if (!signedIn) {
+      return <Logo />;
+    }
+  };
 
   const renderHomeOrProfileButton = () => {
     if (route === "home" || route === "practice" || route === "editor") {
@@ -79,6 +86,7 @@ const Navigation = ({ route, signedIn, error, onRouteChange, onSignOut }) => {
 
   return (
     <nav id="nav-bar">
+      {renderLogo()}
       {renderHomeOrProfileButton()}
       {renderRegisterSignInOrSignOutButton()}
     </nav>

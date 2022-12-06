@@ -1,5 +1,5 @@
 image used to make favicons:
 https://www.iconspng.com/image/123507/index-card
 
-extra image
+image used for logo in app nav bar
 http://clipart-library.com/clipart/1847250.htm
