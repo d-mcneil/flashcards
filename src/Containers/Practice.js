@@ -29,6 +29,7 @@ const mapStateToProps = (state) => ({
   speechSynthesisVoices: state.speechSynthesisVoices.speechSynthesisVoices,
   settings: state.currentDeck.practice.settings,
   currentIndex: state.currentDeck.practice.currentIndex,
+  sampleUser: state.userStatus.sampleUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -69,6 +70,7 @@ const Practice = ({
   setDefinitionVoice,
   currentIndex,
   routeChange,
+  sampleUser,
 }) => {
   const message = isPending ? "Loading cards..." : error;
   const {
@@ -81,6 +83,9 @@ const Practice = ({
 
   // request deck practice settings if they have not already been fetched
   useEffect(() => {
+    if (sampleUser) {
+      return;
+    }
     if (!settingsHaveBeenFetched) {
       fetchCallGet(deckId, "practice-settings").then((data) => {
         if (data.deckId) {

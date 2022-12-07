@@ -199,3 +199,21 @@
     actionCallback(mainFieldNewValue, secondaryFieldNewValue, secondaryId);
     return;
     }
+
+-
+-
+- Practice.js
+  sampleUser: state.userStatus.sampleUser,
+  const Practice = ({ sampleUser,
+  if (sampleUser) {
+  return;
+  }
+
+-
+-
+- PracticeSettings.js
+  sampleUser: state.userStatus.sampleUser,
+  const PracticeSettings = ({ sampleUser
+  if (sampleUser) {
+  return;
+  }

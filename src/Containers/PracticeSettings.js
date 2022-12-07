@@ -15,6 +15,7 @@ const mapStateToProps = (state) => ({
   speechSynthesisVoices: state.speechSynthesisVoices.speechSynthesisVoices,
   termVoice: state.currentDeck.practice.termSpeechSynthesisVoice,
   definitionVoice: state.currentDeck.practice.definitionSpeechSynthesisVoice,
+  sampleUser: state.userStatus.sampleUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -29,6 +30,7 @@ const PracticeSettings = ({
   speechSynthesisVoices,
   termVoice,
   definitionVoice,
+  sampleUser,
 }) => {
   const [error, setError] = useState("");
   const [menuExpanded, setMenuExpanded] = useState(false);
@@ -41,6 +43,9 @@ const PracticeSettings = ({
     settingPropertyName2 = undefined,
     settingValue2 = undefined
   ) => {
+    if (sampleUser) {
+      return;
+    }
     return fetchCallUpdateDeckPracticeSettings(userId, deckId, {
       ...currentSettings,
       [settingPropertyName1]: settingValue1,
