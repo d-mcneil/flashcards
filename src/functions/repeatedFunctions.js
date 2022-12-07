@@ -42,7 +42,8 @@ export const saveChangesDeckOrCard = (
   actionCallback, // updateDeck or updateCard
   userId,
   secondaryId, // deckId or cardId
-  deckOrCard // 'deck' or 'card'
+  deckOrCard, // 'deck' or 'card'
+  sampleUser // true or false
 ) => {
   // prettier-ignore
   if (mainFieldCurrentValue === mainFieldNewValue && secondaryFieldCurrentValue === secondaryFieldNewValue) {
@@ -55,6 +56,11 @@ export const saveChangesDeckOrCard = (
     if (validity.reason) {
       setErrorCallback(validity.reason);
     }
+    return;
+  }
+
+  if (sampleUser) {
+    actionCallback(mainFieldNewValue, secondaryFieldNewValue, secondaryId);
     return;
   }
 

@@ -15,13 +15,17 @@ import DeleteButton from "../DeleteButton/DeleteButton";
 import ScoreCounter from "../ScoreCounter/ScoreCounter";
 import "./CardEditor.css";
 
+const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   onDelete: (cardId) => dispatch(removeCard(cardId)),
   onSave: (...args) => dispatch(updateCard(...args)),
 });
 
 // prettier-ignore
-const CardEditor = ({ onSave, onDelete, userId, cardId, score, currentTerm, currentDefinition }) => {
+const CardEditor = ({ onSave, onDelete, userId, cardId, score, currentTerm, currentDefinition, sampleUser }) => {
   const [error, setError] = useState("");
   const newTerm = useInputValue("", error, () => setError(""));
   const newDefinition = useInputValue("", error, () => setError(""));
@@ -29,10 +33,14 @@ const CardEditor = ({ onSave, onDelete, userId, cardId, score, currentTerm, curr
   const textAreaId = `text-area-${cardId}`;
 
   const saveChanges = () => {
-    saveChangesDeckOrCard(currentTerm, newTerm.value, currentDefinition, newDefinition.value, validateCardInput, setError, onSave, userId, cardId, 'card')
+    saveChangesDeckOrCard(currentTerm, newTerm.value, currentDefinition, newDefinition.value, validateCardInput, setError, onSave, userId, cardId, 'card', sampleUser)
   };
 
   const deleteCard = () => {
+    if (sampleUser) {
+      onDelete(cardId);
+      return;
+    }
     fetchCallDelete(userId, cardId, "card")
       .then((data) => {
         if (data.cardId === cardId) {
@@ -98,4 +106,4 @@ const CardEditor = ({ onSave, onDelete, userId, cardId, score, currentTerm, curr
   );
 };
 
-export default connect(null, mapDispatchToProps)(CardEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(CardEditor);

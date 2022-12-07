@@ -5,11 +5,16 @@ import { fetchCallUpdateCardScore } from "../../functions/fetchCalls";
 import "./ScoreCounter.css";
 import { useWindowEventHandler } from "../../functions/hooks";
 
+const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   onUpdateScore: (...args) => dispatch(updateCardScore(...args)),
 });
 
 const ScoreCounter = ({
+  sampleUser,
   score,
   cardId,
   userId,
@@ -21,6 +26,13 @@ const ScoreCounter = ({
 }) => {
   const updateScore = (incrementValue, event) => {
     event.stopPropagation(); // prevents unwanted card flip
+    if (sampleUser) {
+      onUpdateScore(cardId, incrementValue);
+      if (error) {
+        setErrorCallback("");
+      }
+      return;
+    }
     fetchCallUpdateCardScore(userId, cardId, incrementValue)
       .then((data) => {
         if (data.cardId) {
@@ -69,4 +81,4 @@ const ScoreCounter = ({
   );
 };
 
-export default connect(null, mapDispatchToProps)(ScoreCounter);
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreCounter);

@@ -136,3 +136,66 @@
     sampleUserNewCardId: state.currentDeck.sampleUserNewCardId,
     const Editor = ({sampleUserNewCardId})
     sampleUserNewDeckOrCardId={sampleUserNewCardId}
+
+-
+-
+- Profile.js
+  import { signOutUser } from "../../redux/actions";
+  sampleUser: state.userStatus.sampleUser,
+  onDeleteSampleUser: (error) => dispatch(signOutUser(error)),
+  const Profile = ({onDeleteSampleUser })
+  const handleDeleteUser = () => {
+  if (sampleUser) {
+  onDeleteSampleUser(error)
+  } else {
+  deleteUser(userId, username, error)
+  }
+  }
+  onClick={handleDeleteUser}
+
+-
+-
+- CardEditor.js
+  const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+  });
+  connect(mapStateToProps
+  const CardEditor = ({ sampleUser })
+  saveChangesDeckOrCard(sampleUser)
+  if (sampleUser) {
+  onDelete(cardId);
+  return;
+  }
+
+-
+-
+- DeckEditor.js
+  sampleUser: state.userStatus.sampleUser,
+  const DeckEditor = ({ sampleUser })
+  saveChangesDeckOrCard(sampleUser)
+
+-
+-
+- ScoreCounter.js
+  const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+  });
+  connect(mapStateToProps
+  const ScoreCounter = ({sampleUser,
+  if (sampleUser) {
+  onUpdateScore(cardId, incrementValue);
+  if (error) {
+  setErrorCallback("");
+  }
+  return;
+  }
+
+  -
+  -
+  - repeatedFunctions.js
+    export const saveChangesDeckOrCard = (
+    sampleUser // true or false
+    if (sampleUser) {
+    actionCallback(mainFieldNewValue, secondaryFieldNewValue, secondaryId);
+    return;
+    }

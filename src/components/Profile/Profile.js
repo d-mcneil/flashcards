@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect, batch } from "react-redux";
 // prettier-ignore
-import { deleteUserRequest, requestResovled, unloadCurrentDeck } from "../../redux/actions";
+import { deleteUserRequest, requestResovled, unloadCurrentDeck, signOutUser } from "../../redux/actions";
 import Message from "../Message/Message";
 import Header from "../Header/Header";
 import "./Profile.css";
@@ -10,11 +10,13 @@ const mapStateToProps = (state) => ({
   error: state.error.error,
   user: state.userStatus.user,
   isPending: state.requestStatus.isPending,
+  sampleUser: state.userStatus.sampleUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   deleteUser: (userId, username, error) =>
     dispatch(deleteUserRequest(userId, username, error)),
+  onDeleteSampleUser: (error) => dispatch(signOutUser(error)),
   cleanUpStateOnMount: () =>
     batch(() => {
       dispatch(unloadCurrentDeck());
@@ -28,7 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 // prettier-ignore
-const Profile = ({ error, user, isPending, deleteUser, cleanUpStateOnMount }) => {
+const Profile = ({ error, user, isPending, deleteUser, cleanUpStateOnMount, sampleUser, onDeleteSampleUser }) => {
  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => cleanUpStateOnMount(), []);
@@ -36,6 +38,14 @@ const Profile = ({ error, user, isPending, deleteUser, cleanUpStateOnMount }) =>
   const message = isPending ? "Deleting user..." : error;
   const { userId, firstName, lastName, email, username, joined } = user;
   const profileStyleClasses = "f3 profile-field";
+
+  const handleDeleteUser = () => {
+    if (sampleUser) {
+      onDeleteSampleUser(error)
+    } else {
+      deleteUser(userId, username, error)
+    }
+  }
 
   return (
     <>
@@ -49,7 +59,7 @@ const Profile = ({ error, user, isPending, deleteUser, cleanUpStateOnMount }) =>
         .replace("Z", " UTC")}`}</div>
       <p
         className="f3 dim profile-delete-button"
-        onClick={() => deleteUser(userId, username, error)}
+        onClick={handleDeleteUser}
       >
         Delete User
       </p>

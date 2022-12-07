@@ -12,6 +12,7 @@ const mapStateToProps = (state) => ({
   currentDeck: state.currentDeck.currentDeck,
   userId: state.userStatus.user.userId,
   error: state.error.error,
+  sampleUser: state.userStatus.sampleUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -26,7 +27,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 // prettier-ignore
-const DeckEditor = ({ currentDeck, userId, error, updateError, updateDeck, resetErrorIfNeeded }) => {
+const DeckEditor = ({ currentDeck, userId, error, updateError, updateDeck, resetErrorIfNeeded, sampleUser }) => {
   const newDeckName = useInputValue("", error, resetErrorIfNeeded);
   const newDescription = useInputValue("", error, resetErrorIfNeeded);
 
@@ -35,7 +36,7 @@ const DeckEditor = ({ currentDeck, userId, error, updateError, updateDeck, reset
   const currentDescription = currentDeck.description;
 
   const saveChanges = () => {
-    saveChangesDeckOrCard(currentDeckName, newDeckName.value, currentDescription, newDescription.value, validateDeckName, updateError, updateDeck, userId, deckId, 'deck')
+    saveChangesDeckOrCard(currentDeckName, newDeckName.value, currentDescription, newDescription.value, validateDeckName, updateError, updateDeck, userId, deckId, 'deck', sampleUser)
   };
 
   useEffect(() => {
