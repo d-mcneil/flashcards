@@ -17,6 +17,7 @@ const mapStateToProps = (state) => ({
   isPending: state.requestStatus.isPending,
   decksHaveBeenFetched: state.decks.decksHaveBeenFetched,
   userId: state.userStatus.user.userId,
+  sampleUserNewDeckId: state.decks.sampleUserNewDeckId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -33,7 +34,7 @@ class Decks extends Component {
   }
 
   render() {
-    const { userId, decks, error, isPending } = this.props;
+    const { userId, decks, error, isPending, sampleUserNewDeckId } = this.props;
     const message = isPending ? "Loading decks..." : error;
     return (
       <>
@@ -76,6 +77,7 @@ class Decks extends Component {
           <></>
         )}
         <NewDeckOrNewCard
+          sampleUserNewDeckOrCardId={sampleUserNewDeckId}
           userId={userId}
           validationCallback={validateDeckName}
           fetchCallback={fetchCallCreateDeck}

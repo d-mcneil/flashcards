@@ -9,6 +9,10 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteButton from "../DeleteButton/DeleteButton";
 import "./Deck.css";
 
+const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   onDelete: (deckId) => dispatch(removeDeck(deckId)),
   onSelectDeck: (...args) => dispatch(selectDeck(...args)),
@@ -23,12 +27,16 @@ class Deck extends Component {
   }
 
   deleteDeck = () => {
-    const { userId, deck } = this.props;
+    const { userId, deck, sampleUser, onDelete } = this.props;
     const { deckId } = deck;
+    if (sampleUser) {
+      onDelete(deckId);
+      return;
+    }
     fetchCallDelete(userId, deckId, "deck")
       .then((data) => {
         if (data.deckId === deckId) {
-          this.props.onDelete(deckId);
+          onDelete(deckId);
         } else {
           this.setState({ error: data });
         }
@@ -82,4 +90,4 @@ class Deck extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Deck);
+export default connect(mapStateToProps, mapDispatchToProps)(Deck);

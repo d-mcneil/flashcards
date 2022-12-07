@@ -9,6 +9,10 @@ import SecondaryFieldInputBox from "../InputBoxes/SecondaryFieldInputBox";
 import Message from "../Message/Message";
 import "./NewDeckOrNewCard.css";
 
+const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   onSave: (deckOrCardObject, actionCallback) =>
     dispatch(actionCallback(deckOrCardObject)),
@@ -16,6 +20,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const NewDeckOrNewCard = ({
   onSave, // from mapDispatchToProps
+  sampleUser, // from mapStateToProps
+  sampleUserNewDeckOrCardId, // keeps track of sampleUsers new decks and cards with their own id numbers
   userId, // userId
   deckId = undefined, // newDeck: undefined | newCard: deckId
   validationCallback, // newDeck: validateDeckName | newCard: validateCardInput from "../../functions/validateInput"
@@ -51,6 +57,33 @@ const NewDeckOrNewCard = ({
       if (validity.reason) {
         setError(validity.reason);
       }
+      return;
+    }
+    if (sampleUser) {
+      if (deckId) {
+        // saving a card
+        onSave(
+          {
+            cardId: sampleUserNewDeckOrCardId,
+            score: 0,
+            term: mainField.value,
+            definition: secondaryField.value,
+          },
+          actionCallback
+        );
+      } else {
+        // saving a deck
+        onSave(
+          {
+            userId,
+            deckId: sampleUserNewDeckOrCardId,
+            deckName: mainField.value,
+            description: secondaryField.value,
+          },
+          actionCallback
+        );
+      }
+      resetInput();
       return;
     }
     fetchCallback(userId, mainField.value, secondaryField.value, deckId)
@@ -107,4 +140,4 @@ const NewDeckOrNewCard = ({
   );
 };
 
-export default connect(null, mapDispatchToProps)(NewDeckOrNewCard);
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeckOrNewCard);

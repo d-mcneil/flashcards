@@ -16,9 +16,17 @@ const mapStateToProps = (state) => ({
   deckId: state.currentDeck.currentDeck.deckId,
   userId: state.userStatus.user.userId,
   cards: state.currentDeck.cards,
+  sampleUserNewCardId: state.currentDeck.sampleUserNewCardId,
 });
 
-const Editor = ({ error, isPending, deckId, userId, cards }) => {
+const Editor = ({
+  error,
+  isPending,
+  deckId,
+  userId,
+  cards,
+  sampleUserNewCardId,
+}) => {
   const message = isPending ? "Loading cards..." : error;
 
   return (
@@ -82,6 +90,7 @@ const Editor = ({ error, isPending, deckId, userId, cards }) => {
         <></>
       )}
       <NewDeckOrNewCard
+        sampleUserNewDeckOrCardId={sampleUserNewCardId}
         userId={userId}
         deckId={deckId}
         validationCallback={validateCardInput}

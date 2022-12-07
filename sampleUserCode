@@ -53,6 +53,14 @@
   signedIn: true,
   sampleUser: true,
   };
+  sampleUserNewDeckId: 1000,
+  sampleUserNewCardId: 1000,
+  case ADD_DECK:
+  sampleUserNewDeckId: state.sampleUserNewDeckId + 1,
+  };
+  case ADD_CARD:
+  sampleUserNewCardId: state.sampleUserNewCardId + 1,
+  };
 
 -
 -
@@ -64,3 +72,67 @@
   dispatch(routeChangeAndResetError("home"));
   });
   };
+
+-
+-
+- Deck.js
+  const mapStateToProps = state => ({
+  sampleUser: state.userStatus.sampleUser
+  })
+  if (sampleUser) {
+  onDelete(deckId)
+  return;
+  }
+  connect(mapStateToProps
+  const { sampleUser } = this.props;
+
+-
+-
+- NewDeckOrCard.js
+  const mapStateToProps = (state) => ({
+  sampleUser: state.userStatus.sampleUser,
+  });
+  sampleUser, // from mapStateToProps
+  sampleUserNewDeckOrCardId, // keeps track of sampleUsers new decks and cards with their own id numbers
+  if (sampleUser) {
+  if (deckId) {
+  // saving a card
+  onSave(
+  {
+  cardId: sampleUserNewDeckOrCardId,
+  score: 0,
+  term: mainField.value,
+  definition: secondaryField.value,
+  },
+  actionCallback
+  );
+  } else {
+  // saving a deck
+  onSave(
+  {
+  userId,
+  deckId: sampleUserNewDeckOrCardId,
+  deckName: mainField.value,
+  description: secondaryField.value,
+  },
+  actionCallback
+  );
+  }
+  resetInput();
+  return;
+  }
+  connect(mapStateToProps
+
+-
+-
+- Decks.js
+  sampleUserNewDeckId: state.decks.sampleUserNewDeckId,
+  const { sampleUserNewDeckId } = this.props;
+  sampleUserNewDeckOrCardId={sampleUserNewDeckId}
+
+  -
+  -
+  - Editor.js
+    sampleUserNewCardId: state.currentDeck.sampleUserNewCardId,
+    const Editor = ({sampleUserNewCardId})
+    sampleUserNewDeckOrCardId={sampleUserNewCardId}

@@ -56,11 +56,16 @@ const initialStateUserStatus = {
 };
 const initialStateRequestStatus = { isPending: false };
 const initialStateError = { error: "" };
-const initialStateDecks = { decks: [], decksHaveBeenFetched: false };
+const initialStateDecks = {
+  decks: [],
+  decksHaveBeenFetched: false,
+  sampleUserNewDeckId: 1000,
+};
 const initialStateCurrentDeck = {
   currentDeck: null,
   cards: [],
   cardsHaveBeenFetched: false,
+  sampleUserNewCardId: 1000,
   practice: {
     settingsHaveBeenFetched: false,
     settings: {
@@ -145,7 +150,11 @@ const decks = (state = initialStateDecks, action = {}) => {
     case UNLOAD_DECKS:
       return { ...state, ...initialStateDecks };
     case ADD_DECK:
-      return { ...state, decks: [...state.decks, action.payload] };
+      return {
+        ...state,
+        decks: [...state.decks, action.payload],
+        sampleUserNewDeckId: state.sampleUserNewDeckId + 1,
+      };
     case REMOVE_DECK:
       return {
         ...state,
@@ -177,7 +186,11 @@ const currentDeck = (state = initialStateCurrentDeck, action = {}) => {
     case LOAD_CARDS:
       return { ...state, cards: action.payload, cardsHaveBeenFetched: true };
     case ADD_CARD:
-      return { ...state, cards: [...state.cards, action.payload] };
+      return {
+        ...state,
+        cards: [...state.cards, action.payload],
+        sampleUserNewCardId: state.sampleUserNewCardId + 1,
+      };
     case REMOVE_CARD:
       return {
         ...state,
