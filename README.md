@@ -2,7 +2,7 @@
 
 Engineered a full-stack, progressive web application with responsive design using **React**, **Redux**, **Node**, **Express**, and **PostgreSQL** that lets users create, store, modify, study, and delete their own flashcard decks. Incorporated the JavaScript Web Speech API to add read-aloud functionality  
   
-[See Project Live](https://github.com/d-mcneil/flashcards-api) 
+[See Project Live](https://d-mcneil.github.io/flashcards/) 
   
 [Back End Code](https://github.com/d-mcneil/flashcards-api)  
   
