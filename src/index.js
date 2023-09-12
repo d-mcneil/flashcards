@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import configureStore from "./redux/store";
 import App from "./containers/App";
 import "./tachyons-styles.css";
-import "./index.css";
+import "./index.css"; 
 
 const store = configureStore();
 
@@ -30,3 +30,4 @@ serviceWorkerRegistration.register();
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
+//
